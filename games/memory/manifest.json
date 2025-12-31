@@ -1,0 +1,12 @@
+{
+  "id": "memory",
+  "title": "기억력 게임",
+  "titleEn": "Memory Game",
+  "description": "카드를 뒤집어서 같은 그림을 찾아보세요!",
+  "descriptionEn": "Flip cards to find matching pairs!",
+  "icon": "🧠",
+  "category": "puzzle",
+  "difficulty": "medium",
+  "version": "1.0.0"
+}
+

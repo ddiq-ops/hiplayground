@@ -1,0 +1,144 @@
+/* Memory Game Styles */
+
+.memory-game {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+.memory-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.memory-title {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+}
+
+.memory-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+}
+
+.memory-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.memory-stat-label {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-xs);
+}
+
+.memory-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.memory-card {
+  aspect-ratio: 1;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.memory-card-front,
+.memory-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.memory-card-front {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.memory-card-back {
+  background-color: var(--color-bg-card);
+  color: var(--color-text);
+  transform: rotateY(180deg);
+  border: 3px solid var(--color-border);
+}
+
+.memory-card.flipped .memory-card-back {
+  transform: rotateY(0deg);
+}
+
+.memory-card.flipped .memory-card-front {
+  transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.memory-card.matched .memory-card-back {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.memory-controls {
+  text-align: center;
+}
+
+/* Animation */
+@keyframes flip {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .memory-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .memory-card {
+    font-size: 2rem;
+  }
+  
+  .memory-title {
+    font-size: 1.5rem;
+  }
+  
+  .memory-stats {
+    gap: var(--spacing-md);
+  }
+}
+

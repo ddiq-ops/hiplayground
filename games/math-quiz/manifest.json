@@ -1,0 +1,12 @@
+{
+  "id": "math-quiz",
+  "title": "수학 퀴즈",
+  "titleEn": "Math Quiz",
+  "description": "빠르게 수학 문제를 풀어보세요!",
+  "descriptionEn": "Solve math problems quickly!",
+  "icon": "🔢",
+  "category": "math",
+  "difficulty": "medium",
+  "version": "1.0.0"
+}
+

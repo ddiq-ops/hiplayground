@@ -1,0 +1,50 @@
+{
+  "site": {
+    "name": "Hi Playground",
+    "tagline": "Fun mini game playground"
+  },
+  "nav": {
+    "home": "Home",
+    "games": "Games",
+    "categories": "Categories",
+    "about": "About"
+  },
+  "home": {
+    "title": "Enjoy fun games!",
+    "featured": "Featured Games",
+    "continue": "Continue Playing",
+    "search": "Search games...",
+    "allGames": "View All Games"
+  },
+  "games": {
+    "title": "Game List",
+    "filter": "Filter",
+    "sort": "Sort",
+    "difficulty": "난이도",
+    "category": "Category",
+    "all": "All",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "popular": "Popular",
+    "new": "New",
+    "play": "Play",
+    "noGames": "No games found"
+  },
+  "play": {
+    "back": "Back",
+    "reset": "Reset",
+    "fullscreen": "Fullscreen",
+    "mute": "Mute",
+    "score": "Score",
+    "time": "Time",
+    "level": "Level"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close"
+  }
+}
+

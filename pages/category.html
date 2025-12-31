@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>카테고리 - 하이 플레이그라운드</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-container">
+      <a href="../index.html" class="nav-brand">🎮 하이 플레이그라운드</a>
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">홈</a></li>
+        <li><a href="games.html" class="nav-link">게임</a></li>
+        <li><a href="about.html" class="nav-link">소개</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container" style="padding: var(--spacing-xl) 0;">
+    <div id="category-header" style="margin-bottom: var(--spacing-xl);">
+      <div class="loading-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="grid grid-3" id="games-grid">
+      <div class="loading-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background-color: var(--color-bg-card); padding: var(--spacing-xl) 0; margin-top: var(--spacing-2xl); text-align: center; color: var(--color-text-light);">
+    <div class="container">
+      <p>&copy; 2024 하이 플레이그라운드. 모든 권리 보유.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+  <script src="../assets/js/router.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../shared/ui.js"></script>
+  
+  <script>
+    // Page-specific script
+    (async function() {
+      await App.init();
+      
+      // Get category from URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryId = urlParams.get('c') || 'all';
+      
+      const categoryHeader = document.getElementById('category-header');
+      const gamesGrid = document.getElementById('games-grid');
+      
+      // Load category info
+      if (categoryId !== 'all') {
+        const category = App.getCategoryById(categoryId);
+        if (category) {
+          categoryHeader.innerHTML = `
+            <div style="text-align: center;">
+              <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">${category.icon}</div>
+              <h1>${category.name}</h1>
+              <p style="color: var(--color-text-light); font-size: 1.25rem;">${category.description}</p>
+            </div>
+          `;
+        } else {
+          categoryHeader.innerHTML = '<h1>카테고리를 찾을 수 없습니다</h1>';
+        }
+      } else {
+        categoryHeader.innerHTML = '<h1>모든 게임</h1>';
+      }
+      
+      // Load games in category
+      const games = App.getGamesByCategory(categoryId);
+      UI.renderGameCards(gamesGrid, games);
+      
+      // Track page view
+      Analytics.trackPageView(`category:${categoryId}`);
+    })();
+  </script>
+</body>
+</html>
+

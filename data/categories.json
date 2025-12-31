@@ -1,0 +1,35 @@
+[
+  {
+    "id": "action",
+    "name": "액션",
+    "nameEn": "Action",
+    "icon": "⚡",
+    "description": "빠르고 재미있는 액션 게임들",
+    "descriptionEn": "Fast and fun action games"
+  },
+  {
+    "id": "puzzle",
+    "name": "퍼즐",
+    "nameEn": "Puzzle",
+    "icon": "🧩",
+    "description": "머리를 쓰는 퍼즐 게임들",
+    "descriptionEn": "Brain-teasing puzzle games"
+  },
+  {
+    "id": "math",
+    "name": "수학",
+    "nameEn": "Math",
+    "icon": "🔢",
+    "description": "수학을 배우는 게임들",
+    "descriptionEn": "Educational math games"
+  },
+  {
+    "id": "memory",
+    "name": "기억력",
+    "nameEn": "Memory",
+    "icon": "🧠",
+    "description": "기억력을 키우는 게임들",
+    "descriptionEn": "Memory training games"
+  }
+]
+

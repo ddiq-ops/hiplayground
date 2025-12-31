@@ -1,0 +1,12 @@
+{
+  "id": "clicker",
+  "title": "클리커 게임",
+  "titleEn": "Clicker Game",
+  "description": "빠르게 클릭해서 점수를 모아보세요!",
+  "descriptionEn": "Click fast to collect points!",
+  "icon": "🎯",
+  "category": "action",
+  "difficulty": "easy",
+  "version": "1.0.0"
+}
+

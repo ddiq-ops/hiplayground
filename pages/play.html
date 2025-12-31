@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게임 플레이 - 하이 플레이그라운드</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/theme.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../shared/game-shell.css">
+</head>
+<body>
+  <div id="game-area">
+    <!-- Game Header -->
+    <header id="game-header">
+      <div class="game-header-left">
+        <button id="btn-back" class="game-header-btn" title="뒤로">←</button>
+      </div>
+      <div class="game-header-center">
+        <h1 id="game-title">게임 로딩 중...</h1>
+      </div>
+      <div class="game-header-right">
+        <button id="btn-reset" class="game-header-btn" title="리셋">🔄</button>
+        <button id="btn-fullscreen" class="game-header-btn" title="전체화면">⛶</button>
+        <button id="btn-mute" class="game-header-btn" title="음소거">🔊</button>
+      </div>
+    </header>
+
+    <!-- Game Stats (optional, can be hidden if game doesn't use it) -->
+    <div id="game-stats" style="display: none;">
+      <div class="game-stat">
+        <div class="game-stat-label">점수</div>
+        <div class="game-stat-value" id="game-score">0</div>
+      </div>
+      <div class="game-stat">
+        <div class="game-stat-label">레벨</div>
+        <div class="game-stat-value" id="game-level">1</div>
+      </div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="game-container">
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p style="margin-top: var(--spacing-md);">게임을 불러오는 중...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+  <script src="../assets/js/router.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../shared/game-shell.js"></script>
+  
+  <script>
+    // Page-specific script
+    (async function() {
+      await App.init();
+      
+      // Get game ID from URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const gameId = urlParams.get('id');
+      
+      if (!gameId) {
+        alert('게임 ID가 없습니다.');
+        window.location.href = '../index.html';
+        return;
+      }
+      
+      // Verify game exists
+      const game = App.getGameById(gameId);
+      if (!game) {
+        alert('게임을 찾을 수 없습니다.');
+        window.location.href = '../index.html';
+        return;
+      }
+      
+      // Initialize game shell
+      await GameShell.init(gameId);
+      
+      // Track page view
+      Analytics.trackPageView(`play:${gameId}`);
+    })();
+  </script>
+</body>
+</html>
+

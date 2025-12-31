@@ -1,0 +1,42 @@
+[
+  {
+    "id": "clicker",
+    "title": "클리커 게임",
+    "titleEn": "Clicker Game",
+    "category": "action",
+    "difficulty": "easy",
+    "description": "빠르게 클릭해서 점수를 모아보세요!",
+    "descriptionEn": "Click fast to collect points!",
+    "icon": "🎯",
+    "tags": ["반응속도", "재미", "간단"],
+    "popularity": 95,
+    "releaseDate": "2024-01-01"
+  },
+  {
+    "id": "memory",
+    "title": "기억력 게임",
+    "titleEn": "Memory Game",
+    "category": "puzzle",
+    "difficulty": "medium",
+    "description": "카드를 뒤집어서 같은 그림을 찾아보세요!",
+    "descriptionEn": "Flip cards to find matching pairs!",
+    "icon": "🧠",
+    "tags": ["기억력", "집중력", "퍼즐"],
+    "popularity": 88,
+    "releaseDate": "2024-01-02"
+  },
+  {
+    "id": "math-quiz",
+    "title": "수학 퀴즈",
+    "titleEn": "Math Quiz",
+    "category": "math",
+    "difficulty": "medium",
+    "description": "빠르게 수학 문제를 풀어보세요!",
+    "descriptionEn": "Solve math problems quickly!",
+    "icon": "🔢",
+    "tags": ["수학", "학습", "퀴즈"],
+    "popularity": 92,
+    "releaseDate": "2024-01-03"
+  }
+]
+
