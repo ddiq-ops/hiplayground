@@ -113,20 +113,21 @@
       
       // 결과 표시를 약간의 딜레이 후에 (애니메이션 효과를 위해)
       setTimeout(() => {
+        let resultMessage = '';
+        let resultType = '';
+        
         if (isSuccess) {
           weaponLevel++;
           successfulUpgrades++;
-          
-          this.showUpgradeResult('강화 성공!', 'success');
-          this.playSuccessAnimation();
+          resultMessage = '강화 성공! 🎉';
+          resultType = 'success';
           isGameOver = false; // Game is not over if we succeeded
         } else {
           // 실패 시 무기가 레벨 1로 떨어짐
           const oldLevel = weaponLevel;
           weaponLevel = 1;
-          
-          this.showUpgradeResult('강화 실패!', 'error');
-          this.playFailAnimation();
+          resultMessage = '강화 실패! 💔';
+          resultType = 'error';
           
           // 게임오버 체크
           if (this.checkGameOver()) {
@@ -138,6 +139,16 @@
         
         this.saveProgress();
         this.render();
+        
+        // render() 후에 메시지 표시 (DOM이 다시 생성된 후)
+        setTimeout(() => {
+          this.showUpgradeResult(resultMessage, resultType);
+          if (isSuccess) {
+            this.playSuccessAnimation();
+          } else {
+            this.playFailAnimation();
+          }
+        }, 50);
         
         if (callbacks.onScoreUpdate) {
           callbacks.onScoreUpdate(weaponLevel);
