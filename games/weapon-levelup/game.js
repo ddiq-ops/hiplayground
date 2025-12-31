@@ -44,11 +44,11 @@
     
     /**
      * Calculate upgrade cost for a specific level
-     * 인플레이션: 판매 횟수마다 3%씩 비용 증가
+     * 인플레이션: 판매 횟수마다 1%씩 비용 증가
      */
     getUpgradeCost(level = weaponLevel) {
       const baseCost = Math.floor(level * 15 + 10);
-      const inflationMultiplier = 1 + (sellCount * 0.03); // 판매 횟수마다 3% 증가
+      const inflationMultiplier = 1 + (sellCount * 0.01); // 판매 횟수마다 1% 증가
       return Math.floor(baseCost * inflationMultiplier);
     },
     
@@ -93,6 +93,16 @@
         return;
       }
       
+      // 버튼 비활성화 및 강화 시작 애니메이션
+      const upgradeBtn = document.getElementById('upgrade-btn');
+      if (upgradeBtn) {
+        upgradeBtn.disabled = true;
+        upgradeBtn.textContent = '강화 중...';
+      }
+      
+      // 강화 시작 애니메이션
+      this.playUpgradeAnimation();
+      
       // Deduct cost
       gold -= cost;
       totalUpgrades++;
@@ -101,33 +111,38 @@
       const successRate = this.getSuccessProbability();
       const isSuccess = Math.random() * 100 < successRate;
       
-      if (isSuccess) {
-        weaponLevel++;
-        successfulUpgrades++;
-        
-        this.showMessage(`레벨업 성공! 🎉`, 'success');
-        this.playSuccessAnimation();
-        isGameOver = false; // Game is not over if we succeeded
-      } else {
-        // 실패 시 무기가 레벨 1로 떨어짐
-        const oldLevel = weaponLevel;
-        weaponLevel = 1;
-        
-        this.showMessage(`레벨업 실패! 무기가 레벨 1로 떨어졌습니다... 💔`, 'error');
-        this.playFailAnimation();
-        
-        // 게임오버 체크
-        if (this.checkGameOver()) {
-          this.handleGameOver();
+      // 결과 표시를 약간의 딜레이 후에 (애니메이션 효과를 위해)
+      setTimeout(() => {
+        if (isSuccess) {
+          weaponLevel++;
+          successfulUpgrades++;
+          
+          this.showUpgradeResult('강화 성공!', 'success');
+          this.playSuccessAnimation();
+          isGameOver = false; // Game is not over if we succeeded
+        } else {
+          // 실패 시 무기가 레벨 1로 떨어짐
+          const oldLevel = weaponLevel;
+          weaponLevel = 1;
+          
+          this.showUpgradeResult('강화 실패!', 'error');
+          this.playFailAnimation();
+          
+          // 게임오버 체크
+          if (this.checkGameOver()) {
+            setTimeout(() => {
+              this.handleGameOver();
+            }, 2000); // 2초 후 게임오버 화면 표시
+          }
         }
-      }
-      
-      this.saveProgress();
-      this.render();
-      
-      if (callbacks.onScoreUpdate) {
-        callbacks.onScoreUpdate(weaponLevel);
-      }
+        
+        this.saveProgress();
+        this.render();
+        
+        if (callbacks.onScoreUpdate) {
+          callbacks.onScoreUpdate(weaponLevel);
+        }
+      }, 1500); // 1.5초 딜레이
     },
     
     /**
@@ -145,7 +160,7 @@
       weaponLevel = 1;
       sellCount++; // 판매 횟수 증가 (인플레이션)
       
-      const inflationPercent = Math.round(sellCount * 3);
+      const inflationPercent = Math.round(sellCount * 1);
       this.showMessage(`레벨 ${oldLevel} 무기를 ${sellPrice} 골드에 판매했습니다! 💰\n(강화 비용이 ${inflationPercent}% 증가했습니다)`, 'success');
       this.playSellAnimation();
       
@@ -197,15 +212,44 @@
     },
     
     /**
+     * Show upgrade result with animation
+     */
+    showUpgradeResult(message, type = 'info') {
+      const messageEl = document.getElementById('weapon-message');
+      if (messageEl) {
+        messageEl.textContent = message;
+        messageEl.className = `weapon-message ${type} upgrade-result`;
+        
+        // Clear message after 4 seconds
+        setTimeout(() => {
+          messageEl.textContent = '';
+          messageEl.className = 'weapon-message';
+        }, 4000);
+      }
+    },
+    
+    /**
+     * Play upgrade animation (before result)
+     */
+    playUpgradeAnimation() {
+      const weaponEl = document.getElementById('weapon-display');
+      if (weaponEl) {
+        weaponEl.classList.add('upgrade-animation');
+        // 애니메이션은 CSS에서 지속 시간을 설정
+      }
+    },
+    
+    /**
      * Play success animation
      */
     playSuccessAnimation() {
       const weaponEl = document.getElementById('weapon-display');
       if (weaponEl) {
+        weaponEl.classList.remove('upgrade-animation');
         weaponEl.classList.add('success-animation');
         setTimeout(() => {
           weaponEl.classList.remove('success-animation');
-        }, 500);
+        }, 1000);
       }
     },
     
@@ -215,10 +259,11 @@
     playFailAnimation() {
       const weaponEl = document.getElementById('weapon-display');
       if (weaponEl) {
+        weaponEl.classList.remove('upgrade-animation');
         weaponEl.classList.add('fail-animation');
         setTimeout(() => {
           weaponEl.classList.remove('fail-animation');
-        }, 500);
+        }, 1000);
       }
     },
     
@@ -301,7 +346,7 @@
       const successRate = this.getSuccessProbability();
       const sellPrice = this.getSellPrice();
       const successRatePercent = Math.round(successRate);
-      const inflationPercent = sellCount > 0 ? Math.round(sellCount * 3) : 0;
+      const inflationPercent = sellCount > 0 ? Math.round(sellCount * 1) : 0;
       
       container.innerHTML = `
         <div class="weapon-game">
