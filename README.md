@@ -43,7 +43,6 @@ hiplayground/
   pages/games.html
   pages/category.html
   pages/play.html
-  pages/parents.html
   pages/about.html
   pages/privacy.html
   pages/terms.html

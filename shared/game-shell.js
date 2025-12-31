@@ -65,40 +65,75 @@ const GameShell = {
    */
   async loadGame(gameId) {
     try {
+      // Clear previous game instance
+      this.gameInstance = null;
+      window.Game = null;
+      
       // Remove previous game script if exists
       const oldScript = document.querySelector(`script[data-game-id="${gameId}"]`);
       if (oldScript) oldScript.remove();
+      
+      // Clear game container (remove loading spinner)
+      const gameContainer = document.getElementById('game-container');
+      if (gameContainer) {
+        gameContainer.innerHTML = '';
+      }
       
       // Load new game script
       const script = document.createElement('script');
       script.src = `../games/${gameId}/game.js`;
       script.dataset.gameId = gameId;
-      script.async = true;
+      script.async = true; // Load asynchronously
       
       return new Promise((resolve, reject) => {
         script.onload = () => {
-          // Wait a bit for game to initialize
+          console.log(`Game script loaded for: ${gameId}`);
+          // IIFE executes immediately when script loads, so Game should be available
+          // Use a small delay to ensure the script has fully executed
           setTimeout(() => {
+            console.log('Checking for window.Game:', window.Game);
             if (window.Game && typeof window.Game.init === 'function') {
+              console.log('Game found, initializing...');
               this.gameInstance = window.Game;
               const gameContainer = document.getElementById('game-container');
-              if (gameContainer && this.gameInstance.init) {
-                this.gameInstance.init(gameContainer, {
-                  onScoreUpdate: (score) => this.updateScore(score),
-                  onGameOver: (data) => this.handleGameOver(data),
-                  onLevelChange: (level) => this.updateLevel(level)
-                });
+              if (gameContainer) {
+                try {
+                  this.gameInstance.init(gameContainer, {
+                    onScoreUpdate: (score) => this.updateScore(score),
+                    onGameOver: (data) => this.handleGameOver(data),
+                    onLevelChange: (level) => this.updateLevel(level)
+                  });
+                  console.log('Game initialized successfully');
+                  resolve();
+                } catch (initError) {
+                  console.error('Game init error:', initError);
+                  this.showError('게임 초기화 중 오류가 발생했습니다: ' + initError.message);
+                  reject(initError);
+                }
+              } else {
+                console.error('Game container not found');
+                this.showError('게임 컨테이너를 찾을 수 없습니다.');
+                reject(new Error('Game container not found'));
               }
+            } else {
+              console.error('Game not found or init function missing. window.Game:', window.Game);
+              console.error('Expected path:', `../games/${gameId}/game.js`);
+              this.showError(`게임을 불러올 수 없습니다. (게임 ID: ${gameId}) 콘솔을 확인해주세요.`);
+              reject(new Error('Game not found'));
             }
-            resolve();
           }, 100);
         };
-        script.onerror = reject;
+        script.onerror = (error) => {
+          console.error('Script load error:', error);
+          this.showError('게임 스크립트를 불러오는 중 오류가 발생했습니다.');
+          reject(error);
+        };
         document.body.appendChild(script);
       });
     } catch (error) {
       console.error('Game load error:', error);
       this.showError('게임을 불러오는 중 오류가 발생했습니다.');
+      throw error;
     }
   },
   
@@ -219,6 +254,11 @@ const GameShell = {
     const scoreEl = document.getElementById('game-score');
     if (scoreEl) {
       scoreEl.textContent = score || 0;
+      // Show stats bar if it's hidden
+      const statsBar = document.getElementById('game-stats');
+      if (statsBar && statsBar.style.display === 'none') {
+        statsBar.style.display = 'flex';
+      }
     }
   },
   
@@ -229,6 +269,11 @@ const GameShell = {
     const levelEl = document.getElementById('game-level');
     if (levelEl) {
       levelEl.textContent = level || 1;
+      // Show stats bar if it's hidden
+      const statsBar = document.getElementById('game-stats');
+      if (statsBar && statsBar.style.display === 'none') {
+        statsBar.style.display = 'flex';
+      }
     }
   },
   
