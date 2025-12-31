@@ -8,6 +8,18 @@ const App = {
   categories: [],
   
   /**
+   * Get base path for data files (handles different page locations)
+   */
+  getBasePath() {
+    // Check if we're in pages/ folder
+    const path = window.location.pathname || window.location.href;
+    if (path.includes('/pages/') || path.includes('\\pages\\')) {
+      return '../';
+    }
+    return './';
+  },
+  
+  /**
    * Initialize the application
    */
   async init() {
@@ -27,7 +39,7 @@ const App = {
       console.log('App initialized successfully');
     } catch (error) {
       console.error('App initialization error:', error);
-      this.showError('앱을 초기화하는 중 오류가 발생했습니다.');
+      this.showError('앱을 초기화하는 중 오류가 발생했습니다: ' + error.message);
     }
   },
   
@@ -36,14 +48,16 @@ const App = {
    */
   async loadData() {
     try {
+      const basePath = this.getBasePath();
+      
       // Load games
-      const gamesResponse = await fetch('data/games.json');
-      if (!gamesResponse.ok) throw new Error('Failed to load games');
+      const gamesResponse = await fetch(`${basePath}data/games.json`);
+      if (!gamesResponse.ok) throw new Error(`Failed to load games: ${gamesResponse.status}`);
       this.games = await gamesResponse.json();
       
       // Load categories
-      const categoriesResponse = await fetch('data/categories.json');
-      if (!categoriesResponse.ok) throw new Error('Failed to load categories');
+      const categoriesResponse = await fetch(`${basePath}data/categories.json`);
+      if (!categoriesResponse.ok) throw new Error(`Failed to load categories: ${categoriesResponse.status}`);
       this.categories = await categoriesResponse.json();
       
       return { games: this.games, categories: this.categories };

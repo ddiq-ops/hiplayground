@@ -8,14 +8,27 @@ const I18n = {
   translations: {},
   
   /**
+   * Get base path for data files (handles different page locations)
+   */
+  getBasePath() {
+    // Check if we're in pages/ folder
+    const path = window.location.pathname || window.location.href;
+    if (path.includes('/pages/') || path.includes('\\pages\\')) {
+      return '../';
+    }
+    return './';
+  },
+  
+  /**
    * Initialize i18n system
    */
   async init(language = 'ko') {
     this.currentLanguage = language || Storage.getSettings().language || 'ko';
     
     try {
+      const basePath = this.getBasePath();
       // Load translation file
-      const response = await fetch(`data/i18n/${this.currentLanguage}.json`);
+      const response = await fetch(`${basePath}data/i18n/${this.currentLanguage}.json`);
       if (!response.ok) {
         throw new Error('Failed to load translation file');
       }
