@@ -1,0 +1,12 @@
+{
+  "id": "weapon-levelup",
+  "title": "내 무기만 레벨업",
+  "titleEn": "Weapon Level Up",
+  "description": "대장간에서 무기를 강화하고 상점에서 판매하세요!",
+  "descriptionEn": "Upgrade your weapon at the blacksmith and sell it at the shop!",
+  "icon": "⚔️",
+  "category": "puzzle",
+  "difficulty": "medium",
+  "version": "1.0.0"
+}
+

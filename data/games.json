@@ -37,6 +37,19 @@
     "tags": ["수학", "학습", "퀴즈"],
     "popularity": 92,
     "releaseDate": "2024-01-03"
+  },
+  {
+    "id": "weapon-levelup",
+    "title": "내 무기만 레벨업",
+    "titleEn": "Weapon Level Up",
+    "category": "puzzle",
+    "difficulty": "medium",
+    "description": "대장간에서 무기를 강화하고 상점에서 판매하세요!",
+    "descriptionEn": "Upgrade your weapon at the blacksmith and sell it at the shop!",
+    "icon": "⚔️",
+    "tags": ["전략", "업그레이드", "경영"],
+    "popularity": 90,
+    "releaseDate": "2024-01-04"
   }
 ]
 
