@@ -8,6 +8,7 @@
   let gold = 100;
   let totalUpgrades = 0;
   let successfulUpgrades = 0;
+  let sellCount = 0; // 판매 횟수 (인플레이션 계산용)
   let callbacks = {};
   let container = null;
   let isGameOver = false;
@@ -25,6 +26,7 @@
         gold = saved.gold || 100;
         totalUpgrades = saved.totalUpgrades || 0;
         successfulUpgrades = saved.successfulUpgrades || 0;
+        sellCount = saved.sellCount || 0;
         isGameOver = saved.isGameOver || false;
       }
       
@@ -42,9 +44,12 @@
     
     /**
      * Calculate upgrade cost for a specific level
+     * 인플레이션: 판매 횟수마다 3%씩 비용 증가
      */
     getUpgradeCost(level = weaponLevel) {
-      return Math.floor(level * 15 + 10);
+      const baseCost = Math.floor(level * 15 + 10);
+      const inflationMultiplier = 1 + (sellCount * 0.03); // 판매 횟수마다 3% 증가
+      return Math.floor(baseCost * inflationMultiplier);
     },
     
     /**
@@ -68,13 +73,6 @@
     getSuccessProbability() {
       const baseProbability = 100 - (weaponLevel * 4);
       return Math.max(10, baseProbability); // Minimum 10%
-    },
-    
-    /**
-     * Calculate reward for successful upgrade
-     */
-    getUpgradeReward() {
-      return Math.floor(weaponLevel * 25 + 20);
     },
     
     /**
@@ -106,10 +104,8 @@
       if (isSuccess) {
         weaponLevel++;
         successfulUpgrades++;
-        const reward = this.getUpgradeReward();
-        gold += reward;
         
-        this.showMessage(`레벨업 성공! +${reward} 골드 획득! 🎉`, 'success');
+        this.showMessage(`레벨업 성공! 🎉`, 'success');
         this.playSuccessAnimation();
         isGameOver = false; // Game is not over if we succeeded
       } else {
@@ -147,8 +143,10 @@
       gold += sellPrice;
       const oldLevel = weaponLevel;
       weaponLevel = 1;
+      sellCount++; // 판매 횟수 증가 (인플레이션)
       
-      this.showMessage(`레벨 ${oldLevel} 무기를 ${sellPrice} 골드에 판매했습니다! 💰`, 'success');
+      const inflationPercent = Math.round(sellCount * 3);
+      this.showMessage(`레벨 ${oldLevel} 무기를 ${sellPrice} 골드에 판매했습니다! 💰\n(강화 비용이 ${inflationPercent}% 증가했습니다)`, 'success');
       this.playSellAnimation();
       
       // 게임오버 상태 해제 (판매로 골드를 얻었으므로)
@@ -246,6 +244,7 @@
         gold: gold,
         totalUpgrades: totalUpgrades,
         successfulUpgrades: successfulUpgrades,
+        sellCount: sellCount,
         isGameOver: isGameOver
       });
     },
@@ -302,6 +301,7 @@
       const successRate = this.getSuccessProbability();
       const sellPrice = this.getSellPrice();
       const successRatePercent = Math.round(successRate);
+      const inflationPercent = sellCount > 0 ? Math.round(sellCount * 3) : 0;
       
       container.innerHTML = `
         <div class="weapon-game">
@@ -327,6 +327,13 @@
             </div>
           </div>
           
+          ${inflationPercent > 0 ? `
+          <div class="weapon-inflation-notice">
+            <span class="inflation-icon">📈</span>
+            <span>인플레이션: 강화 비용이 <strong>${inflationPercent}%</strong> 증가했습니다</span>
+          </div>
+          ` : ''}
+          
           <div class="weapon-display-area">
             <div class="weapon-display" id="weapon-display">
               <div class="weapon-icon">${this.getWeaponIcon()}</div>
@@ -341,7 +348,6 @@
               <div class="weapon-action-info">
                 <p>비용: <strong>${upgradeCost.toLocaleString()}</strong> 골드</p>
                 <p>성공 확률: <strong>${successRatePercent}%</strong></p>
-                <p>성공 시 보상: <strong>${this.getUpgradeReward().toLocaleString()}</strong> 골드</p>
                 <p style="color: var(--color-error); font-weight: 600;">⚠️ 실패 시 레벨 1로 떨어집니다!</p>
               </div>
               <button 
@@ -425,6 +431,7 @@
       gold = 100;
       totalUpgrades = 0;
       successfulUpgrades = 0;
+      sellCount = 0;
       isGameOver = false;
       this.saveProgress();
       this.render();

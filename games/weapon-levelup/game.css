@@ -238,6 +238,31 @@
   font-weight: 700;
 }
 
+/* Inflation Notice */
+.weapon-inflation-notice {
+  background-color: var(--color-warning);
+  color: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.inflation-icon {
+  font-size: 1.5rem;
+}
+
+.weapon-inflation-notice strong {
+  font-size: 1.125rem;
+  color: white;
+}
+
 /* Game Over Screen */
 .weapon-game-over {
   text-align: center;
