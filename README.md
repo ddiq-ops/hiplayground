@@ -90,3 +90,4 @@ Output:
 - Keep code clean and commented.
 - No copyrighted assets. Use simple SVG/emoji placeholders if needed.
 
+여기서 게임은 태블릿pc와 휴대폰에서 진행할 때 최적화될 수 있도록 해줘.

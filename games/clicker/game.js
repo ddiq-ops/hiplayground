@@ -27,6 +27,9 @@
   let coopTargetClicks = 0;
   let countdownActive = false;
   let countdownValue = 3;
+  let currentPlayerTurn = 1; // 1 or 2 for two-player modes
+  let player1RoundClicks = 0; // Clicks in current round
+  let player2RoundClicks = 0; // Clicks in current round
   
   // Game state
   const Game = {
@@ -69,11 +72,30 @@
     startGame() {
       if (gameActive || countdownActive) return;
       
-      // Reset values
-      currentClicks = 0;
-      player1Clicks = 0;
-      player2Clicks = 0;
-      coopTotalClicks = 0;
+      // For two-player modes, check if this is the first game or player 2's turn
+      if (gameMode === 'coop' || gameMode === 'versus') {
+        // If it's player 1's turn, reset everything (new game)
+        if (currentPlayerTurn === 1) {
+          currentClicks = 0;
+          player1Clicks = 0;
+          player2Clicks = 0;
+          player1RoundClicks = 0;
+          player2RoundClicks = 0;
+          coopTotalClicks = 0;
+        } else {
+          // If it's player 2's turn, only reset player 2's round clicks
+          player2RoundClicks = 0;
+        }
+      } else {
+        // Single player mode: reset everything
+        currentClicks = 0;
+        player1Clicks = 0;
+        player2Clicks = 0;
+        player1RoundClicks = 0;
+        player2RoundClicks = 0;
+        coopTotalClicks = 0;
+      }
+      
       timeLeft = TIME_LIMIT;
       countdownValue = 3;
       countdownActive = true;
@@ -149,23 +171,23 @@
     /**
      * Handle click
      */
-    handleClick(player = 1) {
+    handleClick() {
       if (!gameActive || countdownActive) return;
       
       if (gameMode === 'single') {
         currentClicks++;
-      } else if (gameMode === 'coop') {
-        if (player === 1) {
+      } else if (gameMode === 'coop' || gameMode === 'versus') {
+        // Two-player modes: only current player can click
+        if (currentPlayerTurn === 1) {
+          player1RoundClicks++;
           player1Clicks++;
         } else {
+          player2RoundClicks++;
           player2Clicks++;
         }
-        coopTotalClicks = player1Clicks + player2Clicks;
-      } else if (gameMode === 'versus') {
-        if (player === 1) {
-          player1Clicks++;
-        } else {
-          player2Clicks++;
+        
+        if (gameMode === 'coop') {
+          coopTotalClicks = player1Clicks + player2Clicks;
         }
       }
       
@@ -194,9 +216,9 @@
      */
     stageComplete() {
       this.stopTimer();
-      gameActive = false;
       
-      if (gameMode === 'single' || gameMode === 'coop') {
+      if (gameMode === 'single') {
+        gameActive = false;
         if (stage < MAX_STAGE) {
           stage++;
           this.calculateTargets();
@@ -215,6 +237,49 @@
           this.render();
           this.setupEvents();
         }
+      } else if (gameMode === 'coop') {
+        // For coop mode, stage complete only after both players finish
+        // This will be handled in endGame when player 2's turn ends
+        if (currentPlayerTurn === 1) {
+          // Player 1 completed, wait for player 2 to start
+          gameActive = false;
+          currentPlayerTurn = 2;
+          player2RoundClicks = 0;
+          timeLeft = TIME_LIMIT;
+          
+          // Show start screen for player 2
+          this.render();
+          this.setupEvents();
+        } else {
+          // Player 2 completed - check if target reached
+          // This should not happen here as target check is in endGame
+          // But if it does, check target
+          if (coopTotalClicks >= coopTargetClicks) {
+            // Target reached, stage complete
+            gameActive = false;
+            if (stage < MAX_STAGE) {
+              stage++;
+              this.calculateTargets();
+              // Reset for next stage
+              player1Clicks = 0;
+              player2Clicks = 0;
+              coopTotalClicks = 0;
+              currentPlayerTurn = 1;
+              this.saveProgress();
+              
+              setTimeout(() => {
+                alert(`스테이지 ${stage - 1} 완료! 다음 스테이지로 진행합니다.`);
+                this.render();
+                this.setupEvents();
+              }, 500);
+            } else {
+              alert('축하합니다! 모든 스테이지를 완료했습니다! 🎉');
+              this.saveProgress();
+              this.render();
+              this.setupEvents();
+            }
+          }
+        }
       }
     },
     
@@ -223,43 +288,108 @@
      */
     endGame() {
       this.stopTimer();
-      gameActive = false;
       
       if (gameMode === 'single') {
+        gameActive = false;
         if (currentClicks < targetClicks) {
           // Failed - reset to stage 1
           stage = 1;
           this.calculateTargets();
           alert(`시간 초과! 스테이지 ${stage} 실패. 1스테이지부터 다시 시작합니다.`);
         }
-      } else if (gameMode === 'coop') {
-        if (coopTotalClicks < coopTargetClicks) {
-          // Failed - reset to stage 1
-          stage = 1;
-          this.calculateTargets();
-          alert(`시간 초과! 스테이지 ${stage} 실패. 1스테이지부터 다시 시작합니다.`);
-        }
-      } else if (gameMode === 'versus') {
-        // Determine winner: most clicks wins
-        let winner = null;
-        if (player1Clicks > player2Clicks) {
-          winner = 1;
-        } else if (player2Clicks > player1Clicks) {
-          winner = 2;
+        this.saveProgress();
+        this.render();
+        this.setupEvents();
+      } else if (gameMode === 'coop' || gameMode === 'versus') {
+        // Two-player modes: switch turns or end game
+        if (currentPlayerTurn === 1) {
+          // Player 1's turn ended, wait for player 2 to start
+          gameActive = false;
+          currentPlayerTurn = 2;
+          player2RoundClicks = 0;
+          timeLeft = TIME_LIMIT;
+          
+          // Show start screen for player 2
+          this.render();
+          this.setupEvents();
         } else {
-          winner = 0; // Draw
-        }
-        
-        if (winner === 0) {
-          alert(`무승부! (플레이어 1: ${player1Clicks}클릭, 플레이어 2: ${player2Clicks}클릭)`);
-        } else {
-          alert(`플레이어 ${winner} 승리! 🎉 (플레이어 1: ${player1Clicks}클릭, 플레이어 2: ${player2Clicks}클릭)`);
+          // Player 2's turn ended
+          gameActive = false;
+          
+          if (gameMode === 'coop') {
+            // Check if target reached
+            if (coopTotalClicks >= coopTargetClicks) {
+              // Target reached, stage complete - go to next stage
+              if (stage < MAX_STAGE) {
+                stage++;
+                this.calculateTargets();
+                // Reset all clicks for next stage
+                player1Clicks = 0;
+                player2Clicks = 0;
+                coopTotalClicks = 0;
+                currentPlayerTurn = 1; // Start from player 1
+                this.saveProgress();
+                
+                setTimeout(() => {
+                  alert(`스테이지 ${stage - 1} 완료! 다음 스테이지로 진행합니다.`);
+                  this.render();
+                  this.setupEvents();
+                }, 500);
+              } else {
+                alert('축하합니다! 모든 스테이지를 완료했습니다! 🎉');
+                this.saveProgress();
+                this.render();
+                this.setupEvents();
+              }
+            } else {
+              // Target not reached - game over, reset to stage 1
+              stage = 1;
+              this.calculateTargets();
+              // Reset all clicks
+              player1Clicks = 0;
+              player2Clicks = 0;
+              coopTotalClicks = 0;
+              currentPlayerTurn = 1;
+              this.saveProgress();
+              
+              alert(`시간 초과! 스테이지 실패. 1스테이지부터 다시 시작합니다.`);
+              this.render();
+              this.setupEvents();
+            }
+          } else if (gameMode === 'versus') {
+            // Determine winner: most clicks wins
+            let winner = null;
+            if (player1Clicks > player2Clicks) {
+              winner = 1;
+            } else if (player2Clicks > player1Clicks) {
+              winner = 2;
+            } else {
+              winner = 0; // Draw
+            }
+            
+            // Show result
+            let resultMessage = '';
+            if (winner === 0) {
+              resultMessage = `무승부! (플레이어 1: ${player1Clicks}클릭, 플레이어 2: ${player2Clicks}클릭)`;
+            } else {
+              resultMessage = `플레이어 ${winner} 승리! 🎉 (플레이어 1: ${player1Clicks}클릭, 플레이어 2: ${player2Clicks}클릭)`;
+            }
+            
+            // Reset all records and start from player 1
+            player1Clicks = 0;
+            player2Clicks = 0;
+            player1RoundClicks = 0;
+            player2RoundClicks = 0;
+            currentPlayerTurn = 1;
+            
+            alert(resultMessage);
+          }
+          
+          this.saveProgress();
+          this.render();
+          this.setupEvents();
         }
       }
-      
-      this.saveProgress();
-      this.render();
-      this.setupEvents();
     },
     
     /**
@@ -268,6 +398,9 @@
     switchMode(mode) {
       gameMode = mode;
       stage = 1;
+      currentPlayerTurn = 1;
+      player1RoundClicks = 0;
+      player2RoundClicks = 0;
       this.calculateTargets();
       this.stopTimer();
       gameActive = false;
@@ -313,21 +446,22 @@
           progressEl.style.width = `${progress}%`;
         }
       } else if (gameMode === 'coop') {
-        const p1ClicksEl = document.getElementById('coop-p1-clicks');
-        const p2ClicksEl = document.getElementById('coop-p2-clicks');
+        const currentClicksEl = document.getElementById('coop-current-clicks');
+        const remainingEl = document.getElementById('coop-remaining');
         const totalClicksEl = document.getElementById('coop-total-clicks');
-        const activeTotalEl = document.getElementById('coop-active-total');
-        const startTotalEl = document.getElementById('coop-start-total');
         const targetEl = document.getElementById('coop-target');
         const timeEl = document.getElementById('coop-time');
         const progressEl = document.getElementById('coop-progress');
+        const turnEl = document.getElementById('coop-turn');
         
-        if (p1ClicksEl) p1ClicksEl.textContent = player1Clicks;
-        if (p2ClicksEl) p2ClicksEl.textContent = player2Clicks;
+        const currentRoundClicks = currentPlayerTurn === 1 ? player1RoundClicks : player2RoundClicks;
+        const remaining = Math.max(0, coopTargetClicks - coopTotalClicks);
+        
+        if (currentClicksEl) currentClicksEl.textContent = currentRoundClicks;
+        if (remainingEl) remainingEl.textContent = remaining;
         if (totalClicksEl) totalClicksEl.textContent = coopTotalClicks;
-        if (activeTotalEl) activeTotalEl.textContent = coopTotalClicks;
-        if (startTotalEl) startTotalEl.textContent = coopTotalClicks;
         if (targetEl) targetEl.textContent = coopTargetClicks;
+        if (turnEl) turnEl.textContent = `플레이어 ${currentPlayerTurn}의 턴`;
         if (timeEl) {
           if (countdownActive) {
             timeEl.textContent = '준비...';
@@ -341,14 +475,25 @@
           progressEl.style.width = `${progress}%`;
         }
       } else if (gameMode === 'versus') {
-        const p1ClicksEl = document.getElementById('p1-clicks');
-        const p2ClicksEl = document.getElementById('p2-clicks');
+        const currentClicksEl = document.getElementById('versus-current-clicks');
+        const p1ClicksEl = document.getElementById('versus-p1-clicks');
         const timeEl = document.getElementById('versus-time');
-        const p1ProgressEl = document.getElementById('p1-progress');
-        const p2ProgressEl = document.getElementById('p2-progress');
+        const turnEl = document.getElementById('versus-turn');
+        const comparisonBarEl = document.getElementById('versus-p1-comparison-bar');
+        const comparisonValueEl = document.querySelector('.comparison-value');
         
-        if (p1ClicksEl) p1ClicksEl.textContent = player1Clicks;
-        if (p2ClicksEl) p2ClicksEl.textContent = player2Clicks;
+        const currentRoundClicks = currentPlayerTurn === 1 ? player1RoundClicks : player2RoundClicks;
+        
+        if (currentClicksEl) currentClicksEl.textContent = currentRoundClicks;
+        if (p1ClicksEl) {
+          if (currentPlayerTurn === 2) {
+            p1ClicksEl.textContent = player1Clicks;
+            p1ClicksEl.style.display = 'block';
+          } else {
+            p1ClicksEl.style.display = 'none';
+          }
+        }
+        if (turnEl) turnEl.textContent = `플레이어 ${currentPlayerTurn}의 턴`;
         if (timeEl) {
           if (countdownActive) {
             timeEl.textContent = countdownValue > 0 ? countdownValue : '시작!';
@@ -357,14 +502,7 @@
           }
         }
         
-        // Progress bars show relative comparison (not target-based)
-        if (p1ProgressEl && p2ProgressEl) {
-          const maxClicks = Math.max(player1Clicks, player2Clicks, 1);
-          const p1Progress = (player1Clicks / maxClicks) * 100;
-          const p2Progress = (player2Clicks / maxClicks) * 100;
-          p1ProgressEl.style.width = `${p1Progress}%`;
-          p2ProgressEl.style.width = `${p2Progress}%`;
-        }
+        // No comparison bar for versus mode
       }
     },
     
@@ -437,6 +575,9 @@
           </div>
         `;
       } else if (gameMode === 'coop') {
+        const remaining = Math.max(0, coopTargetClicks - coopTotalClicks);
+        const currentRoundClicks = currentPlayerTurn === 1 ? player1RoundClicks : player2RoundClicks;
+        
         container.innerHTML = `
           <div class="clicker-game">
             <h2 class="clicker-title">🎯 클리커 게임 (협동전)</h2>
@@ -453,22 +594,28 @@
             
             ${!gameActive && !countdownActive ? `
             <div class="clicker-start-area">
-              <div class="versus-targets">
-                <div class="versus-player">
-                  <div class="player-label">플레이어 1</div>
-                  <div class="clicker-target" id="target-p1">🎯</div>
-                  <div class="player-clicks-display">0</div>
+              ${currentPlayerTurn === 2 ? `
+              <div class="coop-progress-info">
+                <div class="progress-info-label">현재 진행 상황</div>
+                <div class="progress-info-value">${coopTotalClicks} / ${coopTargetClicks}</div>
+                <div class="progress-container">
+                  <div class="progress-bar" style="width: ${Math.min((coopTotalClicks / coopTargetClicks) * 100, 100)}%"></div>
                 </div>
-                <div class="versus-vs coop-total">합계: <span id="coop-start-total">0</span></div>
-                <div class="versus-player">
-                  <div class="player-label">플레이어 2</div>
-                  <div class="clicker-target" id="target-p2">🎯</div>
-                  <div class="player-clicks-display">0</div>
-                </div>
+                <div class="progress-info-remaining">남은 클릭 수: <strong>${Math.max(0, coopTargetClicks - coopTotalClicks)}</strong></div>
+              </div>
+              ` : ''}
+              <div class="clicker-target" id="clicker-target">
+                🎯
               </div>
               <button class="btn btn-primary btn-large" id="start-btn">게임 시작</button>
               <div class="clicker-info">
+                ${currentPlayerTurn === 1 ? `
                 <p>10초 안에 <strong>${coopTargetClicks}</strong>번 클릭하세요! (협동)</p>
+                <p>플레이어 1이 먼저, 플레이어 2가 두 번째로 진행합니다.</p>
+                ` : `
+                <p>플레이어 2의 턴입니다. 남은 클릭 수: <strong>${Math.max(0, coopTargetClicks - coopTotalClicks)}</strong></p>
+                <p>목표: <strong>${coopTargetClicks}</strong>클릭</p>
+                `}
               </div>
             </div>
             ` : `
@@ -478,14 +625,18 @@
                 <div class="countdown-display" id="countdown">${countdownValue}</div>
               </div>
               ` : ''}
+              <div class="clicker-turn-indicator" id="coop-turn">
+                플레이어 ${currentPlayerTurn}의 턴
+              </div>
+              
               <div class="clicker-stats">
                 <div class="stat-item">
-                  <div class="stat-label">총 클릭 수</div>
-                  <div class="stat-value" id="coop-total-clicks">${coopTotalClicks}</div>
+                  <div class="stat-label">현재 클릭 수</div>
+                  <div class="stat-value" id="coop-current-clicks">${currentRoundClicks}</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-label">목표</div>
-                  <div class="stat-value" id="coop-target">${coopTargetClicks}</div>
+                  <div class="stat-label">남은 클릭 수</div>
+                  <div class="stat-value" id="coop-remaining">${remaining}</div>
                 </div>
                 <div class="stat-item">
                   <div class="stat-label">남은 시간</div>
@@ -497,30 +648,21 @@
                 <div class="progress-bar" id="coop-progress" style="width: ${Math.min((coopTotalClicks / coopTargetClicks) * 100, 100)}%"></div>
               </div>
               
-              <div class="versus-players">
-                <div class="versus-player-area">
-                  <div class="player-label">플레이어 1</div>
-                  <div class="clicker-target" id="target-p1">🎯</div>
-                  <div class="player-clicks-display" id="coop-p1-clicks">${player1Clicks}</div>
-                </div>
-                
-                <div class="versus-vs coop-total">합계: <span id="coop-active-total">${coopTotalClicks}</span></div>
-                
-                <div class="versus-player-area">
-                  <div class="player-label">플레이어 2</div>
-                  <div class="clicker-target" id="target-p2">🎯</div>
-                  <div class="player-clicks-display" id="coop-p2-clicks">${player2Clicks}</div>
-                </div>
+              <div class="clicker-target" id="clicker-target">
+                🎯
               </div>
               
               <div class="clicker-info">
-                <p>둘이 함께 빠르게 클릭하세요!</p>
+                <p>플레이어 ${currentPlayerTurn}의 턴입니다. 빠르게 클릭하세요!</p>
+                <p>총 클릭 수: <strong id="coop-total-clicks">${coopTotalClicks}</strong> / 목표: <strong id="coop-target">${coopTargetClicks}</strong></p>
               </div>
             </div>
             `}
           </div>
         `;
       } else if (gameMode === 'versus') {
+        const currentRoundClicks = currentPlayerTurn === 1 ? player1RoundClicks : player2RoundClicks;
+        
         container.innerHTML = `
           <div class="clicker-game">
             <h2 class="clicker-title">🎯 클리커 게임 (경쟁전)</h2>
@@ -532,22 +674,18 @@
             
             ${!gameActive && !countdownActive ? `
             <div class="clicker-start-area">
-              <div class="versus-targets">
-                <div class="versus-player">
-                  <div class="player-label">플레이어 1</div>
-                  <div class="clicker-target" id="target-p1">🎯</div>
-                  <div class="player-clicks-display">0</div>
-                </div>
-                <div class="versus-vs">VS</div>
-                <div class="versus-player">
-                  <div class="player-label">플레이어 2</div>
-                  <div class="clicker-target" id="target-p2">🎯</div>
-                  <div class="player-clicks-display">0</div>
-                </div>
+              <div class="clicker-target" id="clicker-target">
+                🎯
               </div>
               <button class="btn btn-primary btn-large" id="start-btn">게임 시작</button>
               <div class="clicker-info">
+                ${currentPlayerTurn === 1 ? `
                 <p>10초 동안 더 많이 클릭한 사람이 승리합니다!</p>
+                <p>플레이어 1이 먼저, 플레이어 2가 두 번째로 진행합니다.</p>
+                ` : `
+                <p>플레이어 2의 턴입니다. 10초 동안 더 많이 클릭하세요!</p>
+                <p>플레이어 1: <strong>${player1Clicks}</strong>클릭</p>
+                `}
               </div>
             </div>
             ` : `
@@ -557,28 +695,33 @@
                 <div class="countdown-display" id="countdown">${countdownValue}</div>
               </div>
               ` : ''}
-              <div class="versus-time">
-                <div class="time-display" id="versus-time">${timeLeft.toFixed(1)}</div>
+              <div class="clicker-turn-indicator" id="versus-turn">
+                플레이어 ${currentPlayerTurn}의 턴
               </div>
               
-              <div class="versus-players">
-                <div class="versus-player-area">
-                  <div class="player-label">플레이어 1</div>
-                  <div class="clicker-target" id="target-p1">🎯</div>
-                  <div class="player-clicks-display" id="p1-clicks">${player1Clicks}</div>
-                  <div class="progress-container">
-                    <div class="progress-bar" id="p1-progress" style="width: ${Math.max(player1Clicks, player2Clicks) > 0 ? (player1Clicks / Math.max(player1Clicks, player2Clicks, 1)) * 100 : 0}%"></div>
-                  </div>
+              <div class="clicker-stats">
+                <div class="stat-item">
+                  <div class="stat-label">현재 클릭 수</div>
+                  <div class="stat-value" id="versus-current-clicks">${currentRoundClicks}</div>
                 </div>
-                
-                <div class="versus-player-area">
-                  <div class="player-label">플레이어 2</div>
-                  <div class="clicker-target" id="target-p2">🎯</div>
-                  <div class="player-clicks-display" id="p2-clicks">${player2Clicks}</div>
-                  <div class="progress-container">
-                    <div class="progress-bar" id="p2-progress" style="width: ${Math.max(player1Clicks, player2Clicks) > 0 ? (player2Clicks / Math.max(player1Clicks, player2Clicks, 1)) * 100 : 0}%"></div>
-                  </div>
+                ${currentPlayerTurn === 2 ? `
+                <div class="stat-item">
+                  <div class="stat-label">플레이어 1 클릭 수</div>
+                  <div class="stat-value" id="versus-p1-clicks">${player1Clicks}</div>
                 </div>
+                ` : ''}
+                <div class="stat-item">
+                  <div class="stat-label">남은 시간</div>
+                  <div class="stat-value time-critical" id="versus-time">${timeLeft.toFixed(1)}</div>
+                </div>
+              </div>
+              
+              <div class="clicker-target" id="clicker-target">
+                🎯
+              </div>
+              
+              <div class="clicker-info">
+                <p>플레이어 ${currentPlayerTurn}의 턴입니다. 빠르게 클릭하세요!</p>
               </div>
             </div>
             `}
@@ -624,55 +767,25 @@
       }
       
       // Click targets - remove old listeners first to prevent duplicates
-      if (gameMode === 'single') {
-        const target = document.getElementById('clicker-target');
-        if (target) {
-          // Clone and replace to remove all event listeners
-          const newTarget = target.cloneNode(true);
-          target.parentNode.replaceChild(newTarget, target);
-          
-          newTarget.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.handleClick();
-            newTarget.classList.add('clicked');
-            setTimeout(() => {
-              newTarget.classList.remove('clicked');
-            }, 100);
-          });
-        }
-      } else if (gameMode === 'coop' || gameMode === 'versus') {
-        const targetP1 = document.getElementById('target-p1');
-        const targetP2 = document.getElementById('target-p2');
+      // Use touchstart for faster mobile response, click for desktop
+      const target = document.getElementById('clicker-target');
+      if (target) {
+        // Clone and replace to remove all event listeners
+        const newTarget = target.cloneNode(true);
+        target.parentNode.replaceChild(newTarget, target);
         
-        if (targetP1) {
-          // Clone and replace to remove all event listeners
-          const newTargetP1 = targetP1.cloneNode(true);
-          targetP1.parentNode.replaceChild(newTargetP1, targetP1);
-          
-          newTargetP1.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.handleClick(1);
-            newTargetP1.classList.add('clicked');
-            setTimeout(() => {
-              newTargetP1.classList.remove('clicked');
-            }, 100);
-          });
-        }
+        const handleInteraction = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.handleClick();
+          newTarget.classList.add('clicked');
+          setTimeout(() => {
+            newTarget.classList.remove('clicked');
+          }, 50);
+        };
         
-        if (targetP2) {
-          // Clone and replace to remove all event listeners
-          const newTargetP2 = targetP2.cloneNode(true);
-          targetP2.parentNode.replaceChild(newTargetP2, targetP2);
-          
-          newTargetP2.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.handleClick(2);
-            newTargetP2.classList.add('clicked');
-            setTimeout(() => {
-              newTargetP2.classList.remove('clicked');
-            }, 100);
-          });
-        }
+        newTarget.addEventListener('touchstart', handleInteraction, { passive: false });
+        newTarget.addEventListener('click', handleInteraction);
       }
     },
     
@@ -688,6 +801,9 @@
     
     reset: function() {
       stage = 1;
+      currentPlayerTurn = 1;
+      player1RoundClicks = 0;
+      player2RoundClicks = 0;
       gameActive = false;
       countdownActive = false;
       this.stopTimer();

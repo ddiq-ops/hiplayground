@@ -124,9 +124,11 @@
   justify-content: center;
   font-size: 4rem;
   box-shadow: var(--shadow-lg);
-  transition: all 0.1s ease;
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .clicker-target:hover {
@@ -149,13 +151,93 @@
   font-weight: 700;
 }
 
+.clicker-turn-indicator {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(74, 144, 226, 0.1) 100%);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-primary);
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+}
+
+/* Comparison display for versus mode */
+.versus-p1-comparison {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+}
+
+.comparison-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.comparison-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: center;
+  margin: var(--spacing-sm) 0;
+}
+
+.comparison-progress {
+  margin: var(--spacing-md) 0;
+  height: 25px;
+}
+
+/* Coop progress info */
+.coop-progress-info {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-primary);
+}
+
+.progress-info-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.progress-info-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: center;
+  margin: var(--spacing-sm) 0;
+}
+
+.progress-info-remaining {
+  font-size: 1.125rem;
+  color: var(--color-text);
+  text-align: center;
+  margin-top: var(--spacing-md);
+}
+
+.progress-info-remaining strong {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
 /* Click animation */
 @keyframes clickPulse {
   0% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.15);
   }
   100% {
     transform: scale(1);
@@ -163,7 +245,7 @@
 }
 
 .clicker-target.clicked {
-  animation: clickPulse 0.1s ease;
+  animation: clickPulse 0.05s ease;
 }
 
 /* Countdown overlay */
