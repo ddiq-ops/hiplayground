@@ -560,7 +560,7 @@
     },
     
     /**
-     * Render board
+     * Render board with intersection points
      */
     renderBoard() {
       const boardEl = document.getElementById('omok-board');
@@ -568,35 +568,37 @@
       
       boardEl.innerHTML = '';
       
+      // Create grid lines and intersection points
       for (let row = 0; row < BOARD_SIZE; row++) {
         for (let col = 0; col < BOARD_SIZE; col++) {
-          const cell = document.createElement('div');
-          cell.className = 'omok-cell';
-          cell.dataset.row = row;
-          cell.dataset.col = col;
+          // Create intersection point
+          const point = document.createElement('div');
+          point.className = 'omok-point';
+          point.dataset.row = row;
+          point.dataset.col = col;
           
           if (board[row][col] === BLACK) {
-            cell.classList.add('black');
+            point.classList.add('black');
           } else if (board[row][col] === WHITE) {
-            cell.classList.add('white');
+            point.classList.add('white');
           } else {
-            cell.classList.add('empty');
+            point.classList.add('empty');
           }
           
-          boardEl.appendChild(cell);
+          boardEl.appendChild(point);
         }
       }
     },
     
     setupEvents: function() {
-      // Board clicks
-      const cells = document.querySelectorAll('.omok-cell');
-      cells.forEach(cell => {
-        cell.addEventListener('click', () => {
+      // Board clicks on intersection points
+      const points = document.querySelectorAll('.omok-point');
+      points.forEach(point => {
+        point.addEventListener('click', () => {
           if (gameOver) return;
           
-          const row = parseInt(cell.dataset.row);
-          const col = parseInt(cell.dataset.col);
+          const row = parseInt(point.dataset.row);
+          const col = parseInt(point.dataset.col);
           const isPlayerTurn = gameMode === 'multi' || currentPlayer === BLACK;
           
           if (isPlayerTurn && board[row][col] === EMPTY) {

@@ -73,76 +73,84 @@
 .omok-board {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
   gap: 0;
+  background-image: 
+    repeating-linear-gradient(to right, transparent 0, transparent calc(100% / 15 - 1px), #8b6914 calc(100% / 15 - 1px), #8b6914 calc(100% / 15)),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(100% / 15 - 1px), #8b6914 calc(100% / 15 - 1px), #8b6914 calc(100% / 15));
   background-color: #d4a574;
   padding: var(--spacing-sm);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   min-width: min(90vw, 600px);
   aspect-ratio: 1;
+  position: relative;
 }
 
-.omok-cell {
-  aspect-ratio: 1;
-  background-color: #d4a574;
-  border: 1px solid #8b6914;
+.omok-point {
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
-  position: relative;
-  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  z-index: 1;
 }
 
-.omok-cell:hover {
-  background-color: #c49564;
+.omok-point.empty {
+  /* Empty intersection point - clickable */
 }
 
-.omok-cell.empty {
-  background-color: #d4a574;
-}
-
-.omok-cell.empty:hover {
-  background-color: #c49564;
-  cursor: pointer;
-}
-
-.omok-cell.black {
-  background-color: #d4a574;
-  position: relative;
-}
-
-.omok-cell.black::after {
+.omok-point.empty:hover::before {
   content: '';
   position: absolute;
-  width: 80%;
-  height: 80%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.omok-point.black {
+  position: relative;
+}
+
+.omok-point.black::after {
+  content: '';
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 35px;
+  max-height: 35px;
   border-radius: 50%;
   background-color: #000;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 -2px 4px rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  pointer-events: none;
 }
 
-.omok-cell.white {
-  background-color: #d4a574;
+.omok-point.white {
   position: relative;
 }
 
-.omok-cell.white::after {
+.omok-point.white::after {
   content: '';
   position: absolute;
-  width: 80%;
-  height: 80%;
+  width: 70%;
+  height: 70%;
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 35px;
+  max-height: 35px;
   border-radius: 50%;
   background-color: #fff;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .omok-game-over {
@@ -211,8 +219,12 @@
     min-width: min(95vw, 500px);
   }
   
-  .omok-cell {
-    font-size: clamp(0.6rem, 3vw, 1rem);
+  .omok-point.black::after,
+  .omok-point.white::after {
+    min-width: 15px;
+    min-height: 15px;
+    max-width: 25px;
+    max-height: 25px;
   }
   
   .omok-controls {
