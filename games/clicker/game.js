@@ -30,6 +30,7 @@
   let currentPlayerTurn = 1; // 1 or 2 for two-player modes
   let player1RoundClicks = 0; // Clicks in current round
   let player2RoundClicks = 0; // Clicks in current round
+  let versusTimeLimit = 10; // Time limit for versus mode (5-60 seconds, 5 second increments)
   
   // Game state
   const Game = {
@@ -96,7 +97,8 @@
         coopTotalClicks = 0;
       }
       
-      timeLeft = TIME_LIMIT;
+      // Use versus time limit for versus mode, otherwise use default TIME_LIMIT
+      timeLeft = (gameMode === 'versus') ? versusTimeLimit : TIME_LIMIT;
       countdownValue = 3;
       countdownActive = true;
       
@@ -245,7 +247,7 @@
           gameActive = false;
           currentPlayerTurn = 2;
           player2RoundClicks = 0;
-          timeLeft = TIME_LIMIT;
+          timeLeft = (gameMode === 'versus') ? versusTimeLimit : TIME_LIMIT;
           
           // Show start screen for player 2
           this.render();
@@ -307,7 +309,7 @@
           gameActive = false;
           currentPlayerTurn = 2;
           player2RoundClicks = 0;
-          timeLeft = TIME_LIMIT;
+          timeLeft = (gameMode === 'versus') ? versusTimeLimit : TIME_LIMIT;
           
           // Show start screen for player 2
           this.render();
@@ -674,16 +676,27 @@
             
             ${!gameActive && !countdownActive ? `
             <div class="clicker-start-area">
+              ${currentPlayerTurn === 1 ? `
+              <div class="versus-time-selector">
+                <label for="versus-time-select" class="time-select-label">게임 시간 선택:</label>
+                <select id="versus-time-select" class="time-select">
+                  ${Array.from({length: 12}, (_, i) => {
+                    const seconds = (i + 1) * 5;
+                    return `<option value="${seconds}" ${versusTimeLimit === seconds ? 'selected' : ''}>${seconds}초</option>`;
+                  }).join('')}
+                </select>
+              </div>
+              ` : ''}
               <div class="clicker-target" id="clicker-target">
                 🎯
               </div>
               <button class="btn btn-primary btn-large" id="start-btn">게임 시작</button>
               <div class="clicker-info">
                 ${currentPlayerTurn === 1 ? `
-                <p>10초 동안 더 많이 클릭한 사람이 승리합니다!</p>
+                <p>${versusTimeLimit}초 동안 더 많이 클릭한 사람이 승리합니다!</p>
                 <p>플레이어 1이 먼저, 플레이어 2가 두 번째로 진행합니다.</p>
                 ` : `
-                <p>플레이어 2의 턴입니다. 10초 동안 더 많이 클릭하세요!</p>
+                <p>플레이어 2의 턴입니다. ${versusTimeLimit}초 동안 더 많이 클릭하세요!</p>
                 <p>플레이어 1: <strong>${player1Clicks}</strong>클릭</p>
                 `}
               </div>
@@ -763,6 +776,19 @@
       if (startBtn) {
         startBtn.addEventListener('click', () => {
           this.startGame();
+        });
+      }
+      
+      // Time selector for versus mode
+      const timeSelect = document.getElementById('versus-time-select');
+      if (timeSelect) {
+        timeSelect.addEventListener('change', (e) => {
+          versusTimeLimit = parseInt(e.target.value, 10);
+          // Update info text if game is not active
+          if (!gameActive && !countdownActive && gameMode === 'versus' && currentPlayerTurn === 1) {
+            this.render();
+            this.setupEvents();
+          }
         });
       }
       
