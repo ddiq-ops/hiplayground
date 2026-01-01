@@ -145,6 +145,14 @@ const GameShell = {
     if (title) {
       title.textContent = manifest.title || '게임';
     }
+    
+    // 오목 게임은 점수/레벨 표시를 사용하지 않음
+    if (this.gameId === 'omok') {
+      const statsBar = document.getElementById('game-stats');
+      if (statsBar) {
+        statsBar.style.display = 'none';
+      }
+    }
   },
   
   /**

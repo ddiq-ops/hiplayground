@@ -1,0 +1,13 @@
+{
+  "id": "chess",
+  "title": "체스",
+  "titleEn": "Chess",
+  "description": "전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.",
+  "descriptionEn": "Strategic chess game! Supports 1-player and 2-player modes.",
+  "icon": "♟️",
+  "category": "board",
+  "difficulty": "hard",
+  "version": "1.0.0"
+}
+
+

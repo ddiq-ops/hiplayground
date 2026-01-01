@@ -1,7 +1,7 @@
 /**
  * Omok (Five in a Row) Game
  * 1-player with 15 difficulty levels and 2-player mode
- * 오목: 정확히 5개를 연속으로 놓으면 승리
+ * 오목: 바둑판의 교차점에 돌을 놓는 게임
  */
 
 (function() {
@@ -19,6 +19,7 @@
   let moveHistory = [];
   let callbacks = {};
   let container = null;
+  let boardElement = null;
   
   // Game state
   const Game = {
@@ -43,9 +44,7 @@
       this.render();
       this.setupEvents();
       
-      if (callbacks.onScoreUpdate) {
-        callbacks.onScoreUpdate(difficulty);
-      }
+      // 오목 게임은 점수/레벨 표시를 사용하지 않음
     },
     
     /**
@@ -138,18 +137,33 @@
       const blockMove = this.findWinningMove(BLACK);
       if (blockMove) return blockMove;
       
-      // Difficulty-based moves
-      if (difficulty >= 14) {
-        // Very hard: Strong strategic play
-        return this.getStrongMove();
-      } else if (difficulty >= 10) {
-        // Hard: Good strategic play
-        return this.getGoodMove();
-      } else if (difficulty >= 5) {
-        // Medium: Some strategy
-        return this.getMediumMove();
+      // Check for creating double threat (4-3, 3-3, etc.)
+      if (difficulty >= 8) {
+        const doubleThreat = this.findDoubleThreat(WHITE);
+        if (doubleThreat) return doubleThreat;
+        
+        const blockDoubleThreat = this.findDoubleThreat(BLACK);
+        if (blockDoubleThreat) return blockDoubleThreat;
+      }
+      
+      // Difficulty-based moves - 미니맥스 깊이 조정
+      if (difficulty >= 15) {
+        // 최고 난이도: 최대 깊이 미니맥스
+        return this.getMinimaxMove(7);
+      } else if (difficulty >= 12) {
+        // 매우 어려움: 깊이 5 탐색
+        return this.getMinimaxMove(5);
+      } else if (difficulty >= 8) {
+        // 어려움: 깊이 4 탐색
+        return this.getMinimaxMove(4);
+      } else if (difficulty >= 4) {
+        // 중간: 깊이 3 탐색
+        return this.getMinimaxMove(3);
+      } else if (difficulty >= 2) {
+        // 중하: 깊이 2 탐색
+        return this.getMinimaxMove(2);
       } else {
-        // Easy: Random with some logic
+        // 쉬움: 랜덤과 약간의 로직
         return this.getEasyMove();
       }
     },
@@ -177,23 +191,93 @@
      * Get strong move (very hard AI)
      */
     getStrongMove() {
-      let bestScore = -Infinity;
-      let bestMove = null;
+      const candidates = [];
       
+      // Only consider moves near existing pieces (more efficient)
       for (let row = 0; row < BOARD_SIZE; row++) {
         for (let col = 0; col < BOARD_SIZE; col++) {
           if (board[row][col] === EMPTY) {
-            const score = this.evaluatePosition(row, col, WHITE) * 1.2 - 
-                         this.evaluatePosition(row, col, BLACK) * 1.0;
-            if (score > bestScore) {
-              bestScore = score;
-              bestMove = { row, col };
+            // Prioritize moves near existing pieces
+            if (this.hasNearbyPiece(row, col) || this.getMoveCount() < 5) {
+              const attackScore = this.evaluatePosition(row, col, WHITE);
+              const defenseScore = this.evaluatePosition(row, col, BLACK);
+              const positionScore = this.getPositionValue(row, col);
+              const totalScore = attackScore * 2.0 + defenseScore * 1.8 + positionScore;
+              candidates.push({ row, col, score: totalScore });
             }
           }
         }
       }
       
-      return bestMove || this.getRandomMove();
+      if (candidates.length === 0) {
+        // Fallback to all empty cells
+        for (let row = 0; row < BOARD_SIZE; row++) {
+          for (let col = 0; col < BOARD_SIZE; col++) {
+            if (board[row][col] === EMPTY) {
+              const attackScore = this.evaluatePosition(row, col, WHITE);
+              const defenseScore = this.evaluatePosition(row, col, BLACK);
+              const positionScore = this.getPositionValue(row, col);
+              const totalScore = attackScore * 2.0 + defenseScore * 1.8 + positionScore;
+              candidates.push({ row, col, score: totalScore });
+            }
+          }
+        }
+      }
+      
+      if (candidates.length > 0) {
+        candidates.sort((a, b) => b.score - a.score);
+        // 최고 점수만 선택 (랜덤성 제거)
+        return candidates[0];
+      }
+      
+      return this.getRandomMove();
+    },
+    
+    /**
+     * Get position value (center and connectivity bonus)
+     */
+    getPositionValue(row, col) {
+      let value = 0;
+      const center = BOARD_SIZE / 2;
+      const distanceFromCenter = Math.abs(row - center) + Math.abs(col - center);
+      value += (BOARD_SIZE - distanceFromCenter) * 2; // 중앙 선호
+      
+      // 연결성 보너스
+      const connections = this.countConnections(row, col);
+      value += connections * 5;
+      
+      return value;
+    },
+    
+    /**
+     * Count connections to nearby pieces
+     */
+    countConnections(row, col) {
+      let count = 0;
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          if (dr === 0 && dc === 0) continue;
+          const r = row + dr;
+          const c = col + dc;
+          if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE) {
+            if (board[r][c] !== EMPTY) count++;
+          }
+        }
+      }
+      return count;
+    },
+    
+    /**
+     * Get move count
+     */
+    getMoveCount() {
+      let count = 0;
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          if (board[row][col] !== EMPTY) count++;
+        }
+      }
+      return count;
     },
     
     /**
@@ -282,26 +366,477 @@
      */
     scoreLine(line, player) {
       let score = 0;
-      const playerStr = player.toString();
-      const opponentStr = (player === BLACK ? WHITE : BLACK).toString();
+      const opponent = player === BLACK ? WHITE : BLACK;
       
-      // Check for patterns
-      for (let i = 0; i <= line.length - 5; i++) {
-        const segment = line.slice(i, i + 5).map(x => x === player ? playerStr : (x === EMPTY ? '0' : opponentStr)).join('');
+      // Convert line to string for pattern matching
+      const lineStr = line.map(x => {
+        if (x === player) return '1';
+        if (x === opponent) return '2';
+        if (x === EMPTY) return '0';
+        return 'X'; // Out of bounds
+      }).join('');
+      
+      // Check for patterns in all possible 5-length segments
+      for (let i = 0; i <= lineStr.length - 5; i++) {
+        const segment = lineStr.slice(i, i + 5);
         
-        // Open four (011110)
-        if (segment === '011110') score += 10000;
-        // Closed four (011112 or 211110)
-        if (segment === '011112' || segment === '211110') score += 1000;
-        // Open three (01110)
-        if (segment === '01110') score += 100;
-        // Closed three (01112 or 21110)
-        if (segment === '01112' || segment === '21110') score += 10;
-        // Two in a row (0110)
-        if (segment.includes('0110')) score += 1;
+        // Five in a row (11111) - winning
+        if (segment === '11111') score += 100000;
+        
+        // Open four (011110) - can win next turn
+        if (segment === '011110' || segment === '01111') score += 10000;
+        
+        // Closed four (011112, 211110, 01112, 21111) - can win in 2 turns
+        if (segment === '011112' || segment === '211110' || 
+            segment === '01112' || segment === '21111') score += 5000;
+        
+        // Open three (01110) - can become open four
+        if (segment === '01110') score += 1000;
+        
+        // Closed three (01112, 21110, 0112, 2110) - can become closed four
+        if (segment === '01112' || segment === '21110' ||
+            segment === '0112' || segment === '2110') score += 100;
+        
+        // Open two (0110) - can become open three
+        if (segment.includes('0110') || segment.includes('011')) score += 10;
+        
+        // Single piece (01 or 10) - building
+        if (segment.includes('01') || segment.includes('10')) score += 1;
+      }
+      
+      // Check for special patterns (4-3, 3-3, etc.) in longer segments
+      for (let len = 6; len <= Math.min(9, lineStr.length); len++) {
+        for (let i = 0; i <= lineStr.length - len; i++) {
+          const segment = lineStr.slice(i, i + len);
+          // Count potential threats
+          const openFours = (segment.match(/011110/g) || []).length;
+          const openThrees = (segment.match(/01110/g) || []).length;
+          
+          // Double threat patterns
+          if (openFours >= 2) score += 50000; // Double open four
+          if (openFours >= 1 && openThrees >= 1) score += 20000; // 4-3 threat
+          if (openThrees >= 2) score += 5000; // Double open three (3-3)
+        }
       }
       
       return score;
+    },
+    
+    /**
+     * Find double threat move (4-3, 3-3, etc.) - 더 정교하게!
+     */
+    findDoubleThreat(player) {
+      const candidates = [];
+      const visited = new Set();
+      
+      // 기존 돌 주변만 체크 (효율성)
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          if (board[row][col] !== EMPTY) {
+            for (let dr = -3; dr <= 3; dr++) {
+              for (let dc = -3; dc <= 3; dc++) {
+                if (dr === 0 && dc === 0) continue;
+                const r = row + dr;
+                const c = col + dc;
+                const key = `${r},${c}`;
+                
+                if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE &&
+                    board[r][c] === EMPTY && !visited.has(key)) {
+                  visited.add(key);
+                  
+                  board[r][c] = player;
+                  const threatInfo = this.analyzeThreats(r, c, player);
+                  board[r][c] = EMPTY;
+                  
+                  if (threatInfo.totalThreats >= 2) {
+                    candidates.push({ 
+                      row: r, 
+                      col: c, 
+                      threats: threatInfo.totalThreats,
+                      openFours: threatInfo.openFours,
+                      openThrees: threatInfo.openThrees,
+                      score: threatInfo.score
+                    });
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      if (candidates.length > 0) {
+        // 점수로 정렬 (더블 오픈 포 > 4-3 > 더블 오픈 삼)
+        candidates.sort((a, b) => {
+          if (a.openFours >= 2 && b.openFours < 2) return -1;
+          if (a.openFours < 2 && b.openFours >= 2) return 1;
+          if (a.openFours >= 1 && a.openThrees >= 1 && 
+              !(b.openFours >= 1 && b.openThrees >= 1)) return -1;
+          if (b.openFours >= 1 && b.openThrees >= 1 && 
+              !(a.openFours >= 1 && a.openThrees >= 1)) return 1;
+          return b.score - a.score;
+        });
+        return candidates[0];
+      }
+      
+      return null;
+    },
+    
+    /**
+     * Analyze threats at a position - 더 정교한 분석
+     */
+    analyzeThreats(row, col, player) {
+      let openFours = 0;
+      let openThrees = 0;
+      let closedFours = 0;
+      let totalThreats = 0;
+      let score = 0;
+      const directions = [[0, 1], [1, 0], [1, 1], [1, -1]];
+      
+      for (const [dx, dy] of directions) {
+        const line = this.getLine(row, col, dx, dy, player);
+        const lineStr = line.map(x => {
+          if (x === player) return '1';
+          if (x === EMPTY) return '0';
+          return 'X';
+        }).join('');
+        
+        // 열린 사 체크
+        if (lineStr.includes('011110') || lineStr.includes('01111')) {
+          openFours++;
+          totalThreats++;
+          score += 50000;
+        }
+        
+        // 막힌 사 체크
+        if (lineStr.includes('011112') || lineStr.includes('211110') ||
+            lineStr.includes('01112') || lineStr.includes('21111')) {
+          closedFours++;
+          totalThreats++;
+          score += 10000;
+        }
+        
+        // 열린 삼 체크
+        if (lineStr.includes('01110')) {
+          openThrees++;
+          totalThreats++;
+          score += 2000;
+        }
+      }
+      
+      return { openFours, openThrees, closedFours, totalThreats, score };
+    },
+    
+    /**
+     * Minimax algorithm with alpha-beta pruning
+     */
+    getMinimaxMove(depth) {
+      const candidates = this.getCandidateMoves();
+      
+      if (candidates.length === 0) return this.getRandomMove();
+      
+      let bestScore = -Infinity;
+      let bestMove = candidates[0];
+      
+      // 더 많은 후보를 고려 (난이도에 따라)
+      const candidateCount = difficulty >= 13 ? 20 : (difficulty >= 11 ? 15 : 10);
+      
+      for (const move of candidates.slice(0, candidateCount)) {
+        board[move.row][move.col] = WHITE;
+        const score = this.minimax(depth - 1, false, -Infinity, Infinity, BLACK, 0);
+        board[move.row][move.col] = EMPTY;
+        
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = move;
+        }
+      }
+      
+      return bestMove;
+    },
+    
+    /**
+     * Minimax with alpha-beta pruning - 훨씬 더 강력하게!
+     */
+    minimax(depth, isMaximizing, alpha, beta, player, moveCount = 0) {
+      // Terminal conditions
+      if (depth === 0) {
+        return this.evaluateBoardAdvanced(WHITE) - this.evaluateBoardAdvanced(BLACK);
+      }
+      
+      // Check for win/loss (더 빠른 종료)
+      if (isMaximizing) {
+        const winMove = this.findWinningMove(WHITE);
+        if (winMove) return 1000000 - moveCount; // 빠를수록 좋음
+      } else {
+        const winMove = this.findWinningMove(BLACK);
+        if (winMove) return -1000000 + moveCount;
+      }
+      
+      // 상대방의 승리 수 차단
+      if (isMaximizing) {
+        const blockMove = this.findWinningMove(BLACK);
+        if (blockMove) return -500000;
+      } else {
+        const blockMove = this.findWinningMove(WHITE);
+        if (blockMove) return 500000;
+      }
+      
+      const candidates = this.getCandidateMoves();
+      if (candidates.length === 0) return 0;
+      
+      // 깊이에 따라 후보 수 조정
+      const maxCandidates = depth >= 3 ? 10 : (depth >= 2 ? 8 : 6);
+      
+      if (isMaximizing) {
+        let maxScore = -Infinity;
+        for (const move of candidates.slice(0, maxCandidates)) {
+          board[move.row][move.col] = WHITE;
+          const score = this.minimax(depth - 1, false, alpha, beta, BLACK, moveCount + 1);
+          board[move.row][move.col] = EMPTY;
+          maxScore = Math.max(maxScore, score);
+          alpha = Math.max(alpha, score);
+          if (beta <= alpha) break; // Alpha-beta pruning
+        }
+        return maxScore;
+      } else {
+        let minScore = Infinity;
+        for (const move of candidates.slice(0, maxCandidates)) {
+          board[move.row][move.col] = BLACK;
+          const score = this.minimax(depth - 1, true, alpha, beta, WHITE, moveCount + 1);
+          board[move.row][move.col] = EMPTY;
+          minScore = Math.min(minScore, score);
+          beta = Math.min(beta, score);
+          if (beta <= alpha) break; // Alpha-beta pruning
+        }
+        return minScore;
+      }
+    },
+    
+    /**
+     * Get candidate moves (near existing pieces) - 더 정교하게!
+     */
+    getCandidateMoves() {
+      const candidates = [];
+      const visited = new Set();
+      
+      // 더 넓은 범위 탐색 (난이도에 따라)
+      const searchRadius = difficulty >= 13 ? 3 : 2;
+      
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          if (board[row][col] !== EMPTY) {
+            // Add nearby empty cells
+            for (let dr = -searchRadius; dr <= searchRadius; dr++) {
+              for (let dc = -searchRadius; dc <= searchRadius; dc++) {
+                if (dr === 0 && dc === 0) continue;
+                const r = row + dr;
+                const c = col + dc;
+                const key = `${r},${c}`;
+                
+                if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE &&
+                    board[r][c] === EMPTY && !visited.has(key)) {
+                  const attackScore = this.evaluatePositionAdvanced(r, c, WHITE);
+                  const defenseScore = this.evaluatePositionAdvanced(r, c, BLACK);
+                  const positionScore = this.getPositionValue(r, c);
+                  const totalScore = attackScore * 1.5 + defenseScore * 1.3 + positionScore;
+                  candidates.push({ row: r, col: c, score: totalScore });
+                  visited.add(key);
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      // Sort by score
+      candidates.sort((a, b) => b.score - a.score);
+      
+      // If no candidates (empty board), return center area
+      if (candidates.length === 0) {
+        const center = Math.floor(BOARD_SIZE / 2);
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            candidates.push({ row: center + dr, col: center + dc, score: 100 });
+          }
+        }
+      }
+      
+      return candidates;
+    },
+    
+    /**
+     * Evaluate entire board for a player
+     */
+    evaluateBoard(player) {
+      let score = 0;
+      
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          if (board[row][col] === player) {
+            score += this.evaluatePosition(row, col, player);
+          }
+        }
+      }
+      
+      return score;
+    },
+    
+    /**
+     * Advanced board evaluation - 더 정교한 평가
+     */
+    evaluateBoardAdvanced(player) {
+      let score = 0;
+      const opponent = player === BLACK ? WHITE : BLACK;
+      
+      // 모든 돌의 위치 평가
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          if (board[row][col] === player) {
+            score += this.evaluatePositionAdvanced(row, col, player);
+          } else if (board[row][col] === opponent) {
+            score -= this.evaluatePositionAdvanced(row, col, opponent) * 0.9; // 상대방 수비 고려
+          }
+        }
+      }
+      
+      // 전체적인 패턴 평가
+      score += this.evaluateGlobalPatterns(player) * 100;
+      
+      return score;
+    },
+    
+    /**
+     * Advanced position evaluation
+     */
+    evaluatePositionAdvanced(row, col, player) {
+      let score = 0;
+      const directions = [[0, 1], [1, 0], [1, 1], [1, -1]];
+      
+      for (const [dx, dy] of directions) {
+        const line = this.getLine(row, col, dx, dy, player);
+        score += this.scoreLineAdvanced(line, player);
+      }
+      
+      return score;
+    },
+    
+    /**
+     * Advanced line scoring - 더 정교한 패턴 인식
+     */
+    scoreLineAdvanced(line, player) {
+      let score = 0;
+      const opponent = player === BLACK ? WHITE : BLACK;
+      
+      const lineStr = line.map(x => {
+        if (x === player) return '1';
+        if (x === opponent) return '2';
+        if (x === EMPTY) return '0';
+        return 'X';
+      }).join('');
+      
+      // 더 긴 패턴 체크 (최대 9개까지)
+      for (let len = 5; len <= Math.min(9, lineStr.length); len++) {
+        for (let i = 0; i <= lineStr.length - len; i++) {
+          const segment = lineStr.slice(i, i + len);
+          
+          // 5개 연속 (승리)
+          if (segment === '11111') score += 1000000;
+          
+          // 열린 사 (011110) - 다음 턴에 승리 가능
+          if (segment === '011110') score += 50000;
+          
+          // 막힌 사 (011112, 211110) - 2턴 내 승리 가능
+          if (segment === '011112' || segment === '211110') score += 10000;
+          
+          // 열린 삼 (01110) - 2턴 내 열린 사 가능
+          if (segment === '01110') score += 2000;
+          
+          // 막힌 삼 (01112, 21110) - 3턴 내 막힌 사 가능
+          if (segment === '01112' || segment === '21110') score += 500;
+          
+          // 열린 이 (0110) - 3턴 내 열린 삼 가능
+          if (segment.includes('0110') && !segment.includes('2')) score += 50;
+          
+          // 막힌 이 (0112, 2110) - 4턴 내 막힌 삼 가능
+          if (segment.includes('0112') || segment.includes('2110')) score += 10;
+        }
+      }
+      
+      // 더블 위협 체크
+      const openFours = (lineStr.match(/011110/g) || []).length;
+      const openThrees = (lineStr.match(/01110/g) || []).length;
+      
+      if (openFours >= 2) score += 200000; // 더블 오픈 포
+      if (openFours >= 1 && openThrees >= 1) score += 100000; // 4-3 위협
+      if (openThrees >= 2) score += 50000; // 더블 오픈 삼 (3-3)
+      
+      return score;
+    },
+    
+    /**
+     * Evaluate global patterns (연결성, 중심성 등)
+     */
+    evaluateGlobalPatterns(player) {
+      let score = 0;
+      const center = BOARD_SIZE / 2;
+      
+      // 중심에 가까운 돌에 보너스
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          if (board[row][col] === player) {
+            const distFromCenter = Math.abs(row - center) + Math.abs(col - center);
+            score += (BOARD_SIZE - distFromCenter) * 0.1;
+          }
+        }
+      }
+      
+      // 연결성 보너스
+      const groups = this.findGroups(player);
+      score += groups.length * 2; // 더 많은 그룹 = 더 좋음
+      
+      return score;
+    },
+    
+    /**
+     * Find connected groups
+     */
+    findGroups(player) {
+      const visited = new Set();
+      const groups = [];
+      
+      for (let row = 0; row < BOARD_SIZE; row++) {
+        for (let col = 0; col < BOARD_SIZE; col++) {
+          if (board[row][col] === player && !visited.has(`${row},${col}`)) {
+            const group = [];
+            this.dfsGroup(row, col, player, visited, group);
+            if (group.length > 0) groups.push(group);
+          }
+        }
+      }
+      
+      return groups;
+    },
+    
+    /**
+     * DFS to find connected group
+     */
+    dfsGroup(row, col, player, visited, group) {
+      if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) return;
+      if (board[row][col] !== player) return;
+      const key = `${row},${col}`;
+      if (visited.has(key)) return;
+      
+      visited.add(key);
+      group.push({ row, col });
+      
+      // Check 8 directions
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          if (dr === 0 && dc === 0) continue;
+          this.dfsGroup(row + dr, col + dc, player, visited, group);
+        }
+      }
     },
     
     /**
@@ -547,7 +1082,7 @@
             <h4>게임 규칙</h4>
             <ul>
               <li>흑돌이 먼저 시작합니다</li>
-              <li>번갈아가며 돌을 놓습니다</li>
+              <li>번갈아가며 <strong>교차점</strong>에 돌을 놓습니다</li>
               <li>가로, 세로, 대각선 중 하나로 <strong>정확히 5개</strong>를 연속으로 놓으면 승리합니다</li>
               <li>6개 이상 연속은 승리가 아닙니다</li>
             </ul>
@@ -567,11 +1102,51 @@
       if (!boardEl) return;
       
       boardEl.innerHTML = '';
+      boardElement = boardEl;
       
-      // Create grid lines and intersection points
+      // Create SVG for grid lines - 정확한 교차점에 선을 그림
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'omok-grid-svg');
+      svg.setAttribute('width', '100%');
+      svg.setAttribute('height', '100%');
+      svg.setAttribute('preserveAspectRatio', 'none');
+      svg.style.position = 'absolute';
+      svg.style.top = '0';
+      svg.style.left = '0';
+      svg.style.pointerEvents = 'none';
+      svg.style.zIndex = '1';
+      
+      // Draw horizontal lines - 각 셀의 중심(50%)을 지나가도록
+      for (let i = 0; i < BOARD_SIZE; i++) {
+        const hLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        const yPercent = ((i + 0.5) / BOARD_SIZE) * 100;
+        hLine.setAttribute('x1', '0%');
+        hLine.setAttribute('y1', `${yPercent}%`);
+        hLine.setAttribute('x2', '100%');
+        hLine.setAttribute('y2', `${yPercent}%`);
+        hLine.setAttribute('stroke', '#8b6914');
+        hLine.setAttribute('stroke-width', '1.5');
+        svg.appendChild(hLine);
+      }
+      
+      // Draw vertical lines - 각 셀의 중심(50%)을 지나가도록
+      for (let i = 0; i < BOARD_SIZE; i++) {
+        const vLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        const xPercent = ((i + 0.5) / BOARD_SIZE) * 100;
+        vLine.setAttribute('x1', `${xPercent}%`);
+        vLine.setAttribute('y1', '0%');
+        vLine.setAttribute('x2', `${xPercent}%`);
+        vLine.setAttribute('y2', '100%');
+        vLine.setAttribute('stroke', '#8b6914');
+        vLine.setAttribute('stroke-width', '1.5');
+        svg.appendChild(vLine);
+      }
+      
+      boardEl.appendChild(svg);
+      
+      // Create intersection points (15x15 = 225 points)
       for (let row = 0; row < BOARD_SIZE; row++) {
         for (let col = 0; col < BOARD_SIZE; col++) {
-          // Create intersection point
           const point = document.createElement('div');
           point.className = 'omok-point';
           point.dataset.row = row;
@@ -594,7 +1169,7 @@
       // Board clicks on intersection points
       const points = document.querySelectorAll('.omok-point');
       points.forEach(point => {
-        point.addEventListener('click', () => {
+        point.addEventListener('click', (e) => {
           if (gameOver) return;
           
           const row = parseInt(point.dataset.row);

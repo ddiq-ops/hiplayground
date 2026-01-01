@@ -63,6 +63,19 @@
     "tags": ["전략", "두뇌", "오목"],
     "popularity": 85,
     "releaseDate": "2024-01-05"
+  },
+  {
+    "id": "chess",
+    "title": "체스",
+    "titleEn": "Chess",
+    "category": "board",
+    "difficulty": "hard",
+    "description": "전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.",
+    "descriptionEn": "Strategic chess game! Supports 1-player and 2-player modes.",
+    "icon": "♟️",
+    "tags": ["전략", "두뇌", "체스"],
+    "popularity": 90,
+    "releaseDate": "2024-01-06"
   }
 ]
 

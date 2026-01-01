@@ -2,38 +2,51 @@
 
 .omok-game {
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 .omok-header {
   text-align: center;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+  flex-shrink: 0;
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .omok-title {
-  font-size: 2rem;
-  margin-bottom: var(--spacing-lg);
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-sm);
   color: var(--color-text);
+  font-weight: 700;
 }
 
 .omok-mode-selector {
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   justify-content: center;
-  margin-bottom: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
 }
 
 .omok-status {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-lg);
-  padding: var(--spacing-md);
-  background-color: var(--color-bg-card);
-  border-radius: var(--radius-md);
+  align-items: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
   flex-wrap: wrap;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .omok-status-item {
@@ -50,24 +63,34 @@
 .status-value {
   font-weight: 700;
   font-size: 1.125rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-md);
+  min-width: 60px;
+  text-align: center;
 }
 
 .status-value.black {
-  color: #333;
+  color: #fff;
+  background: linear-gradient(135deg, #2c2c2c 0%, #000 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .status-value.white {
-  color: #fff;
-  background-color: #333;
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-sm);
+  color: #333;
+  background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .omok-board-container {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--spacing-xl);
-  overflow-x: auto;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  overflow: auto;
+  padding: var(--spacing-sm);
+  flex: 1;
+  min-height: 0;
 }
 
 .omok-board {
@@ -75,16 +98,19 @@
   grid-template-columns: repeat(15, 1fr);
   grid-template-rows: repeat(15, 1fr);
   gap: 0;
-  background-image: 
-    repeating-linear-gradient(to right, transparent 0, transparent calc(100% / 15 - 1px), #8b6914 calc(100% / 15 - 1px), #8b6914 calc(100% / 15)),
-    repeating-linear-gradient(to bottom, transparent 0, transparent calc(100% / 15 - 1px), #8b6914 calc(100% / 15 - 1px), #8b6914 calc(100% / 15));
   background-color: #d4a574;
-  padding: var(--spacing-sm);
+  border: 3px solid #8b6914;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
-  min-width: min(90vw, 600px);
-  aspect-ratio: 1;
+  width: min(85vw, 600px, 85vh);
+  height: min(85vw, 600px, 85vh);
+  max-width: 600px;
+  max-height: 600px;
   position: relative;
+  flex-shrink: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .omok-point {
@@ -95,21 +121,27 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1;
-}
-
-.omok-point.empty {
-  /* Empty intersection point - clickable */
+  z-index: 2;
+  /* 교차점 중앙에 정확히 배치 */
+  margin: 0;
+  padding: 0;
 }
 
 .omok-point.empty:hover::before {
   content: '';
   position: absolute;
-  width: 30%;
-  height: 30%;
+  width: 50%;
+  height: 50%;
+  min-width: 14px;
+  min-height: 14px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2);
   pointer-events: none;
+  z-index: 1;
+  /* 교차점 중앙에 정확히 배치 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .omok-point.black {
@@ -119,17 +151,23 @@
 .omok-point.black::after {
   content: '';
   position: absolute;
-  width: 70%;
-  height: 70%;
-  min-width: 20px;
-  min-height: 20px;
-  max-width: 35px;
-  max-height: 35px;
+  width: 85%;
+  height: 85%;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 40px;
+  max-height: 40px;
   border-radius: 50%;
-  background-color: #000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 -2px 4px rgba(255, 255, 255, 0.1);
-  z-index: 2;
+  background: #000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 
+              inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+              inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  z-index: 3;
   pointer-events: none;
+  /* 교차점 중앙에 정확히 배치 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .omok-point.white {
@@ -139,26 +177,35 @@
 .omok-point.white::after {
   content: '';
   position: absolute;
-  width: 70%;
-  height: 70%;
-  min-width: 20px;
-  min-height: 20px;
-  max-width: 35px;
-  max-height: 35px;
+  width: 85%;
+  height: 85%;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 40px;
+  max-height: 40px;
   border-radius: 50%;
-  background-color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0, 0.1);
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 
+              inset 0 1px 3px rgba(0, 0, 0, 0.15),
+              inset 0 -1px 2px rgba(255, 255, 255, 0.8);
   border: 1px solid #ddd;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
+  /* 교차점 중앙에 정확히 배치 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .omok-game-over {
   text-align: center;
   padding: var(--spacing-xl);
-  background-color: var(--color-bg-card);
+  background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(255, 255, 255, 0.05) 100%);
   border-radius: var(--radius-lg);
-  margin-bottom: var(--spacing-xl);
+  border: 2px solid var(--color-border);
+  margin-bottom: var(--spacing-md);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-md);
 }
 
 .game-over-message {
@@ -186,63 +233,23 @@
 .omok-controls {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   flex-wrap: wrap;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .omok-game {
-    padding: var(--spacing-md);
-  }
-  
-  .omok-title {
-    font-size: 1.5rem;
-  }
-  
-  .omok-mode-selector {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .omok-mode-selector .btn {
-    width: 100%;
-  }
-  
-  .omok-status {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    text-align: center;
-  }
-  
-  .omok-board {
-    min-width: min(95vw, 500px);
-  }
-  
-  .omok-point.black::after,
-  .omok-point.white::after {
-    min-width: 15px;
-    min-height: 15px;
-    max-width: 25px;
-    max-height: 25px;
-  }
-  
-  .omok-controls {
-    flex-direction: column;
-  }
-  
-  .omok-controls .btn {
-    width: 100%;
-  }
+  margin-bottom: var(--spacing-md);
+  flex-shrink: 0;
+  padding: var(--spacing-sm);
 }
 
 .omok-rules {
-  margin-top: var(--spacing-xl);
-  padding: var(--spacing-lg);
-  background-color: var(--color-bg-card);
-  border-radius: var(--radius-md);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
   font-size: 0.875rem;
   color: var(--color-text-light);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .omok-rules h4 {
@@ -260,13 +267,78 @@
   margin-bottom: var(--spacing-xs);
 }
 
-@media (max-width: 480px) {
-  .omok-board {
-    min-width: 90vw;
+/* Responsive */
+@media (max-width: 768px) {
+  .omok-game {
+    padding: var(--spacing-sm);
   }
   
-  .omok-cell {
-    font-size: clamp(0.5rem, 4vw, 0.9rem);
+  .omok-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .omok-mode-selector {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+  
+  .omok-mode-selector .btn {
+    width: 100%;
+  }
+  
+  .omok-status {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    text-align: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .omok-board {
+    width: min(90vw, 90vh, 500px);
+    height: min(90vw, 90vh, 500px);
+  }
+  
+  .omok-point.black::after,
+  .omok-point.white::after {
+    min-width: 18px;
+    min-height: 18px;
+    max-width: 28px;
+    max-height: 28px;
+  }
+  
+  .omok-controls {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .omok-controls .btn {
+    width: 100%;
+  }
+  
+  .omok-rules {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    font-size: 0.8rem;
   }
 }
 
+@media (max-width: 480px) {
+  .omok-board {
+    width: min(85vw, 85vh);
+    height: min(85vw, 85vh);
+  }
+  
+  .omok-point.black::after,
+  .omok-point.white::after {
+    min-width: 15px;
+    min-height: 15px;
+    max-width: 22px;
+    max-height: 22px;
+  }
+  
+  .omok-title {
+    font-size: 1.25rem;
+  }
+}

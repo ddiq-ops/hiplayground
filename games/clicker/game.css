@@ -2,7 +2,7 @@
 
 .clicker-game {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   padding: var(--spacing-xl);
   text-align: center;
@@ -10,17 +10,108 @@
 
 .clicker-title {
   font-size: 2rem;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   color: var(--color-text);
 }
 
-.clicker-score {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--color-primary);
+/* Mode selector */
+.clicker-mode-selector {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
   margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
 }
 
+/* Stage info */
+.clicker-stage-info {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-primary);
+}
+
+.stage-label {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-xs);
+}
+
+.stage-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Start area */
+.clicker-start-area {
+  margin-top: var(--spacing-xl);
+}
+
+/* Game active area */
+.clicker-game-active {
+  margin-top: var(--spacing-lg);
+}
+
+/* Stats */
+.clicker-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  flex: 1;
+  min-width: 120px;
+  padding: var(--spacing-md);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.stat-value.time-critical {
+  color: var(--color-error);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Progress bar */
+.progress-container {
+  width: 100%;
+  height: 30px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--spacing-lg);
+  border: 2px solid var(--color-border);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  transition: width 0.1s ease;
+  border-radius: var(--radius-md);
+}
+
+/* Click target */
 .clicker-target {
   width: 200px;
   height: 200px;
@@ -48,19 +139,17 @@
 }
 
 .clicker-info {
-  margin-top: var(--spacing-xl);
+  margin-top: var(--spacing-lg);
   color: var(--color-text-light);
   font-size: 1.125rem;
 }
 
-.clicker-multiplier {
-  font-size: 1.5rem;
-  color: var(--color-secondary);
-  font-weight: 600;
-  margin-top: var(--spacing-md);
+.clicker-info strong {
+  color: var(--color-primary);
+  font-weight: 700;
 }
 
-/* Animation for click effect */
+/* Click animation */
 @keyframes clickPulse {
   0% {
     transform: scale(1);
@@ -74,7 +163,146 @@
 }
 
 .clicker-target.clicked {
-  animation: clickPulse 0.2s ease;
+  animation: clickPulse 0.1s ease;
+}
+
+/* Countdown overlay */
+.countdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.countdown-display {
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-shadow: 0 0 20px rgba(74, 144, 226, 0.8);
+  animation: countdownPulse 0.5s ease;
+}
+
+@keyframes countdownPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Versus mode */
+.versus-targets {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-xl) 0;
+  flex-wrap: wrap;
+}
+
+.versus-player {
+  flex: 1;
+  min-width: 200px;
+}
+
+.versus-vs {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-light);
+  padding: 0 var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.versus-vs.coop-total {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.versus-vs.coop-total span {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.player-clicks-display {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-primary);
+  min-width: 80px;
+}
+
+.versus-time {
+  margin-bottom: var(--spacing-lg);
+}
+
+.time-display {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-error);
+  animation: pulse 1s infinite;
+}
+
+.versus-players {
+  display: flex;
+  gap: var(--spacing-lg);
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.versus-player-area {
+  flex: 1;
+  min-width: 300px;
+  padding: var(--spacing-lg);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-border);
+}
+
+.versus-player-area .player-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+.versus-player-area .clicker-stats {
+  margin-bottom: var(--spacing-md);
+}
+
+.versus-player-area .clicker-target {
+  width: 150px;
+  height: 150px;
+  font-size: 3rem;
+  margin: var(--spacing-md) auto 0;
+}
+
+/* Button styles */
+.btn-large {
+  font-size: 1.25rem;
+  padding: var(--spacing-md) var(--spacing-xl);
+  margin-top: var(--spacing-lg);
 }
 
 /* Responsive */
@@ -85,12 +313,53 @@
     font-size: 3rem;
   }
   
-  .clicker-score {
-    font-size: 2rem;
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  
+  .stage-number {
+    font-size: 1.5rem;
   }
   
   .clicker-title {
     font-size: 1.5rem;
   }
+  
+  .versus-players {
+    flex-direction: column;
+  }
+  
+  .versus-player-area {
+    min-width: 100%;
+  }
+  
+  .versus-targets {
+    flex-direction: column;
+  }
+  
+  .versus-vs {
+    font-size: 1.5rem;
+  }
 }
 
+@media (max-width: 480px) {
+  .clicker-stats {
+    flex-direction: column;
+  }
+  
+  .stat-item {
+    min-width: 100%;
+  }
+  
+  .clicker-target {
+    width: 120px;
+    height: 120px;
+    font-size: 2.5rem;
+  }
+  
+  .versus-player-area .clicker-target {
+    width: 120px;
+    height: 120px;
+    font-size: 2.5rem;
+  }
+}

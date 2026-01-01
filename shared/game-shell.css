@@ -107,9 +107,10 @@
   background-color: var(--color-bg);
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   min-height: 0; /* Important for flexbox */
+  padding: var(--spacing-md);
 }
 
 /* Fullscreen styles */
