@@ -99,27 +99,50 @@
   background-color: #c49564;
 }
 
+.omok-cell.empty {
+  background-color: #d4a574;
+}
+
+.omok-cell.empty:hover {
+  background-color: #c49564;
+  cursor: pointer;
+}
+
 .omok-cell.black {
   background-color: #d4a574;
-  color: #000;
-  font-weight: 700;
+  position: relative;
+}
+
+.omok-cell.black::after {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background-color: #000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .omok-cell.white {
   background-color: #d4a574;
-  color: #fff;
-  font-weight: 700;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
-.omok-cell.black::before {
-  content: '●';
-  font-size: 1.2em;
-}
-
-.omok-cell.white::before {
-  content: '○';
-  font-size: 1.2em;
+.omok-cell.white::after {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background-color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px solid #ccc;
 }
 
 .omok-game-over {
@@ -199,6 +222,30 @@
   .omok-controls .btn {
     width: 100%;
   }
+}
+
+.omok-rules {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+}
+
+.omok-rules h4 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+  font-size: 1.125rem;
+}
+
+.omok-rules ul {
+  margin-left: var(--spacing-lg);
+  line-height: 1.8;
+}
+
+.omok-rules li {
+  margin-bottom: var(--spacing-xs);
 }
 
 @media (max-width: 480px) {
