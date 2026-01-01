@@ -1,0 +1,213 @@
+/* Omok Game Styles */
+
+.omok-game {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+.omok-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.omok-title {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text);
+}
+
+.omok-mode-selector {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.omok-status {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  flex-wrap: wrap;
+}
+
+.omok-status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.status-label {
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+.status-value {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.status-value.black {
+  color: #333;
+}
+
+.status-value.white {
+  color: #fff;
+  background-color: #333;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.omok-board-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+  overflow-x: auto;
+}
+
+.omok-board {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 0;
+  background-color: #d4a574;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  min-width: min(90vw, 600px);
+  aspect-ratio: 1;
+}
+
+.omok-cell {
+  aspect-ratio: 1;
+  background-color: #d4a574;
+  border: 1px solid #8b6914;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  position: relative;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+}
+
+.omok-cell:hover {
+  background-color: #c49564;
+}
+
+.omok-cell.black {
+  background-color: #d4a574;
+  color: #000;
+  font-weight: 700;
+}
+
+.omok-cell.white {
+  background-color: #d4a574;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.omok-cell.black::before {
+  content: '●';
+  font-size: 1.2em;
+}
+
+.omok-cell.white::before {
+  content: '○';
+  font-size: 1.2em;
+}
+
+.omok-game-over {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.game-over-message {
+  margin-bottom: var(--spacing-lg);
+}
+
+.game-over-message h3 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.game-over-message.success h3 {
+  color: var(--color-success);
+}
+
+.game-over-message.error h3 {
+  color: var(--color-error);
+}
+
+.game-over-message p {
+  font-size: 1.125rem;
+  color: var(--color-text-light);
+}
+
+.omok-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .omok-game {
+    padding: var(--spacing-md);
+  }
+  
+  .omok-title {
+    font-size: 1.5rem;
+  }
+  
+  .omok-mode-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .omok-mode-selector .btn {
+    width: 100%;
+  }
+  
+  .omok-status {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+  }
+  
+  .omok-board {
+    min-width: min(95vw, 500px);
+  }
+  
+  .omok-cell {
+    font-size: clamp(0.6rem, 3vw, 1rem);
+  }
+  
+  .omok-controls {
+    flex-direction: column;
+  }
+  
+  .omok-controls .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .omok-board {
+    min-width: 90vw;
+  }
+  
+  .omok-cell {
+    font-size: clamp(0.5rem, 4vw, 0.9rem);
+  }
+}
+

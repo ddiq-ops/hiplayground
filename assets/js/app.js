@@ -11,11 +11,18 @@ const App = {
    * Get base path for data files (handles different page locations)
    */
   getBasePath() {
-    // Check if we're in pages/ folder
-    const path = window.location.pathname || window.location.href;
-    if (path.includes('/pages/') || path.includes('\\pages\\')) {
+    // Get current page path
+    const href = window.location.href;
+    const pathname = window.location.pathname;
+    
+    // Simple check: if URL contains 'pages', we're in pages folder
+    if (href.includes('/pages/') || href.includes('\\pages\\') || 
+        href.includes('/pages') || href.includes('\\pages') ||
+        pathname.includes('/pages/') || pathname.includes('\\pages\\') ||
+        pathname.includes('/pages') || pathname.includes('\\pages')) {
       return '../';
     }
+    
     return './';
   },
   
@@ -51,18 +58,28 @@ const App = {
       const basePath = this.getBasePath();
       
       // Load games
-      const gamesResponse = await fetch(`${basePath}data/games.json`);
-      if (!gamesResponse.ok) throw new Error(`Failed to load games: ${gamesResponse.status}`);
+      const gamesUrl = `${basePath}data/games.json`;
+      console.log('Loading games from:', gamesUrl, 'Current location:', window.location.href);
+      const gamesResponse = await fetch(gamesUrl);
+      if (!gamesResponse.ok) {
+        throw new Error(`Failed to load games: ${gamesResponse.status} - ${gamesResponse.statusText}`);
+      }
       this.games = await gamesResponse.json();
       
       // Load categories
-      const categoriesResponse = await fetch(`${basePath}data/categories.json`);
-      if (!categoriesResponse.ok) throw new Error(`Failed to load categories: ${categoriesResponse.status}`);
+      const categoriesUrl = `${basePath}data/categories.json`;
+      console.log('Loading categories from:', categoriesUrl);
+      const categoriesResponse = await fetch(categoriesUrl);
+      if (!categoriesResponse.ok) {
+        throw new Error(`Failed to load categories: ${categoriesResponse.status} - ${categoriesResponse.statusText}`);
+      }
       this.categories = await categoriesResponse.json();
       
       return { games: this.games, categories: this.categories };
     } catch (error) {
       console.error('Data loading error:', error);
+      console.error('Current location:', window.location.href);
+      console.error('Base path:', this.getBasePath());
       throw error;
     }
   },
@@ -189,4 +206,5 @@ if (typeof document !== 'undefined') {
 if (typeof window !== 'undefined') {
   window.App = App;
 }
+
 

@@ -50,6 +50,19 @@
     "tags": ["전략", "업그레이드", "경영"],
     "popularity": 90,
     "releaseDate": "2024-01-04"
+  },
+  {
+    "id": "omok",
+    "title": "오목",
+    "titleEn": "Omok",
+    "category": "puzzle",
+    "difficulty": "medium",
+    "description": "5개를 연속으로 놓아 승리하세요! 1인용과 2인용을 지원합니다.",
+    "descriptionEn": "Place 5 in a row to win! Supports 1-player and 2-player modes.",
+    "icon": "🎯",
+    "tags": ["전략", "두뇌", "오목"],
+    "popularity": 85,
+    "releaseDate": "2024-01-05"
   }
 ]
 

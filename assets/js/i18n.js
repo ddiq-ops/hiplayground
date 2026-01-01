@@ -11,11 +11,35 @@ const I18n = {
    * Get base path for data files (handles different page locations)
    */
   getBasePath() {
+    // Get current page path
+    const href = window.location.href;
+    const pathname = window.location.pathname;
+    
     // Check if we're in pages/ folder
-    const path = window.location.pathname || window.location.href;
-    if (path.includes('/pages/') || path.includes('\\pages\\')) {
+    if (href.includes('/pages/') || href.includes('\\pages\\') || 
+        pathname.includes('/pages/') || pathname.includes('\\pages\\')) {
       return '../';
     }
+    
+    // For file:// protocol, check the directory structure
+    if (href.startsWith('file://')) {
+      try {
+        const url = new URL(href);
+        const pathParts = url.pathname.split('/').filter(p => p);
+        if (pathParts.length > 0) {
+          // If the file is in pages/ directory
+          if (pathParts.includes('pages')) {
+            return '../';
+          }
+        }
+      } catch (e) {
+        // If URL parsing fails, use simple string check
+        if (href.includes('pages')) {
+          return '../';
+        }
+      }
+    }
+    
     return './';
   },
   
