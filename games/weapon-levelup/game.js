@@ -266,18 +266,24 @@
       if (potionType === 5) {
         // 랜덤박스: 1번 70%, 2번 20%, 3번 8%, 4번 2%
         const rand = Math.random() * 100;
-        let actualPotion = 1;
-        if (rand < 70) actualPotion = 1;
-        else if (rand < 90) actualPotion = 2;
-        else if (rand < 98) actualPotion = 3;
-        else actualPotion = 4;
+        let rewardedPotion = 1;
+        if (rand < 70) rewardedPotion = 1;
+        else if (rand < 90) rewardedPotion = 2;
+        else if (rand < 98) rewardedPotion = 3;
+        else rewardedPotion = 4;
         
-        // 실제 포션 효과 적용
-        potionType = actualPotion;
-        this.showMessage(`랜덤박스에서 ${actualPotion}번 포션이 나왔습니다!`, 'success');
+        // 인벤토리에 포션 추가 (즉시 사용하지 않음)
+        potions[rewardedPotion - 1]++;
+        
+        const potionNames = ['확률 강화 (1.2배)', '확률 강화 (1.5배)', '무기 보호 (50%)', '무기 보호 (80%)'];
+        this.showMessage(`랜덤박스에서 ${potionNames[rewardedPotion - 1]} 포션을 획득했습니다!`, 'success');
+        
+        this.saveProgress();
+        this.render();
+        return; // 랜덤박스는 여기서 종료 (포션을 즉시 사용하지 않음)
       }
       
-      // 포션 효과 적용
+      // 일반 포션 효과 적용 (1-4번 포션)
       if (potionType === 1 || potionType === 2) {
         activePotion = potionType;
         const multiplier = potionType === 1 ? '1.2배' : '1.5배';
