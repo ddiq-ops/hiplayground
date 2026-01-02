@@ -5,13 +5,15 @@
 
 (function() {
   let weaponLevel = 1;
-  let gold = 100;
+  let gold = 50; // 초기 골드 감소 (100 -> 50)
   let totalUpgrades = 0;
   let successfulUpgrades = 0;
   let sellCount = 0; // 판매 횟수 (인플레이션 계산용)
+  let storedWeaponLevel = 0; // 보관된 무기 레벨 (0이면 보관된 무기 없음)
   let callbacks = {};
   let container = null;
   let isGameOver = false;
+  let eventsSetup = false; // 이벤트 리스너가 이미 등록되었는지 확인
   
   // Game state
   const Game = {
@@ -22,12 +24,16 @@
       // Load saved progress if available
       const saved = Storage.getGameProgress('weapon-levelup');
       if (saved) {
-        weaponLevel = saved.weaponLevel || 1;
-        gold = saved.gold || 100;
+        weaponLevel = Math.max(1, Math.min(saved.weaponLevel || 1, 100)); // 최소 1, 최대 100
+        gold = saved.gold || 50;
         totalUpgrades = saved.totalUpgrades || 0;
         successfulUpgrades = saved.successfulUpgrades || 0;
         sellCount = saved.sellCount || 0;
+        storedWeaponLevel = saved.storedWeaponLevel || 0;
         isGameOver = saved.isGameOver || false;
+      } else {
+        // 새 게임 시작 시 레벨 1로 초기화
+        weaponLevel = 1;
       }
       
       // Check game over state
@@ -45,9 +51,10 @@
     /**
      * Calculate upgrade cost for a specific level
      * 인플레이션: 판매 횟수마다 1%씩 비용 증가
+     * 강화 비용 증가: 레벨당 20 + 15 (더 비싸게 조정)
      */
     getUpgradeCost(level = weaponLevel) {
-      const baseCost = Math.floor(level * 15 + 10);
+      const baseCost = Math.floor(level * 20 + 15);
       const inflationMultiplier = 1 + (sellCount * 0.01); // 판매 횟수마다 1% 증가
       return Math.floor(baseCost * inflationMultiplier);
     },
@@ -69,29 +76,43 @@
     
     /**
      * Calculate success probability (decreases as level increases)
+     * 레벨 1: 99%, 레벨 80: 20%, 레벨 100: 20% (최소값)
+     * 더 빠르게 감소하여 난이도 증가
      */
     getSuccessProbability() {
-      const baseProbability = 100 - (weaponLevel * 4);
-      return Math.max(10, baseProbability); // Minimum 10%
+      const baseProbability = 100 - (weaponLevel * 1.0);
+      return Math.max(20, baseProbability); // Minimum 20%
     },
     
     /**
      * Calculate sell price
+     * 레벨 제곱에 25을 곱한 후 레벨에 60을 곱한 값을 더함
+     * 판매 가격 감소로 골드 획득량 줄임 (난이도 증가)
+     * 레벨 1: 85, 레벨 10: 3,110, 레벨 50: 62,810, 레벨 100: 250,610
      */
     getSellPrice() {
-      return Math.floor(weaponLevel * weaponLevel * 60 + 50);
+      return Math.floor(weaponLevel * weaponLevel * 25 + weaponLevel * 60 + 30);
     },
     
     /**
      * Attempt weapon upgrade
      */
     attemptUpgrade() {
+      // 최대 레벨 체크
+      if (weaponLevel >= 100) {
+        this.showMessage('이미 최대 레벨(100)에 도달했습니다!', 'error');
+        return;
+      }
+      
       const cost = this.getUpgradeCost();
       
       if (gold < cost) {
         this.showMessage('골드가 부족합니다!', 'error');
         return;
       }
+      
+      // 현재 레벨을 저장 (레벨업 전)
+      const currentLevelBeforeUpgrade = weaponLevel;
       
       // 버튼 비활성화 및 강화 시작 애니메이션
       const upgradeBtn = document.getElementById('upgrade-btn');
@@ -117,23 +138,46 @@
         let resultType = '';
         
         if (isSuccess) {
-          weaponLevel++;
-          successfulUpgrades++;
-          resultMessage = '강화 성공! 🎉';
-          resultType = 'success';
-          isGameOver = false; // Game is not over if we succeeded
+          // 최대 레벨 체크
+          if (weaponLevel >= 100) {
+            resultMessage = '이미 최대 레벨에 도달했습니다!';
+            resultType = 'error';
+          } else {
+            // 레벨 1씩 증가 (레벨 1 -> 2, 레벨 2 -> 3, ...)
+            // setTimeout 내부에서도 현재 레벨을 확인
+            const levelBeforeIncrease = weaponLevel;
+            weaponLevel = levelBeforeIncrease + 1; // 정확히 1씩 증가
+            if (weaponLevel > 100) {
+              weaponLevel = 100; // 최대 100으로 제한
+            }
+            successfulUpgrades++;
+            resultMessage = '강화 성공! 🎉';
+            resultType = 'success';
+            isGameOver = false; // Game is not over if we succeeded
+          }
         } else {
-          // 실패 시 무기가 레벨 1로 떨어짐
+          // 실패 시 무기가 레벨 1로 떨어짐 (보관된 무기가 있으면 자동으로 적용)
           const oldLevel = weaponLevel;
-          weaponLevel = 1;
-          resultMessage = '강화 실패! 💔';
-          resultType = 'error';
           
-          // 게임오버 체크
-          if (this.checkGameOver()) {
-            setTimeout(() => {
-              this.handleGameOver();
-            }, 2000); // 2초 후 게임오버 화면 표시
+          if (storedWeaponLevel > 0) {
+            // 보관된 무기가 있으면 자동으로 적용
+            weaponLevel = storedWeaponLevel;
+            storedWeaponLevel = 0; // 보관된 무기 사용
+            resultMessage = `강화 실패! 💔\n보관된 레벨 ${weaponLevel} 무기가 자동으로 장착되었습니다!`;
+            resultType = 'info';
+            isGameOver = false; // 보관된 무기가 있으면 게임오버 아님
+          } else {
+            // 보관된 무기가 없으면 레벨 1로 떨어짐
+            weaponLevel = 1;
+            resultMessage = '강화 실패! 💔';
+            resultType = 'error';
+            
+            // 게임오버 체크
+            if (this.checkGameOver()) {
+              setTimeout(() => {
+                this.handleGameOver();
+              }, 2000); // 2초 후 게임오버 화면 표시
+            }
           }
         }
         
@@ -154,6 +198,32 @@
           callbacks.onScoreUpdate(weaponLevel);
         }
       }, 1500); // 1.5초 딜레이
+    },
+    
+    /**
+     * Store current weapon
+     */
+    storeWeapon() {
+      if (weaponLevel === 1) {
+        this.showMessage('레벨 1 무기는 보관할 수 없습니다!', 'error');
+        return;
+      }
+      
+      if (storedWeaponLevel > 0) {
+        this.showMessage(`이미 레벨 ${storedWeaponLevel} 무기가 보관되어 있습니다!`, 'error');
+        return;
+      }
+      
+      storedWeaponLevel = weaponLevel;
+      weaponLevel = 1; // 현재 무기는 레벨 1로 변경
+      this.showMessage(`레벨 ${storedWeaponLevel} 무기를 보관했습니다! 🗄️`, 'success');
+      
+      this.saveProgress();
+      this.render();
+      
+      if (callbacks.onScoreUpdate) {
+        callbacks.onScoreUpdate(weaponLevel);
+      }
     },
     
     /**
@@ -301,6 +371,7 @@
         totalUpgrades: totalUpgrades,
         successfulUpgrades: successfulUpgrades,
         sellCount: sellCount,
+        storedWeaponLevel: storedWeaponLevel,
         isGameOver: isGameOver
       });
     },
@@ -344,12 +415,7 @@
           </div>
         `;
         
-        const restartBtn = document.getElementById('restart-btn');
-        if (restartBtn) {
-          restartBtn.addEventListener('click', () => {
-            this.reset();
-          });
-        }
+        // restart 버튼은 이벤트 위임으로 처리 (setupEvents에서)
         return;
       }
       
@@ -358,6 +424,7 @@
       const sellPrice = this.getSellPrice();
       const successRatePercent = Math.round(successRate);
       const inflationPercent = sellCount > 0 ? Math.round(sellCount * 1) : 0;
+      const isMaxLevel = weaponLevel >= 100;
       
       container.innerHTML = `
         <div class="weapon-game">
@@ -374,7 +441,7 @@
             <div class="weapon-stat-card">
               <div class="weapon-stat-icon">⚔️</div>
               <div class="weapon-stat-label">무기 레벨</div>
-              <div class="weapon-stat-value" id="level-display">${weaponLevel}</div>
+              <div class="weapon-stat-value" id="level-display">${weaponLevel}${isMaxLevel ? ' (최대)' : ''}</div>
             </div>
             <div class="weapon-stat-card">
               <div class="weapon-stat-icon">📊</div>
@@ -390,32 +457,32 @@
           </div>
           ` : ''}
           
-          <div class="weapon-display-area">
-            <div class="weapon-display" id="weapon-display">
-              <div class="weapon-icon">${this.getWeaponIcon()}</div>
-              <div class="weapon-level-badge">Lv.${weaponLevel}</div>
-            </div>
-            <div class="weapon-message" id="weapon-message"></div>
-          </div>
-          
-          <div class="weapon-actions">
-            <div class="weapon-action-section">
+          <div class="weapon-main-layout">
+            <div class="weapon-action-section weapon-action-left">
               <h3 class="weapon-section-title">🔨 대장간</h3>
               <div class="weapon-action-info">
                 <p>비용: <strong>${upgradeCost.toLocaleString()}</strong> 골드</p>
                 <p>성공 확률: <strong>${successRatePercent}%</strong></p>
-                <p style="color: var(--color-error); font-weight: 600;">⚠️ 실패 시 레벨 1로 떨어집니다!</p>
+                <p style="color: var(--color-error); font-weight: 600;">⚠️ 실패 시 ${storedWeaponLevel > 0 ? `보관된 레벨 ${storedWeaponLevel} 무기로 변경됩니다!` : '레벨 1로 떨어집니다!'}</p>
               </div>
               <button 
                 class="btn btn-primary weapon-action-btn" 
                 id="upgrade-btn"
-                ${gold < upgradeCost ? 'disabled' : ''}
+                ${gold < upgradeCost || isMaxLevel ? 'disabled' : ''}
               >
-                무기 강화하기
+                ${isMaxLevel ? '최대 레벨 도달' : '무기 강화하기'}
               </button>
             </div>
             
-            <div class="weapon-action-section">
+            <div class="weapon-display-area">
+              <div class="weapon-display" id="weapon-display">
+                <div class="weapon-icon">${this.getWeaponImageHTML()}</div>
+                <div class="weapon-level-badge">Lv.${weaponLevel}</div>
+              </div>
+              <div class="weapon-message" id="weapon-message"></div>
+            </div>
+            
+            <div class="weapon-action-section weapon-action-right">
               <h3 class="weapon-section-title">🏪 상점</h3>
               <div class="weapon-action-info">
                 <p>판매 가격: <strong>${sellPrice.toLocaleString()}</strong> 골드</p>
@@ -427,6 +494,24 @@
                 ${weaponLevel === 1 ? 'disabled' : ''}
               >
                 무기 판매하기
+              </button>
+              
+              <h3 class="weapon-section-title" style="margin-top: var(--spacing-xl);">🗄️ 무기 보관</h3>
+              <div class="weapon-action-info">
+                ${storedWeaponLevel > 0 ? `
+                  <p>보관 중: <strong>레벨 ${storedWeaponLevel}</strong> 무기</p>
+                  <p style="color: var(--color-success); font-weight: 600;">강화 실패 시 자동으로 장착됩니다!</p>
+                ` : `
+                  <p>현재 무기를 보관합니다</p>
+                  <p>보관된 무기는 강화 실패 시 자동으로 장착됩니다</p>
+                `}
+              </div>
+              <button 
+                class="btn btn-secondary weapon-action-btn" 
+                id="store-btn"
+                ${weaponLevel === 1 || storedWeaponLevel > 0 ? 'disabled' : ''}
+              >
+                ${storedWeaponLevel > 0 ? '보관 완료' : '무기 보관하기'}
               </button>
             </div>
           </div>
@@ -451,46 +536,103 @@
       `;
       
       this.setupEvents();
+      
+      // Setup weapon image aspect ratio after render
+      setTimeout(() => {
+        this.setupWeaponImageAspectRatio();
+      }, 100);
     },
     
     /**
-     * Get weapon icon based on level
+     * Setup weapon image to maintain aspect ratio
      */
-    getWeaponIcon() {
-      if (weaponLevel >= 20) return '🗡️';
-      if (weaponLevel >= 15) return '⚔️';
-      if (weaponLevel >= 10) return '🔪';
-      if (weaponLevel >= 5) return '🗡️';
-      return '⚔️';
+    setupWeaponImageAspectRatio() {
+      const imageEl = document.querySelector('.weapon-image');
+      if (!imageEl) return;
+      
+      // Load image to maintain aspect ratio
+      // Each weapon image is 204.8px (1024/5) wide x 1024px tall
+      // Aspect ratio: 204.8/1024 = 0.2 (width:height = 1:5)
+      const img = new Image();
+      img.onload = () => {
+        const naturalWidth = img.naturalWidth;
+        const naturalHeight = img.naturalHeight;
+        const aspectRatio = naturalWidth / naturalHeight;
+        
+        // Update container to maintain image aspect ratio
+        const iconEl = imageEl.closest('.weapon-icon');
+        if (iconEl) {
+          const currentWidth = parseFloat(getComputedStyle(iconEl).width) || 150;
+          // Height should be width / aspectRatio
+          const calculatedHeight = currentWidth / aspectRatio;
+          // Limit max height to prevent too tall images (2.5x width is reasonable for display)
+          const maxHeight = currentWidth * 2.5;
+          iconEl.style.height = Math.min(calculatedHeight, maxHeight) + 'px';
+        }
+      };
+      img.onerror = () => {
+        console.warn('Failed to load weapon image:', imageEl.src);
+      };
+      img.src = imageEl.src;
+    },
+    
+    /**
+     * Get weapon image HTML based on level
+     * Uses individual WebP files for each weapon level
+     */
+    getWeaponImageHTML() {
+      // Each level has its own WebP file: weapon-levelup01.webp, weapon-levelup02.webp, etc.
+      const fileName = `weapon-levelup${String(weaponLevel).padStart(2, '0')}.webp`;
+      
+      // Image path (relative from pages/play.html)
+      const imagePath = `../assets/games/weapon-levelup/images/webp/${fileName}`;
+      
+      return `<img class="weapon-image" src="${imagePath}" alt="Weapon Level ${weaponLevel}" />`;
     },
     
     setupEvents: function() {
-      const upgradeBtn = document.getElementById('upgrade-btn');
-      if (upgradeBtn) {
-        upgradeBtn.addEventListener('click', () => {
-          this.attemptUpgrade();
-        });
+      // 이벤트 리스너가 이미 등록되었다면 다시 등록하지 않음 (중복 방지)
+      if (eventsSetup) {
+        return;
       }
       
-      const sellBtn = document.getElementById('sell-btn');
-      if (sellBtn) {
-        sellBtn.addEventListener('click', () => {
-          if (confirm(`레벨 ${weaponLevel} 무기를 ${this.getSellPrice().toLocaleString()} 골드에 판매하시겠습니까?`)) {
-            this.sellWeapon();
+      // 이벤트 위임을 사용하여 container에 한 번만 등록
+      if (container) {
+        container.addEventListener('click', (e) => {
+          if (e.target && e.target.id === 'upgrade-btn') {
+            e.preventDefault();
+            this.attemptUpgrade();
+          } else if (e.target && e.target.id === 'sell-btn') {
+            e.preventDefault();
+            if (confirm(`레벨 ${weaponLevel} 무기를 ${this.getSellPrice().toLocaleString()} 골드에 판매하시겠습니까?`)) {
+              this.sellWeapon();
+            }
+          } else if (e.target && e.target.id === 'store-btn') {
+            e.preventDefault();
+            if (confirm(`레벨 ${weaponLevel} 무기를 보관하시겠습니까?\n(보관된 무기는 강화 실패 시 자동으로 장착됩니다)`)) {
+              this.storeWeapon();
+            }
+          } else if (e.target && e.target.id === 'restart-btn') {
+            e.preventDefault();
+            this.reset();
           }
         });
+        eventsSetup = true;
       }
     },
     
     reset: function() {
-      weaponLevel = 1;
-      gold = 100;
+      weaponLevel = 1; // 시작 레벨 1
+      gold = 50; // 초기 골드 감소
       totalUpgrades = 0;
       successfulUpgrades = 0;
       sellCount = 0;
+      storedWeaponLevel = 0; // 보관된 무기 초기화
       isGameOver = false;
+      eventsSetup = false; // 이벤트 리스너 재등록을 위해 리셋
       this.saveProgress();
       this.render();
+      this.setupEvents(); // 이벤트 리스너 다시 등록
       
       if (callbacks.onScoreUpdate) {
         callbacks.onScoreUpdate(weaponLevel);
