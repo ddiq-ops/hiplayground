@@ -5,6 +5,42 @@
 
 const UI = {
   /**
+   * Get base path for assets (handles different page locations)
+   */
+  getBasePath() {
+    const href = window.location.href;
+    const pathname = window.location.pathname;
+    
+    if (href.includes('/pages/') || href.includes('\\pages\\') || 
+        href.includes('/pages') || href.includes('\\pages') ||
+        pathname.includes('/pages/') || pathname.includes('\\pages\\') ||
+        pathname.includes('/pages') || pathname.includes('\\pages')) {
+      return '../';
+    }
+    
+    return './';
+  },
+  
+  /**
+   * Render icon (supports both emoji and image paths)
+   */
+  renderIcon(icon, className = 'game-card-icon') {
+    if (!icon) return '<div class="' + className + '">🎮</div>';
+    
+    // Check if icon is an image path (starts with http://, https://, /, or contains image extension)
+    if (icon.match(/^(https?:\/\/|\/|\.\/|\.\.\/|assets\/)/) || icon.match(/\.(png|jpg|jpeg|gif|webp|svg)$/i)) {
+      const basePath = this.getBasePath();
+      const iconPath = icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('/') 
+        ? icon 
+        : basePath + icon;
+      return `<img src="${iconPath}" alt="Game icon" class="${className} game-icon-image" />`;
+    }
+    
+    // Otherwise, treat as emoji
+    return `<div class="${className}">${icon}</div>`;
+  },
+  
+  /**
    * Show loading indicator
    */
   showLoading(container) {
@@ -41,7 +77,7 @@ const UI = {
     
     card.innerHTML = `
       ${isFavorite ? '<div class="game-card-badge">⭐</div>' : ''}
-      <div class="game-card-icon">${game.icon || '🎮'}</div>
+      ${this.renderIcon(game.icon)}
       <div class="game-card-title">${game.title}</div>
       <div class="game-card-description">${game.description}</div>
       <button class="btn btn-primary">플레이</button>

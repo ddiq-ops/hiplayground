@@ -4,7 +4,7 @@
   "titleEn": "Omok",
   "description": "5개를 연속으로 놓아 승리하세요! 1인용과 2인용을 지원합니다.",
   "descriptionEn": "Place 5 in a row to win! Supports 1-player and 2-player modes.",
-  "icon": "🎯",
+  "icon": "assets/games/omok/icon/icon.webp",
   "category": "puzzle",
   "difficulty": "medium",
   "version": "1.0.0"

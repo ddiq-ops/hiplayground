@@ -108,6 +108,13 @@
   display: block;
 }
 
+.game-card-icon.game-icon-image {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  margin: 0 auto var(--spacing-md);
+}
+
 .game-card-title {
   font-size: 1.25rem;
   font-weight: 700;
