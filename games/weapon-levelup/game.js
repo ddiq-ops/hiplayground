@@ -10,6 +10,9 @@
   let successfulUpgrades = 0;
   let sellCount = 0; // 판매 횟수 (인플레이션 계산용)
   let storedWeaponLevel = 0; // 보관된 무기 레벨 (0이면 보관된 무기 없음)
+  let potions = [1, 1, 1, 1, 1]; // 포션 개수 [1번, 2번, 3번, 4번, 5번] - 초기 1개씩
+  let activePotion = null; // 현재 사용 중인 포션 (1-5, null이면 없음)
+  let weaponProtection = 0; // 무기 보호 확률 (0-100)
   let callbacks = {};
   let container = null;
   let isGameOver = false;
@@ -30,10 +33,12 @@
         successfulUpgrades = saved.successfulUpgrades || 0;
         sellCount = saved.sellCount || 0;
         storedWeaponLevel = saved.storedWeaponLevel || 0;
+        potions = saved.potions || [1, 1, 1, 1, 1];
         isGameOver = saved.isGameOver || false;
       } else {
-        // 새 게임 시작 시 레벨 1로 초기화
+        // 새 게임 시작 시 레벨 1로 초기화 및 포션 지급
         weaponLevel = 1;
+        potions = [1, 1, 1, 1, 1]; // 각 포션 1개씩 지급
       }
       
       // Check game over state
@@ -78,10 +83,20 @@
      * Calculate success probability (decreases as level increases)
      * 레벨 1: 99%, 레벨 80: 20%, 레벨 100: 20% (최소값)
      * 더 빠르게 감소하여 난이도 증가
+     * 포션 효과 적용 (1.2배 또는 1.5배)
      */
     getSuccessProbability() {
-      const baseProbability = 100 - (weaponLevel * 1.0);
-      return Math.max(20, baseProbability); // Minimum 20%
+      let baseProbability = 100 - (weaponLevel * 1.0);
+      baseProbability = Math.max(20, baseProbability); // Minimum 20%
+      
+      // 포션 효과 적용
+      if (activePotion === 1) {
+        baseProbability = Math.min(100, baseProbability * 1.2); // 1.2배, 최대 100%
+      } else if (activePotion === 2) {
+        baseProbability = Math.min(100, baseProbability * 1.5); // 1.5배, 최대 100%
+      }
+      
+      return baseProbability;
     },
     
     /**
@@ -156,29 +171,60 @@
             isGameOver = false; // Game is not over if we succeeded
           }
         } else {
-          // 실패 시 무기가 레벨 1로 떨어짐 (보관된 무기가 있으면 자동으로 적용)
+          // 실패 시 처리 (무기 보호 또는 레벨 1로 떨어짐)
           const oldLevel = weaponLevel;
+          let weaponDestroyed = false;
           
-          if (storedWeaponLevel > 0) {
-            // 보관된 무기가 있으면 자동으로 적용
-            weaponLevel = storedWeaponLevel;
-            storedWeaponLevel = 0; // 보관된 무기 사용
-            resultMessage = `강화 실패! 💔\n보관된 레벨 ${weaponLevel} 무기가 자동으로 장착되었습니다!`;
-            resultType = 'info';
-            isGameOver = false; // 보관된 무기가 있으면 게임오버 아님
+          // 무기 보호 체크 (3번 또는 4번 포션 효과)
+          if (weaponProtection > 0) {
+            const protectionRoll = Math.random() * 100;
+            if (protectionRoll < weaponProtection) {
+              // 보호 성공 - 무기 레벨 유지
+              weaponDestroyed = false;
+              resultMessage = `강화 실패! 하지만 무기가 보호되었습니다! 🛡️`;
+              resultType = 'info';
+              isGameOver = false;
+            } else {
+              // 보호 실패
+              weaponDestroyed = true;
+            }
           } else {
-            // 보관된 무기가 없으면 레벨 1로 떨어짐
-            weaponLevel = 1;
-            resultMessage = '강화 실패! 💔';
-            resultType = 'error';
-            
-            // 게임오버 체크
-            if (this.checkGameOver()) {
-              setTimeout(() => {
-                this.handleGameOver();
-              }, 2000); // 2초 후 게임오버 화면 표시
+            weaponDestroyed = true;
+          }
+          
+          if (weaponDestroyed) {
+            // 무기가 파괴됨 - 보관된 무기 또는 레벨 1
+            if (storedWeaponLevel > 0) {
+              // 보관된 무기가 있으면 자동으로 적용
+              weaponLevel = storedWeaponLevel;
+              storedWeaponLevel = 0; // 보관된 무기 사용
+              resultMessage = `강화 실패! 💔\n보관된 레벨 ${weaponLevel} 무기가 자동으로 장착되었습니다!`;
+              resultType = 'info';
+              isGameOver = false; // 보관된 무기가 있으면 게임오버 아님
+            } else {
+              // 보관된 무기가 없으면 레벨 1로 떨어짐
+              weaponLevel = 1;
+              resultMessage = '강화 실패! 💔';
+              resultType = 'error';
+              
+              // 게임오버 체크
+              if (this.checkGameOver()) {
+                setTimeout(() => {
+                  this.handleGameOver();
+                }, 2000); // 2초 후 게임오버 화면 표시
+              }
             }
           }
+          
+          // 포션 효과 초기화 (사용했으므로)
+          activePotion = null;
+          weaponProtection = 0;
+        }
+        
+        // 성공 시에도 포션 효과 초기화
+        if (isSuccess) {
+          activePotion = null;
+          weaponProtection = 0;
         }
         
         this.saveProgress();
@@ -198,6 +244,76 @@
           callbacks.onScoreUpdate(weaponLevel);
         }
       }, 1500); // 1.5초 딜레이
+    },
+    
+    /**
+     * Use potion before upgrade
+     */
+    usePotion(potionType) {
+      if (activePotion !== null) {
+        this.showMessage('이미 포션을 사용했습니다!', 'error');
+        return;
+      }
+      
+      if (potions[potionType - 1] <= 0) {
+        this.showMessage('포션이 부족합니다!', 'error');
+        return;
+      }
+      
+      // 포션 사용
+      potions[potionType - 1]--;
+      
+      if (potionType === 5) {
+        // 랜덤박스: 1번 70%, 2번 20%, 3번 8%, 4번 2%
+        const rand = Math.random() * 100;
+        let actualPotion = 1;
+        if (rand < 70) actualPotion = 1;
+        else if (rand < 90) actualPotion = 2;
+        else if (rand < 98) actualPotion = 3;
+        else actualPotion = 4;
+        
+        // 실제 포션 효과 적용
+        potionType = actualPotion;
+        this.showMessage(`랜덤박스에서 ${actualPotion}번 포션이 나왔습니다!`, 'success');
+      }
+      
+      // 포션 효과 적용
+      if (potionType === 1 || potionType === 2) {
+        activePotion = potionType;
+        const multiplier = potionType === 1 ? '1.2배' : '1.5배';
+        this.showMessage(`${potionType}번 포션 사용! 성공 확률이 ${multiplier}로 증가합니다!`, 'success');
+      } else if (potionType === 3 || potionType === 4) {
+        weaponProtection = potionType === 3 ? 50 : 80;
+        this.showMessage(`${potionType}번 포션 사용! 무기 보호 확률 ${weaponProtection}%가 적용됩니다!`, 'success');
+      }
+      
+      this.saveProgress();
+      this.render();
+    },
+    
+    /**
+     * Buy potion from shop
+     */
+    buyPotion(potionType) {
+      const prices = [1000, 3000, 10000, 30000, 3000]; // 1-5번 포션 가격
+      const price = prices[potionType - 1];
+      
+      if (gold < price) {
+        this.showMessage('골드가 부족합니다!', 'error');
+        return;
+      }
+      
+      gold -= price;
+      potions[potionType - 1]++;
+      this.showMessage(`${potionType}번 포션을 구매했습니다!`, 'success');
+      
+      this.saveProgress();
+      this.render();
+      // 모달 내부의 구매 버튼도 업데이트하기 위해 모달 다시 열기
+      setTimeout(() => {
+        this.closeShopModal();
+        this.showShopModal();
+      }, 100);
     },
     
     /**
@@ -372,6 +488,7 @@
         successfulUpgrades: successfulUpgrades,
         sellCount: sellCount,
         storedWeaponLevel: storedWeaponLevel,
+        potions: potions,
         isGameOver: isGameOver
       });
     },
@@ -472,6 +589,17 @@
               >
                 ${isMaxLevel ? '최대 레벨 도달' : '무기 강화하기'}
               </button>
+              
+              <h3 class="weapon-section-title" style="margin-top: var(--spacing-lg);">🏪 상점</h3>
+              <div class="weapon-action-info">
+                <p>포션을 구매할 수 있습니다</p>
+              </div>
+              <button 
+                class="btn btn-secondary weapon-action-btn" 
+                id="open-shop-btn"
+              >
+                물건보기
+              </button>
             </div>
             
             <div class="weapon-display-area">
@@ -483,7 +611,7 @@
             </div>
             
             <div class="weapon-action-section weapon-action-right">
-              <h3 class="weapon-section-title">🏪 상점</h3>
+              <h3 class="weapon-section-title">💰 판매하기</h3>
               <div class="weapon-action-info">
                 <p>판매 가격: <strong>${sellPrice.toLocaleString()}</strong> 골드</p>
                 <p>판매 후 레벨 1 무기로 돌아갑니다</p>
@@ -514,6 +642,18 @@
                 ${storedWeaponLevel > 0 ? '보관 완료' : '무기 보관하기'}
               </button>
             </div>
+          </div>
+          
+          <!-- 나의 인벤토리 (간단한 형태) -->
+          <div class="weapon-inventory-compact">
+            <div class="weapon-inventory-header">
+              <h3 class="weapon-section-title">📦 나의 인벤토리</h3>
+              <button class="btn btn-secondary btn-small" id="open-inventory-btn">자세히</button>
+            </div>
+            <div class="weapon-inventory-items">
+              ${this.getCompactInventoryHTML()}
+            </div>
+          </div>
           </div>
           
           <div class="weapon-stats-detail">
@@ -590,6 +730,236 @@
       return `<img class="weapon-image" src="${imagePath}" alt="Weapon Level ${weaponLevel}" />`;
     },
     
+    /**
+     * Get potion shop HTML
+     */
+    getPotionShopHTML() {
+      const potionPrices = [1000, 3000, 10000, 30000, 3000];
+      const potionNames = [
+        '확률 강화 (1.2배)',
+        '확률 강화 (1.5배)',
+        '무기 보호 (50%)',
+        '무기 보호 (80%)',
+        '랜덤박스'
+      ];
+      const potionDescriptions = [
+        '성공 확률 1.2배 (최대 100%)',
+        '성공 확률 1.5배 (최대 100%)',
+        '강화 실패 시 50% 확률로 무기 유지',
+        '강화 실패 시 80% 확률로 무기 유지',
+        '1~4번 포션 중 랜덤 (70%/20%/8%/2%)'
+      ];
+      
+      let html = '';
+      for (let i = 0; i < 5; i++) {
+        const potionNum = i + 1;
+        const price = potionPrices[i];
+        const canBuy = gold >= price;
+        
+        html += `
+          <div class="weapon-potion-item">
+            <img src="../assets/games/weapon-levelup/images/potions/potion${potionNum}.webp" alt="Potion ${potionNum}" class="potion-image" />
+            <div class="potion-info">
+              <div class="potion-name">${potionNames[i]}</div>
+              <div class="potion-desc">${potionDescriptions[i]}</div>
+              <div class="potion-price">${price.toLocaleString()} 골드</div>
+            </div>
+            <button 
+              class="btn btn-secondary potion-buy-btn" 
+              id="buy-potion-${potionNum}"
+              ${!canBuy ? 'disabled' : ''}
+            >
+              구매
+            </button>
+          </div>
+        `;
+      }
+      return html;
+    },
+    
+    /**
+     * Get compact inventory HTML (간단한 형태)
+     */
+    getCompactInventoryHTML() {
+      const potionNames = ['1.2배', '1.5배', '보호50%', '보호80%', '랜덤'];
+      
+      let html = '';
+      for (let i = 0; i < 5; i++) {
+        const potionNum = i + 1;
+        const count = potions[i];
+        
+        html += `
+          <div class="weapon-inventory-item-compact">
+            <img src="../assets/games/weapon-levelup/images/potions/potion${potionNum}.webp" alt="Potion ${potionNum}" class="potion-icon-small" />
+            <span class="potion-count-compact">${count}</span>
+          </div>
+        `;
+      }
+      return html;
+    },
+    
+    /**
+     * Get potion inventory HTML (모달용 - 전체 기능)
+     */
+    getPotionInventoryHTML() {
+      const potionNames = [
+        '확률 강화 (1.2배)',
+        '확률 강화 (1.5배)',
+        '무기 보호 (50%)',
+        '무기 보호 (80%)',
+        '랜덤박스'
+      ];
+      
+      let html = '';
+      for (let i = 0; i < 5; i++) {
+        const potionNum = i + 1;
+        const count = potions[i];
+        const canUse = count > 0 && activePotion === null;
+        
+        html += `
+          <div class="weapon-potion-inventory-item">
+            <img src="../assets/games/weapon-levelup/images/potions/potion${potionNum}.webp" alt="Potion ${potionNum}" class="potion-image-small" />
+            <div class="potion-inventory-info">
+              <div class="potion-name-small">${potionNames[i]}</div>
+              <div class="potion-count">보유: ${count}개</div>
+            </div>
+            <button 
+              class="btn btn-primary potion-use-btn" 
+              id="use-potion-${potionNum}"
+              ${!canUse ? 'disabled' : ''}
+            >
+              사용
+            </button>
+          </div>
+        `;
+      }
+      return html;
+    },
+    
+    /**
+     * Show shop modal
+     */
+    showShopModal() {
+      const modalHTML = `
+        <div class="weapon-modal-overlay" id="shop-modal-overlay">
+          <div class="weapon-modal">
+            <div class="weapon-modal-header">
+              <h3 class="weapon-modal-title">🏪 상점</h3>
+              <button class="weapon-modal-close" id="close-shop-modal">×</button>
+            </div>
+            <div class="weapon-modal-content">
+              <div class="weapon-potions-grid">
+                ${this.getPotionShopHTML()}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      const modalContainer = document.createElement('div');
+      modalContainer.innerHTML = modalHTML;
+      const modalElement = modalContainer.firstElementChild;
+      document.body.appendChild(modalElement);
+      
+      // 이벤트 리스너 등록
+      const closeBtn = document.getElementById('close-shop-modal');
+      const overlay = document.getElementById('shop-modal-overlay');
+      
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => this.closeShopModal());
+      }
+      if (overlay) {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            this.closeShopModal();
+          }
+        });
+      }
+      
+      // 모달 내부의 구매 버튼 이벤트
+      const buyButtons = modalElement.querySelectorAll('[id^="buy-potion-"]');
+      buyButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const potionNum = parseInt(btn.id.replace('buy-potion-', ''));
+          this.buyPotion(potionNum);
+        });
+      });
+    },
+    
+    /**
+     * Close shop modal
+     */
+    closeShopModal() {
+      const overlay = document.getElementById('shop-modal-overlay');
+      if (overlay) {
+        overlay.remove();
+      }
+    },
+    
+    /**
+     * Show inventory modal
+     */
+    showInventoryModal() {
+      const modalHTML = `
+        <div class="weapon-modal-overlay" id="inventory-modal-overlay">
+          <div class="weapon-modal">
+            <div class="weapon-modal-header">
+              <h3 class="weapon-modal-title">📦 나의 인벤토리</h3>
+              <button class="weapon-modal-close" id="close-inventory-modal">×</button>
+            </div>
+            <div class="weapon-modal-content">
+              <div class="weapon-potions-inventory">
+                ${this.getPotionInventoryHTML()}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      const modalContainer = document.createElement('div');
+      modalContainer.innerHTML = modalHTML;
+      const modalElement = modalContainer.firstElementChild;
+      document.body.appendChild(modalElement);
+      
+      // 이벤트 리스너 등록
+      const closeBtn = document.getElementById('close-inventory-modal');
+      const overlay = document.getElementById('inventory-modal-overlay');
+      
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => this.closeInventoryModal());
+      }
+      if (overlay) {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            this.closeInventoryModal();
+          }
+        });
+      }
+      
+      // 모달 내부의 사용 버튼 이벤트
+      const useButtons = modalElement.querySelectorAll('[id^="use-potion-"]');
+      useButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const potionNum = parseInt(btn.id.replace('use-potion-', ''));
+          this.usePotion(potionNum);
+          this.closeInventoryModal();
+          this.render(); // 인벤토리 업데이트를 위해 재렌더링
+        });
+      });
+    },
+    
+    /**
+     * Close inventory modal
+     */
+    closeInventoryModal() {
+      const overlay = document.getElementById('inventory-modal-overlay');
+      if (overlay) {
+        overlay.remove();
+      }
+    },
+    
     setupEvents: function() {
       // 이벤트 리스너가 이미 등록되었다면 다시 등록하지 않음 (중복 방지)
       if (eventsSetup) {
@@ -612,6 +982,12 @@
             if (confirm(`레벨 ${weaponLevel} 무기를 보관하시겠습니까?\n(보관된 무기는 강화 실패 시 자동으로 장착됩니다)`)) {
               this.storeWeapon();
             }
+          } else if (e.target && e.target.id === 'open-shop-btn') {
+            e.preventDefault();
+            this.showShopModal();
+          } else if (e.target && e.target.id === 'open-inventory-btn') {
+            e.preventDefault();
+            this.showInventoryModal();
           } else if (e.target && e.target.id === 'restart-btn') {
             e.preventDefault();
             this.reset();
@@ -628,6 +1004,9 @@
       successfulUpgrades = 0;
       sellCount = 0;
       storedWeaponLevel = 0; // 보관된 무기 초기화
+      potions = [1, 1, 1, 1, 1]; // 포션 초기화 (각 1개씩)
+      activePotion = null; // 활성 포션 초기화
+      weaponProtection = 0; // 무기 보호 초기화
       isGameOver = false;
       eventsSetup = false; // 이벤트 리스너 재등록을 위해 리셋
       this.saveProgress();
