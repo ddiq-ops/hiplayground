@@ -37,11 +37,33 @@ const GameShell = {
   },
   
   /**
+   * Get base path for game files
+   */
+  getBasePath() {
+    // Use App.getBasePath if available, otherwise fallback to simple check
+    if (typeof App !== 'undefined' && App.getBasePath) {
+      return App.getBasePath();
+    }
+    
+    // Fallback: simple check for pages directory
+    const href = window.location.href;
+    const pathname = window.location.pathname;
+    
+    if (href.includes('/pages/') || href.includes('\\pages\\') || 
+        pathname.includes('/pages/') || pathname.includes('\\pages\\')) {
+      return '../';
+    }
+    
+    return './';
+  },
+  
+  /**
    * Load game manifest
    */
   async loadManifest(gameId) {
     try {
-      const response = await fetch(`../games/${gameId}/manifest.json`);
+      const basePath = this.getBasePath();
+      const response = await fetch(`${basePath}games/${gameId}/manifest.json`);
       if (!response.ok) throw new Error('Manifest not found');
       return await response.json();
     } catch (error) {
@@ -54,9 +76,10 @@ const GameShell = {
    * Load game CSS
    */
   loadGameCSS(gameId) {
+    const basePath = this.getBasePath();
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = `../games/${gameId}/game.css`;
+    link.href = `${basePath}games/${gameId}/game.css`;
     document.head.appendChild(link);
   },
   
@@ -80,8 +103,9 @@ const GameShell = {
       }
       
       // Load new game script
+      const basePath = this.getBasePath();
       const script = document.createElement('script');
-      script.src = `../games/${gameId}/game.js`;
+      script.src = `${basePath}games/${gameId}/game.js`;
       script.dataset.gameId = gameId;
       script.async = true; // Load asynchronously
       
@@ -117,7 +141,8 @@ const GameShell = {
               }
             } else {
               console.error('Game not found or init function missing. window.Game:', window.Game);
-              console.error('Expected path:', `../games/${gameId}/game.js`);
+              const basePath = this.getBasePath();
+              console.error('Expected path:', `${basePath}games/${gameId}/game.js`);
               this.showError(`게임을 불러올 수 없습니다. (게임 ID: ${gameId}) 콘솔을 확인해주세요.`);
               reject(new Error('Game not found'));
             }

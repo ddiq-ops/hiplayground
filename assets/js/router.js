@@ -80,32 +80,47 @@ const Router = {
   },
   
   /**
+   * Get base path for navigation (handles pages directory)
+   */
+  getBasePath() {
+    const href = window.location.href;
+    const pathname = window.location.pathname;
+    const isInPages = href.includes('/pages/') || href.includes('\\pages\\') || 
+                      pathname.includes('/pages/') || pathname.includes('\\pages\\');
+    return isInPages ? '' : 'pages/';
+  },
+  
+  /**
    * Navigate to game list
    */
   goToGames() {
     // For local file serving, we'll use direct page navigation
-    window.location.href = 'pages/games.html';
+    const basePath = this.getBasePath();
+    window.location.href = `${basePath}games.html`;
   },
   
   /**
    * Navigate to category page
    */
   goToCategory(categoryId) {
-    window.location.href = `pages/category.html?c=${encodeURIComponent(categoryId)}`;
+    const basePath = this.getBasePath();
+    window.location.href = `${basePath}category.html?c=${encodeURIComponent(categoryId)}`;
   },
   
   /**
    * Navigate to play page
    */
   goToPlay(gameId) {
-    window.location.href = `pages/play.html?id=${encodeURIComponent(gameId)}`;
+    const basePath = this.getBasePath();
+    window.location.href = `${basePath}play.html?id=${encodeURIComponent(gameId)}`;
   },
   
   /**
    * Navigate to home
    */
   goToHome() {
-    window.location.href = 'index.html';
+    const basePath = this.getBasePath();
+    window.location.href = basePath ? '../index.html' : 'index.html';
   },
   
   /**

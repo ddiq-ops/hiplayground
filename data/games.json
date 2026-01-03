@@ -76,6 +76,32 @@
     "tags": ["전략", "두뇌", "체스"],
     "popularity": 90,
     "releaseDate": "2024-01-06"
+  },
+  {
+    "id": "gravity-run",
+    "title": "그래비티 런",
+    "titleEn": "Gravity Run",
+    "category": "casual",
+    "difficulty": "medium",
+    "description": "터치해서 중력을 바꾸고 장애물을 피하세요!",
+    "descriptionEn": "Touch to flip gravity and avoid obstacles!",
+    "icon": "🏃",
+    "tags": ["반사신경", "중력", "액션"],
+    "popularity": 89,
+    "releaseDate": "2024-01-07"
+  },
+  {
+    "id": "olympic",
+    "title": "2버튼 미니 올림픽",
+    "titleEn": "2-Button Mini Olympics",
+    "category": "sports",
+    "difficulty": "hard",
+    "description": "장애물, 창던지기, 수영! 2개의 버튼으로 금메달에 도전하세요.",
+    "descriptionEn": "Hurdles, Javelin, Swimming! Challenge for gold medal with 2 buttons.",
+    "icon": "🏅",
+    "tags": ["스포츠", "올림픽", "액션"],
+    "popularity": 88,
+    "releaseDate": "2024-01-08"
   }
 ]
 

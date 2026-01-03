@@ -1,0 +1,13 @@
+{
+  "id": "olympic",
+  "title": "2버튼 미니 올림픽",
+  "titleEn": "2-Button Mini Olympics",
+  "description": "장애물, 창던지기, 수영! 2개의 버튼으로 금메달에 도전하세요.",
+  "descriptionEn": "Hurdles, Javelin, Swimming! Challenge for gold medal with 2 buttons.",
+  "icon": "🏅",
+  "category": "sports",
+  "difficulty": "hard",
+  "orientation": "landscape",
+  "version": "1.0.0"
+}
+

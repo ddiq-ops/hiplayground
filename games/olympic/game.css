@@ -1,0 +1,223 @@
+/* Olympic Game Styles */
+
+.olympic-game {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.olympic-canvas-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #98D8C8 100%);
+}
+
+.olympic-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+.olympic-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  font-weight: 600;
+}
+
+.olympic-event-name {
+  font-size: 1.25rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.olympic-score {
+  font-size: 1.125rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.olympic-buttons {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.olympic-button {
+  flex: 1;
+  height: 120px;
+  border-radius: var(--radius-lg);
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s, box-shadow 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.olympic-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.olympic-button-a {
+  background: linear-gradient(135deg, #FF4444 0%, #CC0000 100%);
+}
+
+.olympic-button-a:hover {
+  background: linear-gradient(135deg, #FF6666 0%, #FF0000 100%);
+}
+
+.olympic-button-b {
+  background: linear-gradient(135deg, #4444FF 0%, #0000CC 100%);
+}
+
+.olympic-button-b:hover {
+  background: linear-gradient(135deg, #6666FF 0%, #0000FF 100%);
+}
+
+.olympic-button-label {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.olympic-transition {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  z-index: 100;
+  animation: fadeInOut 2s ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.olympic-result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  z-index: 200;
+  min-width: 300px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.olympic-result h2 {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.olympic-medal {
+  font-size: 5rem;
+  margin: var(--spacing-md) 0;
+  animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.olympic-result-score {
+  font-size: 1.5rem;
+  margin: var(--spacing-md) 0;
+  color: #FFD700;
+}
+
+.olympic-result-breakdown {
+  margin-top: var(--spacing-lg);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.olympic-result-breakdown div {
+  margin: var(--spacing-xs) 0;
+}
+
+.olympic-firework {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 150;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .olympic-button {
+    height: 100px;
+    font-size: 1.5rem;
+  }
+  
+  .olympic-header {
+    font-size: 0.9rem;
+  }
+  
+  .olympic-event-name {
+    font-size: 1rem;
+  }
+  
+  .olympic-score {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .olympic-button {
+    height: 80px;
+    font-size: 1.25rem;
+  }
+  
+  .olympic-buttons {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+}
+

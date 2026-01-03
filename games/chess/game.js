@@ -886,8 +886,8 @@
               <div class="game-over-message success">
                 <h3>🎉 흰색 승리!</h3>
                 ${gameMode === 'single' && difficulty < 15 ? `
-                  <p>다음 난이도: ${difficulty + 1}/15</p>
-                ` : gameMode === 'single' && difficulty === 15 ? `
+                  <p>다음 난이도: ${difficulty}/15</p>
+                ` : gameMode === 'single' && difficulty >= 15 ? `
                   <p>축하합니다! 모든 난이도를 완료했습니다! 🏆</p>
                 ` : ''}
               </div>

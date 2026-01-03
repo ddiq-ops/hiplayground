@@ -58,11 +58,11 @@ for png_file in png_files:
         webp_size = webp_file.stat().st_size
         size_reduction = (1 - webp_size / original_size) * 100 if original_size else 0
 
-        print(f"✓ {png_file.name} → webp/{webp_file.name} ({size_reduction:.1f}% smaller)")
+        print(f"[OK] {png_file.name} -> webp/{webp_file.name} ({size_reduction:.1f}% smaller)")
         success_count += 1
 
     except Exception as e:
-        print(f"✗ Error converting {png_file.name}: {e}")
+        print(f"[FAIL] Error converting {png_file.name}: {e}")
         error_count += 1
 
 print("\nConversion complete!")
