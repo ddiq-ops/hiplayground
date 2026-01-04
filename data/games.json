@@ -8,7 +8,11 @@
     "description": "빠르게 클릭해서 점수를 모아보세요!",
     "descriptionEn": "Click fast to collect points!",
     "icon": "🎯",
-    "tags": ["반응속도", "재미", "간단"],
+    "tags": [
+      "반응속도",
+      "재미",
+      "간단"
+    ],
     "popularity": 95,
     "releaseDate": "2024-01-01"
   },
@@ -21,7 +25,11 @@
     "description": "카드를 뒤집어서 같은 그림을 찾아보세요!",
     "descriptionEn": "Flip cards to find matching pairs!",
     "icon": "🧠",
-    "tags": ["기억력", "집중력", "퍼즐"],
+    "tags": [
+      "기억력",
+      "집중력",
+      "퍼즐"
+    ],
     "popularity": 88,
     "releaseDate": "2024-01-02"
   },
@@ -34,7 +42,11 @@
     "description": "빠르게 수학 문제를 풀어보세요!",
     "descriptionEn": "Solve math problems quickly!",
     "icon": "🔢",
-    "tags": ["수학", "학습", "퀴즈"],
+    "tags": [
+      "수학",
+      "학습",
+      "퀴즈"
+    ],
     "popularity": 92,
     "releaseDate": "2024-01-03"
   },
@@ -47,7 +59,11 @@
     "description": "대장간에서 무기를 강화하고 상점에서 판매하세요!",
     "descriptionEn": "Upgrade your weapon at the blacksmith and sell it at the shop!",
     "icon": "⚔️",
-    "tags": ["전략", "업그레이드", "경영"],
+    "tags": [
+      "전략",
+      "업그레이드",
+      "경영"
+    ],
     "popularity": 90,
     "releaseDate": "2024-01-04"
   },
@@ -60,7 +76,11 @@
     "description": "5개를 연속으로 놓아 승리하세요! 1인용과 2인용을 지원합니다.",
     "descriptionEn": "Place 5 in a row to win! Supports 1-player and 2-player modes.",
     "icon": "assets/games/omok/icon/icon.webp",
-    "tags": ["전략", "두뇌", "오목"],
+    "tags": [
+      "전략",
+      "두뇌",
+      "오목"
+    ],
     "popularity": 85,
     "releaseDate": "2024-01-05"
   },
@@ -73,35 +93,38 @@
     "description": "전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.",
     "descriptionEn": "Strategic chess game! Supports 1-player and 2-player modes.",
     "icon": "♟️",
-    "tags": ["전략", "두뇌", "체스"],
+    "tags": [
+      "전략",
+      "두뇌",
+      "체스"
+    ],
     "popularity": 90,
     "releaseDate": "2024-01-06"
   },
   {
-    "id": "gravity-run",
-    "title": "그래비티 런",
-    "titleEn": "Gravity Run",
-    "category": "casual",
-    "difficulty": "medium",
-    "description": "터치해서 중력을 바꾸고 장애물을 피하세요!",
-    "descriptionEn": "Touch to flip gravity and avoid obstacles!",
-    "icon": "🏃",
-    "tags": ["반사신경", "중력", "액션"],
-    "popularity": 89,
-    "releaseDate": "2024-01-07"
+    "id": "speed-number",
+    "title": "순발력 숫자 터치",
+    "titleEn": "Speed Number Tap",
+    "category": "action",
+    "difficulty": "easy",
+    "description": "1부터 20까지 숫자를 순서대로 터치하세요! 누가 가장 빠를까요?",
+    "descriptionEn": "Tap numbers 1 to 20 in order as fast as possible!",
+    "icon": "⚡",
+    "tags": ["순발력", "스피드", "집중력"],
+    "popularity": 100,
+    "releaseDate": "2024-01-08"
   },
   {
-    "id": "olympic",
-    "title": "2버튼 미니 올림픽",
-    "titleEn": "2-Button Mini Olympics",
-    "category": "sports",
-    "difficulty": "hard",
-    "description": "장애물, 창던지기, 수영! 2개의 버튼으로 금메달에 도전하세요.",
-    "descriptionEn": "Hurdles, Javelin, Swimming! Challenge for gold medal with 2 buttons.",
-    "icon": "🏅",
-    "tags": ["스포츠", "올림픽", "액션"],
+    "id": "physics-box",
+    "title": "와르르 상자",
+    "titleEn": "Physics Box",
+    "description": "공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요.",
+    "descriptionEn": "Drag, Shoot, and Crash! Knock down the box tower.",
+    "icon": "💣",
+    "category": "action",
+    "difficulty": "medium",
+    "tags": ["물리", "슈팅", "Phaser"],
     "popularity": 88,
-    "releaseDate": "2024-01-08"
+    "releaseDate": "2024-01-09"
   }
 ]
-

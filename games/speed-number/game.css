@@ -1,0 +1,146 @@
+/* 게임 전체 래퍼 */
+.sn-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f2f5;
+    font-family: 'Pretendard', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 상단 정보바 */
+.sn-header {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    padding: 10px 15px 0 15px; /* 하단 패딩 제거 (게이지바 때문) */
+    gap: 8px;
+}
+
+.sn-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.sn-lives { color: #ff4757; letter-spacing: 2px; }
+
+.sn-game-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.sn-info-box { display: flex; align-items: center; gap: 10px; }
+.sn-label { font-size: 0.9rem; color: #888; font-weight: 600; }
+.sn-value { font-size: 1.8rem; font-weight: 800; color: #2d3436; }
+.sn-value.highlight { color: #2e86de; }
+.sn-value.timer { font-family: 'Courier New', monospace; color: #2d3436; min-width: 80px; text-align: right; }
+.sn-value.timer.danger { color: #e74c3c; animation: pulse 0.5s infinite; }
+
+/* 타임 게이지 (Progress Bar) */
+.sn-timer-bar-bg {
+    width: 100%;
+    height: 6px;
+    background-color: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.sn-timer-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: #4cd137; /* 초기 초록색 */
+    transition: width 0.1s linear, background-color 0.3s;
+    transform-origin: left;
+}
+
+/* 숫자판 그리드 */
+.sn-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 5), 1fr);
+    gap: 8px;
+    padding: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    align-content: center;
+}
+
+/* 숫자 카드 */
+.sn-card {
+    background: #ffffff;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2d3436;
+    cursor: pointer;
+    aspect-ratio: 1/1;
+    box-shadow: 0 4px 0 #dfe6e9;
+    transition: transform 0.1s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.sn-card:active { transform: translateY(2px); box-shadow: 0 2px 0 #dfe6e9; }
+.sn-card.correct { opacity: 0; pointer-events: none; transform: scale(0.5); transition: all 0.2s; }
+.sn-card.wrong { background-color: #ff7675; color: white; border-color: #ff7675; animation: shake 0.4s; }
+
+/* 오버레이 (Start 화면, 결과 화면 공용) */
+.sn-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.95); /* 배경 덜 투명하게 (Start화면용) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sn-overlay.active { opacity: 1; pointer-events: auto; }
+.sn-overlay.dark-mode { background: rgba(0,0,0,0.8); color: white; } /* 결과화면용 어두운 배경 */
+
+.sn-msg-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; color: #2d3436; }
+.sn-msg-sub { font-size: 1.2rem; margin-bottom: 30px; color: #636e72; text-align: center; line-height: 1.5; }
+
+.sn-btn-start {
+    padding: 15px 40px;
+    background: #2e86de;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(46, 134, 222, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.sn-btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46, 134, 222, 0.6); }
+.sn-btn-start:active { transform: translateY(1px); }
+
+/* 애니메이션 */
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }

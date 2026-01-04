@@ -1,0 +1,11 @@
+{
+    "id": "speed-number",
+    "title": "순발력 숫자 터치",
+    "titleEn": "Speed Number Tap",
+    "description": "1부터 20까지의 숫자를 순서대로 가장 빠르게 터치하세요!",
+    "descriptionEn": "Tap numbers from 1 to 20 in order as fast as possible!",
+    "icon": "🔢",
+    "category": "action",
+    "difficulty": "easy",
+    "version": "1.0.0"
+  }
