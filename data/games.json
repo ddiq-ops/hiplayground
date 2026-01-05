@@ -70,20 +70,21 @@
   },
   {
     "id": "omok",
-    "title": "오목",
-    "titleEn": "Omok",
-    "category": "puzzle",
-    "difficulty": "medium",
-    "description": "5개를 연속으로 놓아 승리하세요! 1인용과 2인용을 지원합니다.",
-    "descriptionEn": "Place 5 in a row to win! Supports 1-player and 2-player modes.",
-    "icon": "assets/games/omok/icon/icon.webp",
+    "title": "오목 마스터",
+    "titleEn": "Omok Master",
+    "category": "board",
+    "difficulty": "hard",
+    "description": "5개를 연속으로 놓아 승리하세요! 고스트 스톤과 마지막 수 표시로 더 편리하게 즐기세요.",
+    "descriptionEn": "Place 5 in a row to win! Features ghost stone guide and last move marker.",
+    "icon": "⚫",
     "tags": [
       "전략",
       "두뇌",
-      "오목"
+      "오목",
+      "보드게임"
     ],
-    "popularity": 85,
-    "releaseDate": "2024-01-05"
+    "popularity": 90,
+    "releaseDate": "2024-01-29"
   },
   {
     "id": "chess",
@@ -108,12 +109,17 @@
     "titleEn": "Speed Number Tap",
     "category": "action",
     "difficulty": "easy",
-    "description": "1부터 20까지 숫자를 순서대로 터치하세요! 누가 가장 빠를까요?",
-    "descriptionEn": "Tap numbers 1 to 20 in order as fast as possible!",
-    "icon": "⚡",
-    "tags": ["순발력", "스피드", "집중력"],
-    "popularity": 100,
-    "releaseDate": "2024-01-08"
+    "description": "눈보다 빠른 손! 1부터 50까지 숫자를 순서대로 찾아 터치하세요. 난이도별 10단계 스테이지 도전!",
+    "descriptionEn": "Faster than eyes! Tap numbers in order up to 50. Challenge 10 stages with difficulty levels!",
+    "icon": "🔢",
+    "tags": [
+      "순발력",
+      "스피드",
+      "퍼즐",
+      "기록경쟁"
+    ],
+    "popularity": 80,
+    "releaseDate": "2024-01-31"
   },
   {
     "id": "physics-box",
