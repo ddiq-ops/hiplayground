@@ -7,8 +7,11 @@
   color: #fff;
 }
 
+/* PC 기본: 가로형 */
 .game-frame {
-  position: relative; width: 900px; height: 600px;
+  position: relative;
+  width: 100%; max-width: 900px;
+  height: 100%; max-height: 600px;
   background: #111; border-radius: 16px;
   box-shadow: 0 0 50px rgba(0, 210, 211, 0.2);
   border: 2px solid #34495e;
@@ -20,17 +23,26 @@
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(15, 15, 15, 0.95); z-index: 100;
   display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 20px; box-sizing: border-box;
 }
-.mode-title { font-size: 3rem; font-weight: 900; color: #00d2d3; margin-bottom: 40px; text-shadow: 0 0 20px rgba(0,210,211,0.5); }
-.mode-grid { display: flex; gap: 20px; }
+
+.mode-title { 
+  font-size: 3rem; font-weight: 900; color: #00d2d3; margin-bottom: 40px; 
+  text-shadow: 0 0 20px rgba(0,210,211,0.5); text-align: center;
+}
+
+.mode-grid { display: flex; gap: 20px; width: 100%; justify-content: center; }
+
 .mode-card {
   background: #2f3640; width: 220px; padding: 30px 20px; border-radius: 15px;
-  text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;
+  text-align: center; cursor: pointer; border: 2px solid transparent; 
+  transition: all 0.2s; display: flex; flex-direction: column; align-items: center;
 }
 .mode-card:hover { transform: translateY(-10px); border-color: #00d2d3; background: #353b48; }
+
 .mode-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
 .mode-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; color: #fff; }
-.mode-desc { font-size: 0.9rem; color: #bdc3c7; line-height: 1.4; }
+.mode-desc { font-size: 0.9rem; color: #bdc3c7; line-height: 1.4; word-break: keep-all;}
 
 /* === 좌측: 게임 영역 === */
 .clk-main {
@@ -40,26 +52,21 @@
   position: relative; border-right: 2px solid #34495e;
 }
 
-/* 상단 정보 (점수 & 타이머) */
+/* 상단 정보 */
 .clk-header {
-  position: absolute; top: 20px; width: 100%; text-align: center;
+  position: absolute; top: 20px; width: 100%; text-align: center; z-index: 20;
 }
 .clk-score {
   font-size: 3.5rem; font-weight: 900; color: #fff;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); margin: 0;
 }
-/* GPS (초당 클릭) 강조 */
 .clk-gps {
   font-size: 1.4rem; color: #00d2d3; font-weight: bold;
   margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;
   background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px;
   display: inline-block; border: 1px solid rgba(0, 210, 211, 0.3);
 }
-
-/* 모드별 목표 표시 */
-.mode-target {
-  font-size: 1.2rem; color: #f1c40f; margin-top: 10px; font-weight: bold;
-}
+.mode-target { font-size: 1.2rem; color: #f1c40f; margin-top: 10px; font-weight: bold; }
 
 /* 코어 버튼 */
 .core-btn {
@@ -68,7 +75,7 @@
   box-shadow: 0 0 60px rgba(0, 210, 211, 0.6), inset 0 0 20px rgba(255,255,255,0.5);
   border: 8px solid rgba(255,255,255,0.1);
   cursor: pointer; position: relative; z-index: 10;
-  transition: transform 0.05s; margin-top: 20px;
+  transition: transform 0.05s; margin-top: 40px; /* 헤더 공간 확보 */
 }
 .core-btn:active { transform: scale(0.92); }
 .core-btn::after {
@@ -82,32 +89,32 @@
   flex: 4; background: #1e272e; display: flex; flex-direction: column;
 }
 .shop-header {
-  padding: 20px; background: #2f3640; border-bottom: 2px solid #111;
+  padding: 15px 20px; background: #2f3640; border-bottom: 2px solid #111;
   display: flex; justify-content: space-between; align-items: center;
 }
 .shop-title { color: #f1c40f; font-weight: 900; font-size: 1.4rem; margin: 0; }
 .btn-util { background: none; border: none; font-size: 1.2rem; cursor: pointer; margin-left: 10px; color: #fff; }
 
 .shop-list { flex: 1; overflow-y: auto; padding: 10px; }
-.shop-list::-webkit-scrollbar { width: 8px; }
+.shop-list::-webkit-scrollbar { width: 6px; }
 .shop-list::-webkit-scrollbar-thumb { background: #57606f; border-radius: 4px; }
 
 .upgrade-item {
-  background: #353b48; margin-bottom: 10px; padding: 15px; border-radius: 8px;
+  background: #353b48; margin-bottom: 8px; padding: 12px; border-radius: 8px;
   display: flex; align-items: center; cursor: pointer;
   transition: all 0.2s; border: 1px solid transparent; position: relative;
 }
-.upgrade-item:hover { background: #3d4655; transform: translateX(-5px); }
+.upgrade-item:hover { background: #3d4655; transform: translateX(-3px); }
 .upgrade-item.disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
 
-.item-icon { font-size: 2rem; margin-right: 15px; width: 40px; text-align: center; }
+.item-icon { font-size: 1.8rem; margin-right: 12px; width: 30px; text-align: center; }
 .item-info { flex: 1; }
-.item-name { color: #fff; font-weight: bold; font-size: 1rem; display: block; }
-.item-cost { color: #e74c3c; font-size: 0.9rem; font-weight: bold; }
-.item-effect { color: #bdc3c7; font-size: 0.8rem; display: block; margin-top: 3px; }
+.item-name { color: #fff; font-weight: bold; font-size: 0.95rem; display: block; }
+.item-cost { color: #e74c3c; font-size: 0.85rem; font-weight: bold; }
+.item-effect { color: #bdc3c7; font-size: 0.75rem; display: block; margin-top: 2px; }
 .item-count { 
   background: #00d2d3; color: #000; font-weight: 900; 
-  padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;
+  padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;
   position: absolute; right: 10px; top: 10px;
 }
 
@@ -115,7 +122,7 @@
 .float-text {
   position: absolute; color: #fff; font-weight: bold; font-size: 1.5rem;
   pointer-events: none; animation: floatUp 0.8s ease-out forwards;
-  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  text-shadow: 0 0 5px rgba(0,0,0,0.8); z-index: 50;
 }
 @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-80px) scale(1.2); opacity: 0; } }
 
@@ -130,4 +137,59 @@
 .btn-restart {
   padding: 15px 40px; font-size: 1.5rem; background: #e74c3c; color: white;
   border: none; border-radius: 50px; cursor: pointer; font-weight: bold;
+}
+
+/* =========================================
+ 📱 MOBILE & TABLET RESPONSIVE
+ ========================================= */
+@media (max-width: 850px) {
+  .game-frame {
+      width: 100%; height: 100%; /* 전체 화면 */
+      max-width: none; max-height: none;
+      border: none; border-radius: 0;
+      flex-direction: column; /* 세로 배치 */
+  }
+
+  /* --- 모드 선택 화면 (모바일) --- */
+  .mode-select-screen {
+      padding: 40px 20px;
+      overflow-y: auto; /* 스크롤 허용 */
+      justify-content: flex-start; /* 상단부터 배치 */
+  }
+  .mode-title { font-size: 2rem; margin-bottom: 30px; margin-top: 20px; }
+  .mode-grid {
+      flex-direction: column; /* 카드를 세로로 */
+      align-items: center;
+      gap: 15px;
+      padding-bottom: 40px;
+  }
+  .mode-card {
+      width: 100%; max-width: 320px; /* 꽉 차게 */
+      flex-direction: row; /* 아이콘과 텍스트 가로로 */
+      text-align: left;
+      padding: 20px;
+      align-items: center;
+  }
+  .mode-icon { margin-bottom: 0; margin-right: 20px; font-size: 2.5rem; }
+
+  /* --- 게임 화면 (모바일) --- */
+  .clk-main {
+      flex: 4; /* 게임 영역 비율 */
+      border-right: none;
+      border-bottom: 2px solid #34495e;
+      min-height: 300px;
+  }
+  .clk-shop {
+      flex: 6; /* 상점 영역을 더 넓게 */
+  }
+
+  .clk-score { font-size: 2.5rem; }
+  .clk-gps { font-size: 1rem; }
+  .core-btn {
+      width: 160px; height: 160px; margin-top: 60px;
+  }
+  .core-btn::after { font-size: 4rem; }
+  
+  .shop-header { padding: 10px 15px; }
+  .shop-title { font-size: 1.2rem; }
 }

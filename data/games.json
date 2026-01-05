@@ -151,5 +151,24 @@
     ],
     "popularity": 85,
     "releaseDate": "2024-01-26"
+  },
+  {
+    "id": "gravity-run",
+    "title": "그래비티 런: 제로",
+    "titleEn": "Gravity Run: Zero",
+    "category": "action",
+    "difficulty": "hard",
+    "description": "중력을 거스르는 질주! 터치 한 번으로 위아래를 뒤집으세요. 극한의 속도감에 도전하라.",
+    "descriptionEn": "Defy gravity! Tap to flip up and down. Experience extreme speed.",
+    "icon": "🏃",
+    "tags": [
+      "런게임",
+      "액션",
+      "스피드",
+      "반사신경",
+      "중력"
+    ],
+    "popularity": 88,
+    "releaseDate": "2024-02-01"
   }
 ]
