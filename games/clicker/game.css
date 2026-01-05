@@ -1,488 +1,169 @@
-/* Clicker Game Styles */
-
-.clicker-game {
+/* === 전체 레이아웃 === */
+.clk-wrapper {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: var(--spacing-xl);
-  text-align: center;
-}
-
-.clicker-title {
-  font-size: 2rem;
-  margin-bottom: var(--spacing-lg);
-  color: var(--color-text);
-}
-
-/* Mode selector */
-.clicker-mode-selector {
-  display: flex;
-  gap: var(--spacing-sm);
-  justify-content: center;
-  margin-bottom: var(--spacing-lg);
-  flex-wrap: wrap;
-}
-
-/* Stage info */
-.clicker-stage-info {
-  margin-bottom: var(--spacing-lg);
-  padding: var(--spacing-md);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-primary);
-}
-
-.stage-label {
-  font-size: 0.875rem;
-  color: var(--color-text-light);
-  margin-bottom: var(--spacing-xs);
-}
-
-.stage-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-/* Start area */
-.clicker-start-area {
-  margin-top: var(--spacing-xl);
-}
-
-/* Game active area */
-.clicker-game-active {
-  margin-top: var(--spacing-lg);
-}
-
-/* Stats */
-.clicker-stats {
-  display: flex;
-  justify-content: space-around;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-  flex-wrap: wrap;
-}
-
-.stat-item {
-  flex: 1;
-  min-width: 120px;
-  padding: var(--spacing-md);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  color: var(--color-text-light);
-  margin-bottom: var(--spacing-xs);
-}
-
-.stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.stat-value.time-critical {
-  color: var(--color-error);
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-/* Progress bar */
-.progress-container {
-  width: 100%;
-  height: 30px;
-  background: var(--color-bg);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin-bottom: var(--spacing-lg);
-  border: 2px solid var(--color-border);
-}
-
-.progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
-  transition: width 0.1s ease;
-  border-radius: var(--radius-md);
-}
-
-/* Click target */
-.clicker-target {
-  width: 200px;
-  height: 200px;
-  margin: var(--spacing-xl) auto;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-  border-radius: 50%;
-  cursor: pointer;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 4rem;
-  box-shadow: var(--shadow-lg);
-  transition: transform 0.05s ease, box-shadow 0.05s ease;
+  align-items: center;
+  background: #1e272e;
+  font-family: 'Pretendard', sans-serif;
   user-select: none;
-  -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+  overflow: hidden;
 }
 
-.clicker-target:hover {
-  transform: scale(1.05);
-}
-
-.clicker-target:active {
-  transform: scale(0.95);
-  box-shadow: var(--shadow-md);
-}
-
-.clicker-info {
-  margin-top: var(--spacing-lg);
-  color: var(--color-text-light);
-  font-size: 1.125rem;
-}
-
-.clicker-info strong {
-  color: var(--color-primary);
-  font-weight: 700;
-}
-
-/* Time selector for versus mode */
-.versus-time-selector {
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-md);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-primary);
-}
-
-.time-select-label {
-  display: block;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: var(--spacing-sm);
-}
-
-.time-select {
-  width: 100%;
-  max-width: 200px;
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--color-text);
-  background: var(--color-bg);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.time-select:hover {
-  border-color: var(--color-primary);
-}
-
-.time-select:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-}
-
-.clicker-turn-indicator {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-md) var(--spacing-lg);
-  background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(74, 144, 226, 0.1) 100%);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-primary);
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
-}
-
-/* Comparison display for versus mode */
-.versus-p1-comparison {
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-md);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-border);
-}
-
-.comparison-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  margin-bottom: var(--spacing-sm);
-  text-align: center;
-}
-
-.comparison-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  text-align: center;
-  margin: var(--spacing-sm) 0;
-}
-
-.comparison-progress {
-  margin: var(--spacing-md) 0;
-  height: 25px;
-}
-
-/* Coop progress info */
-.coop-progress-info {
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-md);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-primary);
-}
-
-.progress-info-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-text-light);
-  margin-bottom: var(--spacing-sm);
-  text-align: center;
-}
-
-.progress-info-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  text-align: center;
-  margin: var(--spacing-sm) 0;
-}
-
-.progress-info-remaining {
-  font-size: 1.125rem;
-  color: var(--color-text);
-  text-align: center;
-  margin-top: var(--spacing-md);
-}
-
-.progress-info-remaining strong {
-  color: var(--color-accent);
-  font-weight: 700;
-}
-
-/* Click animation */
-@keyframes clickPulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.clicker-target.clicked {
-  animation: clickPulse 0.05s ease;
-}
-
-/* Countdown overlay */
-.countdown-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+.game-frame {
+  position: relative;
+  width: 900px;
+  height: 600px;
+  background: #111;
+  border-radius: 16px;
+  box-shadow: 0 0 50px rgba(0, 210, 211, 0.2);
+  border: 2px solid #34495e;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  pointer-events: none;
+  overflow: hidden;
 }
 
-.countdown-display {
-  font-size: 8rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  text-shadow: 0 0 20px rgba(74, 144, 226, 0.8);
-  animation: countdownPulse 0.5s ease;
-}
-
-@keyframes countdownPulse {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Versus mode */
-.versus-targets {
+/* === 좌측: 클릭 영역 (60%) === */
+.clk-main {
+  flex: 6;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: var(--spacing-lg);
-  margin: var(--spacing-xl) 0;
-  flex-wrap: wrap;
-}
-
-.versus-player {
-  flex: 1;
-  min-width: 200px;
-}
-
-.versus-vs {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-text-light);
-  padding: 0 var(--spacing-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.versus-vs.coop-total {
-  font-size: 1.5rem;
-  color: var(--color-primary);
   flex-direction: column;
-  gap: var(--spacing-xs);
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #2f3640 0%, #111 100%);
+  position: relative;
+  border-right: 2px solid #34495e;
 }
 
-.versus-vs.coop-total span {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-accent);
+/* 상단 정보 */
+.clk-header {
+  position: absolute;
+  top: 30px;
+  text-align: center;
+  width: 100%;
+}
+.clk-score {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+.clk-gps {
+  font-size: 1.2rem;
+  color: #00d2d3; /* 청록색 네온 */
+  font-weight: bold;
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.player-clicks-display {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  margin-top: var(--spacing-md);
-  padding: var(--spacing-sm);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-primary);
-  min-width: 80px;
+/* 메인 코어 버튼 */
+.core-btn {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00d2d3, #5f27cd);
+  box-shadow: 0 0 60px rgba(0, 210, 211, 0.6), inset 0 0 20px rgba(255,255,255,0.5);
+  border: 8px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: transform 0.05s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+  position: relative;
+  z-index: 10;
+}
+.core-btn:active { transform: scale(0.92); }
+.core-btn::after {
+  content: '⚡';
+  font-size: 5rem;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
 }
 
-.versus-time {
-  margin-bottom: var(--spacing-lg);
+/* 플로팅 텍스트 (+1 효과) */
+.float-text {
+  position: absolute;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.5rem;
+  pointer-events: none;
+  animation: floatUp 0.8s ease-out forwards;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-80px) scale(1.2); opacity: 0; }
 }
 
-.time-display {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--color-error);
-  animation: pulse 1s infinite;
-}
-
-.versus-players {
+/* === 우측: 상점 영역 (40%) === */
+.clk-shop {
+  flex: 4;
+  background: #1e272e;
   display: flex;
-  gap: var(--spacing-lg);
-  justify-content: space-around;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
-.versus-player-area {
+.shop-header {
+  padding: 20px;
+  background: #2f3640;
+  border-bottom: 2px solid #111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.shop-title { color: #f1c40f; font-weight: 900; font-size: 1.4rem; margin: 0; }
+.btn-sound { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
+.shop-list {
   flex: 1;
-  min-width: 300px;
-  padding: var(--spacing-lg);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
+  overflow-y: auto; /* 스크롤 가능 */
+  padding: 10px;
+}
+/* 스크롤바 디자인 */
+.shop-list::-webkit-scrollbar { width: 8px; }
+.shop-list::-webkit-scrollbar-thumb { background: #57606f; border-radius: 4px; }
+
+/* 업그레이드 아이템 카드 */
+.upgrade-item {
+  background: #353b48;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  position: relative;
+}
+.upgrade-item:hover { background: #3d4655; transform: translateX(-5px); }
+.upgrade-item:active { transform: scale(0.98); }
+.upgrade-item.disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+.item-icon { font-size: 2rem; margin-right: 15px; width: 40px; text-align: center; }
+.item-info { flex: 1; }
+.item-name { color: #fff; font-weight: bold; font-size: 1rem; display: block; }
+.item-cost { color: #e74c3c; font-size: 0.9rem; font-weight: bold; }
+.item-effect { color: #bdc3c7; font-size: 0.8rem; display: block; margin-top: 3px; }
+.item-count { 
+  background: #00d2d3; color: #000; font-weight: 900; 
+  padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;
+  position: absolute; right: 10px; top: 10px;
 }
 
-.versus-player-area .player-label {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: var(--spacing-md);
+/* === 이펙트 레이어 === */
+.fx-layer {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;
 }
-
-.versus-player-area .clicker-stats {
-  margin-bottom: var(--spacing-md);
+.particle {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  animation: pop 0.6s ease-out forwards;
 }
-
-.versus-player-area .clicker-target {
-  width: 150px;
-  height: 150px;
-  font-size: 3rem;
-  margin: var(--spacing-md) auto 0;
-}
-
-/* Button styles */
-.btn-large {
-  font-size: 1.25rem;
-  padding: var(--spacing-md) var(--spacing-xl);
-  margin-top: var(--spacing-lg);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .clicker-target {
-    width: 150px;
-    height: 150px;
-    font-size: 3rem;
-  }
-  
-  .stat-value {
-    font-size: 1.5rem;
-  }
-  
-  .stage-number {
-    font-size: 1.5rem;
-  }
-  
-  .clicker-title {
-    font-size: 1.5rem;
-  }
-  
-  .versus-players {
-    flex-direction: column;
-  }
-  
-  .versus-player-area {
-    min-width: 100%;
-  }
-  
-  .versus-targets {
-    flex-direction: column;
-  }
-  
-  .versus-vs {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .clicker-stats {
-    flex-direction: column;
-  }
-  
-  .stat-item {
-    min-width: 100%;
-  }
-  
-  .clicker-target {
-    width: 120px;
-    height: 120px;
-    font-size: 2.5rem;
-  }
-  
-  .versus-player-area .clicker-target {
-    width: 120px;
-    height: 120px;
-    font-size: 2.5rem;
-  }
+@keyframes pop {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
 }

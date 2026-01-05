@@ -1,144 +1,170 @@
-/* Memory Game Styles */
-
-.memory-game {
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
-  padding: var(--spacing-xl);
-}
-
-.memory-header {
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-}
-
-.memory-title {
-  font-size: 2rem;
-  margin-bottom: var(--spacing-md);
-  color: var(--color-text);
-}
-
-.memory-stats {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-lg);
-}
-
-.memory-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.memory-stat-label {
-  font-size: 0.875rem;
-  color: var(--color-text-light);
-  margin-bottom: var(--spacing-xs);
-}
-
-.memory-stat-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.memory-card {
-  aspect-ratio: 1;
-  background-color: var(--color-primary);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  transition: all 0.3s ease;
-  transform-style: preserve-3d;
-  position: relative;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.memory-card-front,
-.memory-card-back {
-  position: absolute;
+/* === 전체 레이아웃 (다크 모드) === */
+.mem-wrapper {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  backface-visibility: hidden;
-  border-radius: var(--radius-lg);
+  align-items: center;
+  background: #1e272e;
+  font-family: 'Pretendard', sans-serif;
+  user-select: none;
+  overflow: hidden;
 }
 
-.memory-card-front {
-  background-color: var(--color-primary);
-  color: white;
+.game-frame {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  background: #2f3640;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  border: 4px solid #353b48;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.memory-card-back {
-  background-color: var(--color-bg-card);
-  color: var(--color-text);
-  transform: rotateY(180deg);
-  border: 3px solid var(--color-border);
+/* === 상단 UI 바 === */
+.mem-header {
+  height: 70px;
+  background: #1e272e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  border-bottom: 2px solid #353b48;
 }
 
-.memory-card.flipped .memory-card-back {
-  transform: rotateY(0deg);
+.mem-info { display: flex; gap: 20px; align-items: center; }
+.mem-badge {
+  background: #2c3e50;
+  padding: 8px 15px;
+  border-radius: 8px;
+  color: #bdc3c7;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: flex;
+  gap: 8px;
+}
+.mem-badge span { color: #fff; font-size: 1.1rem; }
+.accent { color: #f1c40f !important; }
+
+.btn-icon {
+  background: none; border: none; font-size: 1.5rem; cursor: pointer;
+  width: 40px; height: 40px; border-radius: 50%;
+  transition: background 0.2s;
+}
+.btn-icon:hover { background: rgba(255,255,255,0.1); }
+
+/* === 타이머 바 === */
+.timer-container {
+  width: 100%;
+  height: 6px;
+  background: #1e272e;
+}
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
+  width: 100%;
+  transition: width 1s linear;
 }
 
-.memory-card.flipped .memory-card-front {
-  transform: rotateY(180deg);
+/* === 카드 그리드 영역 === */
+.mem-board {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.memory-card.matched {
-  opacity: 0.6;
-  cursor: default;
+.card-grid {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  max-height: 500px;
+  margin: 0 auto;
 }
 
-.memory-card.matched .memory-card-back {
-  background-color: var(--color-success);
-  border-color: var(--color-success);
+/* === 카드 디자인 (3D 뒤집기) === */
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  cursor: pointer;
 }
 
-.memory-controls {
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
   text-align: center;
+  transition: transform 0.4s;
+  transform-style: preserve-3d;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
-/* Animation */
-@keyframes flip {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(180deg);
-  }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.card.matched .card-inner { animation: pulse 0.5s; }
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  border: 2px solid rgba(255,255,255,0.1);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .memory-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-sm);
-  }
-  
-  .memory-card {
-    font-size: 2rem;
-  }
-  
-  .memory-title {
-    font-size: 1.5rem;
-  }
-  
-  .memory-stats {
-    gap: var(--spacing-md);
-  }
+/* 앞면 (물음표) */
+.card-front {
+  background: linear-gradient(135deg, #34495e, #2c3e50);
+  color: #7f8c8d;
+  font-size: 1.5rem;
+}
+/* 뒷면 (그림) */
+.card-back {
+  background: #ecf0f1;
+  color: #2c3e50;
+  transform: rotateY(180deg);
 }
 
+/* === 모달 (팝업) === */
+.mem-modal {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+  display: flex; justify-content: center; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 100;
+}
+.mem-modal.active { opacity: 1; pointer-events: auto; }
+
+.modal-content {
+  background: #2f3640; padding: 40px; border-radius: 20px;
+  text-align: center; color: white; width: 400px;
+  border: 1px solid #57606f; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+.modal-title { font-size: 2.5rem; margin-bottom: 10px; font-weight: 900; }
+.modal-desc { font-size: 1.1rem; color: #bdc3c7; margin-bottom: 30px; line-height: 1.5; }
+
+.btn-action {
+  padding: 12px 40px; background: #3498db; color: white; border: none; border-radius: 50px;
+  font-size: 1.3rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #2980b9;
+  transition: transform 0.1s; width: 100%;
+}
+.btn-action:hover { transform: translateY(-2px); }
+.btn-action:active { transform: translateY(0); box-shadow: 0 2px 0 #2980b9; }
+
+@keyframes pulse {
+  0% { transform: rotateY(180deg) scale(1); }
+  50% { transform: rotateY(180deg) scale(1.1); box-shadow: 0 0 20px #f1c40f; }
+  100% { transform: rotateY(180deg) scale(1); }
+}

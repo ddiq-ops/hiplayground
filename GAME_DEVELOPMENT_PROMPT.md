@@ -820,6 +820,342 @@ reset() {
 })();
 ```
 
+## 🌐 메인 페이지 구조 및 게임 표시
+
+### 1. 메인 페이지 레이아웃
+
+현재 메인 페이지(`index.html`)는 다음과 같은 구조를 가집니다:
+
+```html
+<main class="container">
+  <!-- 검색 박스 -->
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-input" class="search-input" placeholder="게임 검색...">
+  </div>
+
+  <!-- 이어서 하기 섹션 (선택적) -->
+  <section class="continue-section" id="continue-section" style="display: none;">
+    <h2 class="section-title">이어서 하기</h2>
+    <div id="continue-game"></div>
+  </section>
+
+  <!-- 모든 게임 섹션 -->
+  <section class="section">
+    <h2 class="section-title">모든 게임</h2>
+    <div class="grid grid-3" id="all-games-grid">
+      <!-- 게임 카드들이 여기에 동적으로 추가됩니다 -->
+    </div>
+  </section>
+</main>
+```
+
+**중요 사항:**
+- 메인 페이지에는 **카테고리 섹션과 인기 게임 섹션이 없습니다**
+- 모든 게임이 한 번에 표시됩니다 (`id="all-games-grid"`)
+- 검색 기능을 통해 게임을 필터링할 수 있습니다
+- `grid-3` 클래스를 사용하여 3열 그리드 레이아웃을 사용합니다
+
+### 2. 메인 페이지 초기화 스크립트
+
+```javascript
+(async function() {
+  // App 초기화 대기
+  await App.init();
+  
+  // 모든 게임 로드
+  const allGames = App.getGames();
+  const allGamesGrid = document.getElementById('all-games-grid');
+  UI.renderGameCards(allGamesGrid, allGames);
+  
+  // 이어서 하기 기능 (선택적)
+  const lastPlayed = Storage.getLastPlayed();
+  if (lastPlayed && lastPlayed.gameId) {
+    const game = App.getGameById(lastPlayed.gameId);
+    if (game) {
+      const continueSection = document.getElementById('continue-section');
+      const continueGame = document.getElementById('continue-game');
+      continueSection.style.display = 'block';
+      
+      // 이어서 하기 카드 생성
+      const continueCard = document.createElement('div');
+      continueCard.className = 'continue-game-card';
+      continueCard.onclick = () => Router.goToPlay(game.id);
+      continueCard.innerHTML = `
+        <div class="continue-game-icon">${game.icon}</div>
+        <div>
+          <div style="font-weight: 700; font-size: 1.25rem;">${game.title}</div>
+          <div style="color: var(--color-text-light);">계속해서 플레이하세요!</div>
+        </div>
+      `;
+      continueGame.appendChild(continueCard);
+    }
+  }
+  
+  // 검색 기능 설정
+  const searchInput = document.getElementById('search-input');
+  const handleSearch = UI.debounce((query) => {
+    if (!query.trim()) {
+      UI.renderGameCards(allGamesGrid, allGames);
+      return;
+    }
+    const results = App.searchGames(query);
+    UI.renderGameCards(allGamesGrid, results);
+  }, 300);
+  
+  searchInput.addEventListener('input', (e) => {
+    handleSearch(e.target.value);
+  });
+  
+  // 페이지뷰 추적
+  Analytics.trackPageView('home');
+})();
+```
+
+## 🎴 게임 카드 아이콘 처리
+
+### 1. 아이콘 타입 지원
+
+게임 카드는 **이모지**와 **이미지 파일** 두 가지 아이콘 타입을 지원합니다:
+
+- **이모지**: `"icon": "🎮"` (문자열)
+- **이미지**: `"icon": "assets/games/omok/icon/icon.webp"` (경로 문자열)
+
+### 2. UI.renderIcon() 메서드
+
+`shared/ui.js`의 `renderIcon()` 메서드는 자동으로 아이콘 타입을 감지합니다:
+
+```javascript
+renderIcon(icon, className = 'game-card-icon') {
+  if (!icon) return '<div class="' + className + '">🎮</div>';
+  
+  // 이미지 경로 감지 (http://, https://, /, ./, ../, assets/로 시작하거나 이미지 확장자 포함)
+  if (icon.match(/^(https?:\/\/|\/|\.\/|\.\.\/|assets\/)/) || icon.match(/\.(png|jpg|jpeg|gif|webp|svg)$/i)) {
+    const basePath = this.getBasePath();
+    const iconPath = icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('/') 
+      ? icon 
+      : basePath + icon;
+    return `<img src="${iconPath}" alt="Game icon" class="${className} game-icon-image" />`;
+  }
+  
+  // 이모지로 처리
+  return `<div class="${className}">${icon}</div>`;
+}
+```
+
+**중요 사항:**
+- 이미지 경로는 상대 경로를 지원하며, `getBasePath()`를 통해 현재 페이지 위치에 맞게 자동 조정됩니다
+- 이미지 아이콘에는 `game-icon-image` 클래스가 추가됩니다
+- 이모지 아이콘은 `<div>` 요소로 렌더링됩니다
+
+### 3. 게임 카드 아이콘 CSS 스타일
+
+**중요:** 이미지 아이콘과 이모지 아이콘의 높이를 동일하게 맞춰야 텍스트 위치가 일치합니다:
+
+```css
+.game-card-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-md);
+  display: block;
+  height: 4rem;              /* 고정 높이 필수 */
+  line-height: 4rem;         /* 이모지 수직 정렬 */
+  text-align: center;        /* 이모지 중앙 정렬 */
+}
+
+.game-card-icon.game-icon-image {
+  width: 4rem;
+  height: 4rem;              /* 이미지 고정 높이 (이모지와 동일) */
+  object-fit: contain;       /* 비율 유지하며 크기 조정 */
+  margin: 0 auto var(--spacing-md);
+  display: block;
+}
+```
+
+**핵심 포인트:**
+- 이모지 아이콘: `height: 4rem` + `line-height: 4rem`으로 고정 높이와 수직 정렬 보장
+- 이미지 아이콘: `width: 4rem` + `height: 4rem`으로 고정 크기 설정
+- 두 타입 모두 동일한 `margin-bottom`을 사용하여 텍스트와의 간격 일치
+
+### 4. 게임 카드 생성
+
+```javascript
+createGameCard(game) {
+  const card = document.createElement('div');
+  card.className = 'card game-card';
+  card.dataset.gameId = game.id;
+  
+  const isFavorite = Storage.isFavorite(game.id);
+  
+  card.innerHTML = `
+    ${isFavorite ? '<div class="game-card-badge">⭐</div>' : ''}
+    ${this.renderIcon(game.icon)}  <!-- 아이콘 자동 렌더링 -->
+    <div class="game-card-title">${game.title}</div>
+    <div class="game-card-description">${game.description}</div>
+    <button class="btn btn-primary">플레이</button>
+  `;
+  
+  return card;
+}
+```
+
+## 📐 UI 컴포넌트 스타일링 가이드
+
+### 1. 게임 카드 스타일
+
+```css
+.game-card {
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.game-card-description {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-md);
+}
+```
+
+### 2. 그리드 레이아웃
+
+```css
+.grid {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .grid-3 {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+```
+
+### 3. 검색 박스
+
+```css
+.search-box {
+  position: relative;
+  margin-bottom: var(--spacing-xl);
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  font-size: 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  transition: border-color var(--transition-fast);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  color: var(--color-text-lighter);
+}
+```
+
+## 🔍 데이터 구조 및 API 사용
+
+### 1. 게임 데이터 구조 (data/games.json)
+
+```json
+{
+  "id": "game-id",
+  "title": "게임 제목",
+  "titleEn": "Game Title",
+  "category": "action|puzzle|math|board",
+  "difficulty": "easy|medium|hard",
+  "description": "게임 설명",
+  "descriptionEn": "Game Description",
+  "icon": "🎮",  // 또는 "assets/games/game-id/icon/icon.webp"
+  "tags": ["태그1", "태그2"],
+  "popularity": 95,
+  "releaseDate": "2024-01-01"
+}
+```
+
+### 2. App API 사용법
+
+```javascript
+// App 초기화 (필수)
+await App.init();
+
+// 모든 게임 가져오기
+const allGames = App.getGames();
+
+// ID로 게임 찾기
+const game = App.getGameById('game-id');
+
+// 카테고리로 게임 필터링
+const games = App.getGamesByCategory('puzzle');
+
+// 게임 검색
+const results = App.searchGames('검색어');
+
+// 필터 및 정렬
+const filtered = App.filterAndSortGames(allGames, {
+  category: 'puzzle',
+  difficulty: 'medium',
+  sort: 'popular'  // 또는 'new'
+});
+```
+
+### 3. UI API 사용법
+
+```javascript
+// 게임 카드 렌더링
+UI.renderGameCards(containerElement, gamesArray);
+
+// 카테고리 카드 렌더링
+UI.renderCategoryCards(containerElement, categoriesArray);
+
+// 아이콘 렌더링
+const iconHTML = UI.renderIcon(game.icon);
+
+// 디바운스 함수 (검색 등에 사용)
+const debouncedSearch = UI.debounce((query) => {
+  // 검색 로직
+}, 300);
+```
+
+## ⚠️ 주의사항 및 베스트 프랙티스
+
+### 1. 아이콘 처리 시 주의사항
+
+- **이미지 아이콘 사용 시**: `assets/games/[game-id]/icon/icon.webp` 경로를 사용하는 것을 권장합니다
+- **이모지 아이콘 사용 시**: 단일 이모지 문자를 사용하세요 (예: `"🎮"`)
+- **아이콘 높이**: CSS에서 이모지와 이미지 모두 동일한 높이(`4rem`)를 사용해야 텍스트 정렬이 일치합니다
+
+### 2. 메인 페이지 수정 시
+
+- **절대 제거하지 말 것**: 검색 박스, 모든 게임 섹션
+- **추가 가능**: 이어서 하기 섹션은 선택적이지만, 이미 구현되어 있음
+- **그리드 클래스**: `grid-3`을 사용하여 일관된 레이아웃 유지
+
+### 3. 게임 카드 스타일 수정 시
+
+- 아이콘 높이를 변경하면 이모지와 이미지 모두 동일하게 변경해야 합니다
+- `margin-bottom` 값도 일치시켜야 텍스트 위치가 일관됩니다
+- 반응형 디자인을 고려하여 모바일에서도 적절한 크기를 유지해야 합니다
+
 ---
 
 이 프롬프트를 참고하여 새로운 게임을 개발할 때, 위의 패턴과 구조를 따라가면 일관성 있고 유지보수하기 쉬운 코드를 작성할 수 있습니다.

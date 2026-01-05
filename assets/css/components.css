@@ -106,6 +106,9 @@
   font-size: 4rem;
   margin-bottom: var(--spacing-md);
   display: block;
+  height: 4rem;
+  line-height: 4rem;
+  text-align: center;
 }
 
 .game-card-icon.game-icon-image {
@@ -113,6 +116,7 @@
   height: 4rem;
   object-fit: contain;
   margin: 0 auto var(--spacing-md);
+  display: block;
 }
 
 .game-card-title {

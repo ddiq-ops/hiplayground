@@ -1,12 +1,11 @@
 {
   "id": "memory",
-  "title": "기억력 게임",
-  "titleEn": "Memory Game",
-  "description": "카드를 뒤집어서 같은 그림을 찾아보세요!",
-  "descriptionEn": "Flip cards to find matching pairs!",
+  "title": "기억력 마스터",
+  "titleEn": "Memory Master",
+  "description": "제한 시간 안에 모든 짝을 찾으세요! 단계별로 늘어나는 카드에 도전하세요.",
+  "descriptionEn": "Find matching pairs before time runs out! Challenge increasing difficulty levels.",
   "icon": "🧠",
   "category": "puzzle",
   "difficulty": "medium",
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
-

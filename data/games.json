@@ -126,5 +126,18 @@
     "tags": ["물리", "슈팅", "Phaser"],
     "popularity": 88,
     "releaseDate": "2024-01-09"
+  },
+  {
+    "id": "knights",
+    "title": "제국의 기사단",
+    "titleEn": "Knights of the Empire",
+    "description": "유닛을 고용하고 전략적으로 배치하여 적을 물리치세요! 중독성 있는 오토 배틀러 게임.",
+    "descriptionEn": "Hire units and strategize your formation! An epic auto-battler game.",
+    "icon": "⚔️",
+    "category": "strategy",
+    "difficulty": "hard",
+    "tags": ["전략", "오토배틀러", "시뮬레이션", "Phaser"],
+    "popularity": 95,
+    "releaseDate": "2024-01-25"
   }
 ]

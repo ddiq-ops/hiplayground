@@ -1,12 +1,11 @@
 {
   "id": "clicker",
-  "title": "클리커 게임",
-  "titleEn": "Clicker Game",
-  "description": "빠르게 클릭해서 점수를 모아보세요!",
-  "descriptionEn": "Click fast to collect points!",
-  "icon": "🎯",
-  "category": "action",
+  "title": "네온 코어",
+  "titleEn": "Neon Core",
+  "description": "코어를 클릭해 에너지를 모으고 시스템을 업그레이드하세요! 중독성 있는 방치형 게임.",
+  "descriptionEn": "Click the core to gather energy! Upgrade your system in this addictive idle game.",
+  "icon": "⚡",
+  "category": "simulation",
   "difficulty": "easy",
   "version": "1.0.0"
 }
-

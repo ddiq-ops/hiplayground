@@ -3,7 +3,72 @@
 
     const PHASER_URL = 'https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.min.js';
 
-    // ... (generateLevel 함수는 이전과 동일) ...
+    // ================= 사운드 엔진 =================
+    const SoundEngine = {
+        ctx: null,
+        isMuted: false,
+        init: function() {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioContext();
+        },
+        playTone: function(freq, type, duration, vol = 0.1) {
+            if (this.isMuted || !this.ctx) return;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start();
+            osc.stop(this.ctx.currentTime + duration);
+        },
+        playShoot: function() {
+            if (this.isMuted || !this.ctx) return;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+            osc.start();
+            osc.stop(this.ctx.currentTime + 0.3);
+        },
+        playExplosion: function() {
+            if (this.isMuted || !this.ctx) return;
+            const bufferSize = this.ctx.sampleRate * 0.5;
+            const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+            const noise = this.ctx.createBufferSource();
+            noise.buffer = buffer;
+            const gain = this.ctx.createGain();
+            const filter = this.ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 800;
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(this.ctx.destination);
+            gain.gain.setValueAtTime(0.5, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+            noise.start();
+        },
+        playWin: function() {
+            this.playTone(523.25, 'sine', 0.1); 
+            setTimeout(() => this.playTone(659.25, 'sine', 0.1), 100); 
+            setTimeout(() => this.playTone(783.99, 'sine', 0.4), 200); 
+        },
+        playLose: function() {
+            this.playTone(300, 'sawtooth', 0.3);
+            setTimeout(() => this.playTone(200, 'sawtooth', 0.4), 200);
+        }
+    };
+
+    // ================= 레벨 생성기 =================
     const generateLevel = (levelIndex) => {
         const distance = 1000 + (levelIndex * 20); 
         const height = 3 + Math.floor(levelIndex / 5);
@@ -21,7 +86,6 @@
                     scene.createBox(distance, 500, 60); 
                     scene.createBox(distance, 440, 60);
                     scene.createBox(distance, 380, 60);
-                    // 텍스트 제거 (UI로 대체)
                     if(scene.drawArrow) scene.drawArrow(200, 450, 100, 450);
                 } else {
                     switch(patternType) {
@@ -49,7 +113,8 @@
             this.callbacks = options;
             this.currentLevelIdx = 0; 
             
-            // [디자인 변경] 게임 프레임 안에 모든 UI를 포함시킴
+            SoundEngine.init();
+
             this.container.innerHTML = `
                 <div class="pb-wrapper">
                     <div class="game-frame">
@@ -63,6 +128,7 @@
                                 </div>
                                 <div class="pb-controls-group">
                                     <div class="pb-shots-badge">BALLS: <span id="pb-shots-val">3</span></div>
+                                    <button class="btn-help" id="btn-sound" title="소리 켜기/끄기">🔊</button>
                                     <button class="btn-help" id="btn-help" title="게임 방법">?</button>
                                 </div>
                             </div>
@@ -94,12 +160,10 @@
                                 <button class="pb-btn-action" id="msg-btn" tabindex="-1">NEXT</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             `;
 
-            // UI 요소 캐싱
             this.el = {
                 score: document.getElementById('pb-score-val'),
                 stage: document.getElementById('pb-stage-txt'),
@@ -108,6 +172,7 @@
                 modalHelp: document.getElementById('modal-help'),
                 btnHelp: document.getElementById('btn-help'),
                 btnCloseHelp: document.getElementById('btn-close-help'),
+                btnSound: document.getElementById('btn-sound'),
 
                 modalMsg: document.getElementById('modal-msg'),
                 msgTitle: document.getElementById('msg-title'),
@@ -115,12 +180,20 @@
                 msgBtn: document.getElementById('msg-btn')
             };
 
-            // 이벤트 연결
-            this.el.msgBtn.onclick = () => this.handleNextAction();
+            this.el.msgBtn.onclick = () => {
+                if(SoundEngine.ctx && SoundEngine.ctx.state === 'suspended') SoundEngine.ctx.resume();
+                this.handleNextAction();
+            };
             
-            // 도움말 팝업 열기/닫기
             this.el.btnHelp.onclick = () => this.el.modalHelp.classList.add('active');
             this.el.btnCloseHelp.onclick = () => this.el.modalHelp.classList.remove('active');
+            
+            this.el.btnSound.onclick = () => {
+                SoundEngine.isMuted = !SoundEngine.isMuted;
+                this.el.btnSound.innerText = SoundEngine.isMuted ? "🔇" : "🔊";
+                // 버튼 클릭 후 포커스 해제 (스페이스바 오작동 방지)
+                this.el.btnSound.blur();
+            };
 
             this.loadPhaserScript();
         },
@@ -153,6 +226,11 @@
                     boxG.lineStyle(2, 0x000000);
                     boxG.strokeRect(0, 0, 40, 40);
                     boxG.generateTexture('tex_box', 40, 40);
+                    
+                    const particleG = this.make.graphics({x:0, y:0, add:false});
+                    particleG.fillStyle(0xffffff, 1);
+                    particleG.fillRect(0,0,8,8);
+                    particleG.generateTexture('tex_particle', 8, 8);
                 }
 
                 init(data) {
@@ -175,7 +253,6 @@
                     this.shotsLeft = data.shots;
                     this.boxes = []; 
                     this.initialBoxCount = 0;
-                    
                     this.dragState = 'none'; 
                     this.isBallFlying = false;
                     this.canShoot = true; 
@@ -191,6 +268,14 @@
                     this.initialBoxCount = this.boxes.length;
                     
                     this.spawnBall(); 
+
+                    this.emitter = this.add.particles(0, 0, 'tex_particle', {
+                        lifespan: 600,
+                        speed: { min: 100, max: 300 },
+                        scale: { start: 1, end: 0 },
+                        gravityY: 500,
+                        emitting: false
+                    });
 
                     this.matter.world.on('collisionstart', (event) => {
                         event.pairs.forEach(pair => {
@@ -212,6 +297,8 @@
                 }
 
                 onPointerDown(pointer) {
+                    if(SoundEngine.ctx && SoundEngine.ctx.state === 'suspended') SoundEngine.ctx.resume();
+
                     if (this.isBallFlying) return;
                     const dist = Phaser.Math.Distance.Between(pointer.worldX, pointer.worldY, this.ball.x, this.ball.y);
                     
@@ -233,7 +320,6 @@
                         const startY = 450;
                         let dx = pointer.worldX - startX; 
                         let dy = pointer.worldY - startY;
-                        
                         const dist = Math.sqrt(dx*dx + dy*dy);
                         const maxDist = 150;
                         if (dist > maxDist) {
@@ -259,6 +345,8 @@
                         this.ball.setStatic(false); 
                         this.ball.setVelocity(vectorX * speedFactor, vectorY * speedFactor);
                         
+                        SoundEngine.playShoot();
+
                         this.shotsLeft--;
                         this.isBallFlying = true;
                         this.canShoot = false;
@@ -323,6 +411,9 @@
                 destroyBox(box) {
                     if(box.isDestroyed) return;
                     box.isDestroyed = true;
+                    this.cameras.main.shake(100, 0.01);
+                    this.emitter.explode(10, box.x, box.y);
+                    SoundEngine.playExplosion();
                     const boom = this.add.circle(box.x, box.y, 40, 0xffffff);
                     this.tweens.add({ targets: boom, scale: 2, alpha: 0, duration: 200, onComplete: () => boom.destroy() });
                     box.destroy(); 
@@ -346,13 +437,13 @@
                         this.spawnBall();    
                         this.cameras.main.stopFollow();
                         this.cameras.main.pan(200, 300, 800, 'Power2');
-                        
                         this.isBallFlying = false;
                         this.canShoot = true;
                     } else {
                         const activeBoxes = this.boxes.filter(box => box.active && !box.isDestroyed).length;
                         const threshold = Math.ceil(this.initialBoxCount * 0.3);
                         if (activeBoxes > threshold) {
+                            SoundEngine.playLose();
                             GameWrapper.showResult("GAME OVER", "처음부터 다시 시작!", "RETRY", "retry");
                         }
                     }
@@ -361,10 +452,10 @@
                 levelClear() {
                     if(this.isLevelClearing) return;
                     this.isLevelClearing = true;
+                    SoundEngine.playWin();
                     const bonus = this.shotsLeft * 500;
                     this.totalScore += bonus;
                     GameWrapper.updateUI(this.totalScore, this.levelIdx, this.shotsLeft);
-                    
                     if (this.levelIdx < 99) {
                         GameWrapper.showResult(`STAGE ${this.levelIdx + 1} CLEAR!`, `Bonus: +${bonus}`, "NEXT LEVEL", "next");
                     } else {
@@ -379,7 +470,7 @@
                 }
                 restartLevel() { 
                     this.isLevelClearing = false;
-                    this.scene.restart({ score: 0 }); // 1탄부터
+                    this.scene.restart({ score: 0 }); 
                 }
 
                 createStack(x, y, cols, rows) { for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) this.createBox(x + i * 40, y - 20 - j * 40, 40); }
@@ -429,7 +520,14 @@
         },
         hideResult: function() { if(this.el.modalMsg) this.el.modalMsg.classList.remove('active'); },
         handleNextAction: function() {
+            // [중요] 모달이 안 보이는 상태에서는 작동 금지 (스페이스바 연타 버그 방지)
+            if (!this.el.modalMsg.classList.contains('active')) return;
+            
             if(!this.gameInstance) return;
+            
+            // [중요] 버튼 포커스 해제 (다음 턴에서 스페이스바 눌림 방지)
+            this.el.msgBtn.blur();
+
             const scene = this.gameInstance.scene.getScene('MainScene');
             if (scene) {
                 if (this.currentAction === 'next') scene.nextLevel();
@@ -437,6 +535,7 @@
                 else if (this.currentAction === 'restart') { GameWrapper.currentLevelIdx = 0; scene.restartLevel(); }
             }
             this.hideResult();
+            this.currentAction = null; // 액션 초기화
         },
         reset: function() {
             if (this.gameInstance) {
