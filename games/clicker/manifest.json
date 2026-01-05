@@ -1,11 +1,11 @@
 {
   "id": "clicker",
-  "title": "네온 코어",
-  "titleEn": "Neon Core",
-  "description": "코어를 클릭해 에너지를 모으고 시스템을 업그레이드하세요! 중독성 있는 방치형 게임.",
-  "descriptionEn": "Click the core to gather energy! Upgrade your system in this addictive idle game.",
+  "title": "네온 코어: 오버로드",
+  "titleEn": "Neon Core: Overload",
+  "description": "3가지 모드로 즐기는 네온 스타일 클리커! 타임어택과 한계 돌파에 도전하세요.",
+  "descriptionEn": "Neon style clicker with 3 modes! Challenge Time Attack and Limit Break.",
   "icon": "⚡",
   "category": "simulation",
-  "difficulty": "easy",
-  "version": "1.0.0"
+  "difficulty": "hard",
+  "version": "2.0.0"
 }

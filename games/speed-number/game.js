@@ -1,26 +1,45 @@
 (function() {
     'use strict';
 
-    // ================= CONFIGURATION =================
-    // 난이도별 설정
-    const DIFFICULTY_CONFIG = {
-        easy: { label: 'EASY', timeBonus: 5, scoreMult: 0.8, colorHint: true },
-        normal: { label: 'NORMAL', timeBonus: 3, scoreMult: 1.0, colorHint: false },
-        hard: { label: 'HARD', timeBonus: 0, scoreMult: 1.5, colorHint: false }
+    // ================= SOUND ENGINE =================
+    const Sound = {
+        ctx: null, isMuted: false,
+        init: function() { window.AudioContext = window.AudioContext || window.webkitAudioContext; this.ctx = new AudioContext(); },
+        playTone: function(freq, type, duration) {
+            if (this.isMuted || !this.ctx) return;
+            const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+            osc.connect(gain); gain.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + duration);
+        },
+        playTap: function(pitch) { // 피치가 올라가는 효과
+            this.playTone(400 + (pitch * 50), 'sine', 0.1); 
+        },
+        playWrong: function() { this.playTone(150, 'sawtooth', 0.3); },
+        playClear: function() { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => this.playTone(f, 'square', 0.1), i * 80)); }
     };
 
-    // 스테이지 설정
+    // ================= CONFIGURATION =================
+    const DIFFICULTY_CONFIG = {
+        easy: { label: 'EASY', timeBonus: 10, hint: true },
+        normal: { label: 'NORMAL', timeBonus: 5, hint: false },
+        hard: { label: 'HARD', timeBonus: 0, hint: false }
+    };
+
+    // 난이도 상승 곡선 (총 12단계)
     const LEVEL_DATA = [
-        { stage: 1, count: 10, time: 10.0, cols: 5 },
-        { stage: 2, count: 15, time: 12.0, cols: 5 },
-        { stage: 3, count: 20, time: 15.0, cols: 5 },
-        { stage: 4, count: 25, time: 18.0, cols: 5 },
-        { stage: 5, count: 25, time: 15.0, cols: 5 },
-        { stage: 6, count: 30, time: 20.0, cols: 5 },
-        { stage: 7, count: 35, time: 20.0, cols: 5 },
-        { stage: 8, count: 40, time: 25.0, cols: 5 },
-        { stage: 9, count: 50, time: 35.0, cols: 5 },
-        { stage: 10, count: 50, time: 25.0, cols: 5 }
+        { stage: 1, count: 9, time: 5.0, cols: 3 },    // 3x3
+        { stage: 2, count: 16, time: 8.0, cols: 4 },   // 4x4
+        { stage: 3, count: 20, time: 10.0, cols: 4 },  // 4x5
+        { stage: 4, count: 25, time: 15.0, cols: 5 },  // 5x5
+        { stage: 5, count: 25, time: 12.0, cols: 5 },  // Speed Up
+        { stage: 6, count: 30, time: 18.0, cols: 5 },  // 5x6
+        { stage: 7, count: 35, time: 20.0, cols: 5 },  // 5x7
+        { stage: 8, count: 36, time: 20.0, cols: 6 },  // 6x6
+        { stage: 9, count: 40, time: 25.0, cols: 5 },  // 5x8 (Dense)
+        { stage: 10, count: 42, time: 30.0, cols: 6 }, // 6x7
+        { stage: 11, count: 48, time: 35.0, cols: 6 }, // 6x8
+        { stage: 12, count: 50, time: 35.0, cols: 5 }  // 5x10 (Extreme)
     ];
 
     const Game = {
@@ -28,26 +47,22 @@
             currentStageIdx: 0,
             lives: 3,
             score: 0,
-            difficulty: 'normal', // easy, normal, hard
-            
-            // Level State
+            combo: 0,
+            difficulty: 'normal',
             currentNum: 1,
             maxNum: 0,
-            initialTime: 0,
             timeLeft: 0,
             isActive: false,
             timerId: null
         },
+        elements: {}, callbacks: {},
 
-        elements: {},
-        callbacks: {},
-
-        // ================= INIT =================
         init: function(container, options = {}) {
             this.elements.container = container;
             this.callbacks = options;
+            Sound.init();
             this.createUI();
-            this.showDifficultySelect(); // 시작 시 난이도 선택 화면
+            this.showDifficultySelect();
         },
 
         createUI: function() {
@@ -55,29 +70,18 @@
                 <div class="sn-wrapper">
                     <header class="sn-header">
                         <div class="sn-status-row">
-                            <div>
-                                <span id="sn-stage">STAGE 1</span>
-                                <span id="sn-mode" class="sn-mode-badge">NORMAL</span>
-                            </div>
+                            <div><span id="sn-stage">STAGE 1</span> <span style="font-size:0.8rem; color:#f1c40f" id="sn-diff"></span></div>
                             <span id="sn-lives" class="sn-lives">❤️❤️❤️</span>
                         </div>
                         <div class="sn-game-row">
-                            <div class="sn-info-box">
-                                <span class="sn-label">FIND</span>
-                                <span class="sn-value highlight" id="sn-target">1</span>
-                            </div>
-                            <div class="sn-info-box">
-                                <span class="sn-label">TIME</span>
-                                <span class="sn-value timer" id="sn-timer">00.00</span>
-                            </div>
+                            <div class="sn-info-box"><span class="sn-label">FIND</span><span class="sn-value highlight" id="sn-target">1</span></div>
+                            <div class="sn-info-box"><span class="sn-label">TIME</span><span class="sn-value timer" id="sn-timer">00.00</span></div>
                         </div>
-                        <div class="sn-timer-bar-bg">
-                            <div class="sn-timer-bar-fill" id="sn-timer-fill"></div>
-                        </div>
+                        <div class="sn-combo-bar"><div class="sn-combo-fill" id="sn-combo-fill"></div></div>
                     </header>
-                    
                     <div class="sn-grid" id="sn-grid"></div>
-
+                    <div id="fx-layer"></div>
+                    
                     <div class="sn-overlay active" id="sn-overlay">
                         <div class="sn-msg-title" id="msg-title"></div>
                         <div class="sn-msg-sub" id="msg-sub"></div>
@@ -85,286 +89,242 @@
                     </div>
                 </div>
             `;
-
-            // Cache Elements
             const q = (sel) => this.elements.container.querySelector(sel);
             this.el = {
-                stage: q('#sn-stage'),
-                mode: q('#sn-mode'),
-                lives: q('#sn-lives'),
-                target: q('#sn-target'),
-                timer: q('#sn-timer'),
-                timerFill: q('#sn-timer-fill'),
-                grid: q('#sn-grid'),
-                overlay: q('#sn-overlay'),
-                title: q('#msg-title'),
-                sub: q('#msg-sub'),
-                btnContainer: q('#btn-container')
+                stage: q('#sn-stage'), diff: q('#sn-diff'), lives: q('#sn-lives'),
+                target: q('#sn-target'), timer: q('#sn-timer'), comboFill: q('#sn-combo-fill'),
+                grid: q('#sn-grid'), overlay: q('#sn-overlay'), title: q('#msg-title'),
+                sub: q('#msg-sub'), btnContainer: q('#btn-container'), fx: q('#fx-layer')
             };
         },
 
-        // ================= FLOW CONTROL =================
-        
-        // 1. 난이도 선택 화면
         showDifficultySelect: function() {
-            this.hideOverlay();
-            
-            // HTML 직접 주입
-            this.el.title.textContent = "SPEED NUMBER";
-            this.el.title.style.color = "#2d3436";
-            this.el.sub.textContent = "난이도를 선택하세요";
-            this.el.sub.style.color = "#636e72";
-            this.el.overlay.className = 'sn-overlay active'; // Light mode
-            
+            this.el.title.innerText = "SPEED NUMBER";
+            this.el.sub.innerText = "OVERCLOCK EDITION";
+            this.el.overlay.className = 'sn-overlay active';
             this.el.btnContainer.innerHTML = `
-                <button class="sn-btn btn-easy" data-diff="easy">EASY (시간+5초, 색상힌트)</button>
-                <button class="sn-btn btn-normal" data-diff="normal">NORMAL (시간+3초)</button>
-                <button class="sn-btn btn-hard" data-diff="hard">HARD (보너스 없음, 고득점)</button>
+                <button class="sn-btn btn-easy" data-diff="easy">EASY (힌트/여유)</button>
+                <button class="sn-btn btn-normal" data-diff="normal">NORMAL (표준)</button>
+                <button class="sn-btn btn-hard" data-diff="hard">HARD (극한 도전)</button>
             `;
-
-            // 버튼 이벤트 연결
             this.el.btnContainer.querySelectorAll('button').forEach(btn => {
                 btn.onclick = () => this.startGameFull(btn.dataset.diff);
             });
         },
 
-        // 2. 게임 전체 초기화 (난이도 선택 후)
         startGameFull: function(difficulty) {
             this.state.difficulty = difficulty;
             this.state.lives = 3;
             this.state.score = 0;
+            this.state.combo = 0;
             this.state.currentStageIdx = 0;
-            
-            this.updateHeaderUI();
-            this.prepareLevel(); // 1스테이지 준비
+            this.el.diff.innerText = difficulty.toUpperCase();
+            this.prepareLevel();
         },
 
-        // 리셋 버튼 대응
-        reset: function() {
-            if(confirm('난이도 선택 화면으로 돌아갑니다.')) {
-                this.showDifficultySelect();
-            }
-        },
-
-        // 3. 레벨 준비 (Start 버튼 표시)
         prepareLevel: function() {
             const config = LEVEL_DATA[this.state.currentStageIdx];
             const diffConfig = DIFFICULTY_CONFIG[this.state.difficulty];
-            
-            // 난이도별 시간 계산
             const totalTime = config.time + diffConfig.timeBonus;
 
-            // 상태 초기화
             this.state.isActive = false;
             this.state.currentNum = 1;
             this.state.maxNum = config.count;
             this.state.timeLeft = totalTime;
-            this.state.initialTime = totalTime;
+            this.state.combo = 0;
             
             this.el.grid.innerHTML = ''; 
-            this.el.target.textContent = '1';
+            this.el.target.innerText = '1';
             this.el.timer.classList.remove('danger');
-            this.updateTimerBar(100);
-
-            // Start Overlay
-            this.el.title.textContent = `STAGE ${config.stage}`;
-            this.el.title.style.color = "#2d3436";
-            this.el.sub.innerHTML = `제한시간: ${totalTime}초<br>찾아야 할 숫자: ${config.count}개`;
-            this.el.sub.style.color = "#636e72";
-            this.el.overlay.className = 'sn-overlay active';
-            
-            this.el.btnContainer.innerHTML = `<button class="sn-btn btn-action">GAME START</button>`;
-            this.el.btnContainer.querySelector('button').onclick = () => this.startGameplay();
-            
+            this.updateComboBar(0);
             this.updateHeaderUI();
-            if(this.callbacks.onLevelChange) this.callbacks.onLevelChange(config.stage);
+
+            this.el.title.innerText = `STAGE ${config.stage}`;
+            this.el.sub.innerHTML = `목표: 1 ~ ${config.count}<br>제한시간: <span style="color:#f1c40f">${totalTime}초</span>`;
+            this.el.overlay.className = 'sn-overlay active';
+            this.el.btnContainer.innerHTML = `<button class="sn-btn btn-action">START</button>`;
+            this.el.btnContainer.querySelector('button').onclick = () => this.startGameplay();
         },
 
-        // 4. 실제 플레이 시작
         startGameplay: function() {
-            this.hideOverlay();
-            
-            // 그리드 생성
+            this.el.overlay.classList.remove('active');
             const config = LEVEL_DATA[this.state.currentStageIdx];
             this.el.grid.style.setProperty('--cols', config.cols);
             this.renderGrid(config.count);
-            
             this.state.isActive = true;
             this.startTimer();
         },
 
-        // ================= LOGIC =================
         renderGrid: function(count) {
             this.el.grid.innerHTML = '';
             const nums = Array.from({length: count}, (_, i) => i + 1);
             this.shuffle(nums);
-
-            const isEasy = this.state.difficulty === 'easy';
-
+            
             nums.forEach(n => {
                 const card = document.createElement('div');
                 card.className = 'sn-card';
-                card.textContent = n;
+                card.innerText = n;
                 
-                // Easy 모드일 때 색상 힌트 클래스 추가 (10단위로 그룹화)
-                if (isEasy) {
-                    const group = Math.floor((n - 1) / 10);
-                    card.classList.add(`hint-${group % 5}`);
+                // EASY 모드 힌트 (다음 숫자 강조)
+                if (this.state.difficulty === 'easy' && n === 1) {
+                    card.classList.add('hint-active');
                 }
 
-                card.onpointerdown = (e) => {
-                    e.preventDefault();
-                    this.handleTap(n, card);
+                // Pointer events for faster reaction than click
+                card.onpointerdown = (e) => { 
+                    e.preventDefault(); 
+                    this.handleTap(n, card, e.clientX, e.clientY); 
                 };
                 this.el.grid.appendChild(card);
             });
         },
 
-        handleTap: function(num, card) {
+        handleTap: function(num, card, x, y) {
             if(!this.state.isActive) return;
 
             if (num === this.state.currentNum) {
                 // Correct
                 card.classList.add('correct');
                 this.state.currentNum++;
+                this.state.combo++;
                 
-                // 점수 계산 (기본 100점 * 난이도 배율)
-                const mult = DIFFICULTY_CONFIG[this.state.difficulty].scoreMult;
-                this.state.score += Math.round(100 * mult);
-                this.updateScore();
+                // Sound & Pitch
+                Sound.playTap(this.state.combo % 10);
 
-                if (this.state.currentNum > this.state.maxNum) {
-                    this.levelClear();
-                } else {
-                    this.el.target.textContent = this.state.currentNum;
+                // Score
+                const baseScore = 100;
+                const comboBonus = this.state.combo * 20;
+                const addScore = baseScore + comboBonus;
+                this.state.score += addScore;
+                
+                // Visuals
+                this.showFloatingText(x, y, `+${addScore}`);
+                if(this.state.combo > 5) this.showFloatingText(x, y - 30, `${this.state.combo} COMBO!`);
+
+                // Update Hint for Easy Mode
+                if (this.state.difficulty === 'easy' && this.state.currentNum <= this.state.maxNum) {
+                    const nextCards = Array.from(this.el.grid.children);
+                    nextCards.forEach(c => {
+                        if(parseInt(c.innerText) === this.state.currentNum) c.classList.add('hint-active');
+                    });
                 }
+
+                if (this.state.currentNum > this.state.maxNum) this.levelClear();
+                else this.el.target.innerText = this.state.currentNum;
+
+                this.updateComboBar(100); // 콤보 게이지 리셋 느낌 (추후 감퇴 구현 가능)
+
             } else {
                 // Wrong
                 card.classList.add('wrong');
-                setTimeout(() => card.classList.remove('wrong'), 400);
-                this.state.score = Math.max(0, this.state.score - 50);
-                this.updateScore();
+                setTimeout(() => card.classList.remove('wrong'), 300);
+                Sound.playWrong();
+                
+                this.state.combo = 0; // 콤보 초기화
+                this.state.score = Math.max(0, this.state.score - 500);
+                this.state.timeLeft = Math.max(0, this.state.timeLeft - 2.0); // 시간 페널티
+                this.showFloatingText(x, y, "-2 SEC", "#ff4757");
+                
+                this.updateComboBar(0);
             }
+            this.updateScore();
         },
 
         startTimer: function() {
             if(this.state.timerId) cancelAnimationFrame(this.state.timerId);
-            this.state.lastFrame = performance.now();
+            let lastTime = performance.now();
             
             const loop = (now) => {
                 if(!this.state.isActive) return;
+                const delta = (now - lastTime) / 1000;
+                lastTime = now;
                 
-                const delta = (now - this.state.lastFrame) / 1000;
-                this.state.lastFrame = now;
                 this.state.timeLeft -= delta;
-
-                const percentage = (this.state.timeLeft / this.state.initialTime) * 100;
-                this.updateTimerBar(percentage);
-
+                
+                // 5초 이하 경고
                 if (this.state.timeLeft <= 5.0) this.el.timer.classList.add('danger');
                 
                 if (this.state.timeLeft <= 0) {
                     this.state.timeLeft = 0;
-                    this.el.timer.textContent = "0.00";
-                    this.updateTimerBar(0);
-                    this.levelFail("Time Over!");
+                    this.el.timer.innerText = "0.00";
+                    this.levelFail("TIME OVER");
                 } else {
-                    this.el.timer.textContent = this.state.timeLeft.toFixed(2);
+                    this.el.timer.innerText = this.state.timeLeft.toFixed(2);
                     this.state.timerId = requestAnimationFrame(loop);
                 }
             };
             this.state.timerId = requestAnimationFrame(loop);
         },
 
-        updateTimerBar: function(percent) {
-            const p = Math.max(0, Math.min(100, percent));
-            this.el.timerFill.style.width = `${p}%`;
-            if(p > 50) this.el.timerFill.style.backgroundColor = '#4cd137';
-            else if(p > 20) this.el.timerFill.style.backgroundColor = '#fbc531';
-            else this.el.timerFill.style.backgroundColor = '#e84118';
-        },
-
-        // ================= ENDINGS =================
         levelClear: function() {
             this.state.isActive = false;
             cancelAnimationFrame(this.state.timerId);
+            Sound.playClear();
             
-            // 시간 보너스 계산 (남은 시간 * 100 * 난이도 배율)
-            const mult = DIFFICULTY_CONFIG[this.state.difficulty].scoreMult;
-            const bonus = Math.round(this.state.timeLeft * 100 * mult);
-            this.state.score += bonus;
+            const timeBonus = Math.floor(this.state.timeLeft * 500);
+            this.state.score += timeBonus;
             this.updateScore();
 
             if (this.state.currentStageIdx >= LEVEL_DATA.length - 1) {
                 this.gameClear();
             } else {
                 this.state.currentStageIdx++;
-                this.showResultOverlay("STAGE CLEAR!", `보너스: +${bonus}점`, "NEXT STAGE", () => this.prepareLevel());
+                this.showResultOverlay("STAGE CLEAR", `Time Bonus: +${timeBonus}`, "NEXT STAGE", () => this.prepareLevel());
             }
         },
 
         levelFail: function(reason) {
             this.state.isActive = false;
             cancelAnimationFrame(this.state.timerId);
+            Sound.playWrong();
             this.state.lives--;
             this.updateHeaderUI();
 
             if (this.state.lives > 0) {
-                this.showResultOverlay("FAILED!", reason, "RETRY STAGE", () => this.prepareLevel());
+                this.showResultOverlay("FAILED", reason, "RETRY", () => this.prepareLevel());
             } else {
-                this.showResultOverlay("GAME OVER", "생명이 모두 소진되었습니다.", "TITLE SCREEN", () => {
-                    this.state.isGameOver = true;
-                    // 결과창에서 버튼 누르면 타이틀로
-                    if(this.callbacks.onGameOver) {
-                         this.callbacks.onGameOver({ completed: true, score: this.state.score, win: false });
-                    }
-                    this.showDifficultySelect();
-                });
+                this.showResultOverlay("GAME OVER", `Final Score: ${this.state.score}`, "MAIN MENU", () => this.showDifficultySelect());
             }
         },
 
         gameClear: function() {
-            if (this.callbacks.onGameOver) {
-                this.callbacks.onGameOver({ completed: true, score: this.state.score, win: true });
-            }
-            this.showResultOverlay("ALL CLEAR!", `최종 점수: ${this.state.score}`, "PLAY AGAIN", () => this.showDifficultySelect());
+            this.showResultOverlay("ALL CLEAR!", `LEGENDARY SCORE: ${this.state.score}`, "MAIN MENU", () => this.showDifficultySelect());
         },
 
-        // ================= UTIL & UI Helpers =================
         showResultOverlay: function(title, sub, btnText, action) {
-            this.el.title.textContent = title;
-            this.el.sub.textContent = sub;
+            this.el.title.innerText = title;
+            this.el.sub.innerText = sub;
             this.el.btnContainer.innerHTML = `<button class="sn-btn btn-action">${btnText}</button>`;
-            
-            // 결과창은 어둡게
-            this.el.overlay.className = 'sn-overlay active dark-mode';
-            this.el.title.style.color = 'white';
-            this.el.sub.style.color = '#dfe6e9';
-
+            this.el.overlay.className = 'sn-overlay active';
             this.el.btnContainer.querySelector('button').onclick = action;
         },
 
-        hideOverlay: function() {
-            this.el.overlay.classList.remove('active');
+        showFloatingText: function(x, y, text, color = null) {
+            const el = document.createElement('div');
+            el.className = 'float-score';
+            el.innerText = text;
+            if(color) el.style.color = color;
+            
+            // 좌표 보정 (컨테이너 기준)
+            const rect = this.elements.container.getBoundingClientRect();
+            el.style.left = (x - rect.left) + 'px';
+            el.style.top = (y - rect.top) + 'px';
+            
+            this.el.fx.appendChild(el);
+            setTimeout(() => el.remove(), 600);
         },
 
+        updateComboBar: function(percent) {
+            this.el.comboFill.style.width = `${percent}%`;
+        },
         updateHeaderUI: function() {
-            this.el.stage.textContent = `STAGE ${this.state.currentStageIdx + 1}`;
-            this.el.mode.textContent = DIFFICULTY_CONFIG[this.state.difficulty].label;
-            this.el.lives.textContent = '❤️'.repeat(Math.max(0, this.state.lives));
+            this.el.lives.innerText = '❤️'.repeat(Math.max(0, this.state.lives));
         },
-
         updateScore: function() {
             if(this.callbacks.onScoreUpdate) this.callbacks.onScoreUpdate(this.state.score);
         },
-
-        shuffle: function(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-        }
+        shuffle: function(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } }
     };
 
-    window.Game = Game;
+    if (typeof window !== 'undefined') window.Game = Game;
 })();
