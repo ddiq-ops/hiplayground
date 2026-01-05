@@ -35,17 +35,18 @@
   },
   {
     "id": "math-quiz",
-    "title": "수학 퀴즈",
-    "titleEn": "Math Quiz",
-    "category": "math",
+    "title": "초등 수학 마스터",
+    "titleEn": "Elementary Math Master",
+    "category": "education",
     "difficulty": "medium",
-    "description": "빠르게 수학 문제를 풀어보세요!",
-    "descriptionEn": "Solve math problems quickly!",
-    "icon": "🔢",
+    "description": "초등 저학년 필수! 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요.",
+    "descriptionEn": "Essential for lower elementary! Fun training for addition, subtraction, multiplication, and division.",
+    "icon": "💯",
     "tags": [
       "수학",
-      "학습",
-      "퀴즈"
+      "교육",
+      "구구단",
+      "초등학생"
     ],
     "popularity": 92,
     "releaseDate": "2024-01-03"
@@ -128,16 +129,21 @@
     "releaseDate": "2024-01-09"
   },
   {
-    "id": "knights",
-    "title": "제국의 기사단",
-    "titleEn": "Knights of the Empire",
-    "description": "유닛을 고용하고 전략적으로 배치하여 적을 물리치세요! 중독성 있는 오토 배틀러 게임.",
-    "descriptionEn": "Hire units and strategize your formation! An epic auto-battler game.",
-    "icon": "⚔️",
-    "category": "strategy",
+    "id": "math-quiz-hard",
+    "title": "암산 천재 (고학년)",
+    "titleEn": "Mental Math Genius",
+    "category": "education",
     "difficulty": "hard",
-    "tags": ["전략", "오토배틀러", "시뮬레이션", "Phaser"],
-    "popularity": 95,
-    "releaseDate": "2024-01-25"
+    "description": "초등 고학년 도전! 큰 수 연산과 사칙연산 혼합 계산을 마스터하세요.",
+    "descriptionEn": "Master mixed operations and large numbers.",
+    "icon": "🧠",
+    "tags": [
+      "수학",
+      "암산",
+      "고학년",
+      "두뇌"
+    ],
+    "popularity": 85,
+    "releaseDate": "2024-01-26"
   }
 ]

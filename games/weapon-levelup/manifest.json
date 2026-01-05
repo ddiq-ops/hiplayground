@@ -2,11 +2,10 @@
   "id": "weapon-levelup",
   "title": "내 무기만 레벨업",
   "titleEn": "Weapon Level Up",
-  "description": "대장간에서 무기를 강화하고 상점에서 판매하세요!",
-  "descriptionEn": "Upgrade your weapon at the blacksmith and sell it at the shop!",
+  "description": "대장간에서 무기를 강화하고 상점에서 판매하세요! 실패하면 초기화되는 쫄깃한 강화 시뮬레이션.",
+  "descriptionEn": "Upgrade your weapon! High risk, high return simulation.",
   "icon": "⚔️",
-  "category": "puzzle",
+  "category": "simulation",
   "difficulty": "medium",
   "version": "1.0.0"
 }
-

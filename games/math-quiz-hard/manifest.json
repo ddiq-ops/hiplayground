@@ -1,0 +1,11 @@
+{
+  "id": "math-quiz",
+  "title": "매스 마스터",
+  "titleEn": "Math Master",
+  "description": "제한 시간 안에 정답을 맞추고 콤보를 쌓으세요! 두뇌 풀가동 수학 액션.",
+  "descriptionEn": "Solve math problems instantly! Keep the combo alive in this time-attack quiz.",
+  "icon": "🔢",
+  "category": "puzzle",
+  "difficulty": "variable",
+  "version": "2.0.0"
+}

@@ -1,12 +1,11 @@
 {
   "id": "math-quiz",
-  "title": "수학 퀴즈",
-  "titleEn": "Math Quiz",
-  "description": "빠르게 수학 문제를 풀어보세요!",
-  "descriptionEn": "Solve math problems quickly!",
-  "icon": "🔢",
-  "category": "math",
+  "title": "초등 수학 마스터",
+  "titleEn": "Elementary Math Master",
+  "description": "초등 저학년 필수! 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요.",
+  "descriptionEn": "Essential for lower elementary! Fun training for addition, subtraction, multiplication, and division.",
+  "icon": "💯",
+  "category": "education",
   "difficulty": "medium",
-  "version": "1.0.0"
+  "version": "2.2.0"
 }
-

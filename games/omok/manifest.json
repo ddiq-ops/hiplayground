@@ -1,12 +1,11 @@
 {
   "id": "omok",
-  "title": "오목",
-  "titleEn": "Omok",
-  "description": "5개를 연속으로 놓아 승리하세요! 1인용과 2인용을 지원합니다.",
-  "descriptionEn": "Place 5 in a row to win! Supports 1-player and 2-player modes.",
-  "icon": "assets/games/omok/icon/icon.webp",
-  "category": "puzzle",
-  "difficulty": "medium",
-  "version": "1.0.0"
+  "title": "오목 마스터",
+  "titleEn": "Omok Master",
+  "description": "총 12라운드의 극한 도전! 점차 강력해지는 AI를 꺾고 오목의 신이 되어보세요.",
+  "descriptionEn": "Challenge 12 rounds! Defeat the evolving AI and become the Omok God.",
+  "icon": "⚫",
+  "category": "board",
+  "difficulty": "hard",
+  "version": "2.1.0"
 }
-

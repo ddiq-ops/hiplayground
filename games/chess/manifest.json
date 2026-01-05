@@ -1,13 +1,11 @@
 {
   "id": "chess",
-  "title": "체스",
-  "titleEn": "Chess",
-  "description": "전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.",
-  "descriptionEn": "Strategic chess game! Supports 1-player and 2-player modes.",
-  "icon": "♟️",
+  "title": "체스 마스터: 헬 모드",
+  "titleEn": "Chess Master: Hell Mode",
+  "description": "1라운드부터 그랜드마스터급 AI가 당신을 기다립니다. 위치 기반 전술이 추가된 극한의 체스.",
+  "descriptionEn": "Grandmaster-level AI from Round 1. Extreme chess with positional tactics.",
+  "icon": "👿",
   "category": "board",
-  "difficulty": "hard",
-  "version": "1.0.0"
+  "difficulty": "extreme",
+  "version": "2.2.0"
 }
-
-
