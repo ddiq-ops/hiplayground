@@ -38,9 +38,8 @@
             contentHeight: 588, 
             floorY: 588 - 50, 
             ceilY: 0,         
-            gravitySpeed: 35, // 중력 속도도 더 빠르게
-            baseSpeed: 10,     // 기본 속도 상향 (9 -> 10)
-            maxSpeed: 55      // 최대 속도 대폭 상향
+            gravitySpeed: 35, 
+            baseSpeed: 10, maxSpeed: 55
         },
         loopId: null,
 
@@ -49,17 +48,37 @@
             Sound.init();
             this.container.innerHTML = '';
             this.state.playerY = this.config.floorY;
+
             this.renderLayout();
             this.showTitleScreen();
             this.updatePlayerPos();
+            
+            this.resizeGame();
+            window.addEventListener('resize', () => this.resizeGame());
+
             setTimeout(() => {
                 const wrapper = document.querySelector('.gr-wrapper');
                 if(wrapper) wrapper.focus();
             }, 100);
         },
 
+        resizeGame: function() {
+            const frame = document.getElementById('game-frame');
+            if (!frame) return;
+            const baseW = 900; const baseH = 600;
+            const winW = window.innerWidth; const winH = window.innerHeight;
+            const scaleW = winW / baseW; const scaleH = winH / baseH;
+            let scale = Math.min(scaleW, scaleH) * 0.95;
+            if (scale > 1) scale = 1;
+            frame.style.transform = `scale(${scale})`;
+        },
+
         renderLayout: function() {
             this.container.innerHTML = `
+                <div id="rotate-message">
+                    <div id="rotate-icon">📱</div>
+                    <div>화면을 가로로 돌려주세요<br>Please rotate your device</div>
+                </div>
                 <div class="gr-wrapper" tabindex="0">
                     <div class="game-frame" id="game-frame">
                         <div class="gr-background" id="gr-bg"></div>
@@ -77,7 +96,7 @@
                         </div>
                         <div class="gr-overlay active" id="gr-overlay">
                             <div class="gr-title" id="m-title">GRAVITY RUN</div>
-                            <div class="gr-desc" id="m-desc">EXTREME MODE<br>더 빠르고 거대한 장애물이 옵니다!</div>
+                            <div class="gr-desc" id="m-desc">Lv.40+ 엘리트 장애물 등장!<br>보라색 장애물은 움직입니다.</div>
                             <button class="gr-btn" id="m-btn">RUN</button>
                         </div>
                     </div>
@@ -112,7 +131,7 @@
 
         showTitleScreen: function() {
             this.el.mTitle.innerText = "GRAVITY RUN";
-            this.el.mDesc.innerHTML = "EXTREME MODE<br>더 빠르고 거대한 장애물이 옵니다!";
+            this.el.mDesc.innerHTML = "Lv.40+ 엘리트 장애물 등장!<br>보라색 장애물은 움직입니다.";
             this.el.mBtn.innerText = "RUN";
             this.el.overlay.classList.add('active');
             this.state.isDead = false;
@@ -148,25 +167,34 @@
         spawnObstacle: function() {
             const rand = Math.random();
             let type = 'bottom';
-            if (rand < 0.45) type = 'top'; // 확률 조정
+            if (rand < 0.45) type = 'top'; 
             else if (rand < 0.9) type = 'bottom';
             else type = 'middle'; 
 
             const obs = document.createElement('div');
-            obs.className = `gr-obstacle ${type}`;
+            // [NEW] 레벨 40부터 움직이는 장애물 생성
+            const isMoving = this.state.level >= 40 && Math.random() < 0.3;
             
-            // [수정 1] 높이: 최소 80 ~ 최대 화면의 55%까지 (약 320px)
-            // 화면 절반을 넘어가면 피하기 정말 어려워짐
+            if (isMoving) {
+                obs.className = `gr-obstacle ${type} moving`;
+                type = 'middle'; // 움직이는 건 주로 중간 타입으로 처리
+            } else {
+                obs.className = `gr-obstacle ${type}`;
+            }
+            
             const maxH = this.config.contentHeight * 0.55; 
             let h = 80 + Math.random() * (maxH - 80);
-            
-            // [수정 2] 너비(굵기): 30px ~ 100px 랜덤
             let w = 30 + Math.random() * 70;
 
             let startY = 0;
+            // 움직임 변수
+            let vy = 0;
+
             if (type === 'middle') {
-                h = 50 + Math.random() * 40; // 중간 장애물은 너무 크지 않게
+                h = 50 + Math.random() * 40; 
                 startY = (this.config.contentHeight / 2) - (h / 2);
+                // 움직임 속도 설정 (2 ~ 4)
+                if (isMoving) vy = (Math.random() < 0.5 ? 2 : -2) * (1 + this.state.level/100); 
             } else if (type === 'top') {
                 startY = 0;
             } else {
@@ -174,12 +202,12 @@
             }
 
             obs.style.height = `${h}px`;
-            obs.style.width = `${w}px`; // 굵기 적용
+            obs.style.width = `${w}px`; 
             obs.style.top = `${startY}px`;
             obs.style.left = '900px'; 
             
             this.el.obsContainer.appendChild(obs);
-            this.state.obstacles.push({ el: obs, x: 900, y: startY, w: w, h: h, type: type, passed: false });
+            this.state.obstacles.push({ el: obs, x: 900, y: startY, w: w, h: h, type: type, vy: vy, passed: false });
         },
 
         spawnParticles: function(x, y, color) {
@@ -217,28 +245,38 @@
             else this.state.playerY = targetY;
             this.updatePlayerPos();
 
-            // 2. [수정 3] 속도 공식 (4레벨마다 가속, 더 빠르게)
-            // Lv1=10, Lv5=12.2, Lv9=14.4 ... Lv25=23 ... Lv100=50+
+            // 2. 속도
             const speedBoost = Math.floor(this.state.level / 4) * 2.2;
             this.state.gameSpeed = Math.min(this.config.maxSpeed, this.config.baseSpeed + speedBoost);
             this.el.bg.style.animationDuration = `${1 / (this.state.gameSpeed/5)}s`;
 
-            // 3. 스폰 (장애물 굵기 고려하여 간격 조정)
+            // 3. 스폰
             this.state.distance += this.state.gameSpeed;
-            // 장애물이 두꺼워졌으므로 간격을 더 띄워야 불가능한 패턴이 안 나옴
             const spawnDist = Math.max(350, 300 + (this.state.gameSpeed * 11)); 
             if (this.state.distance > spawnDist) {
                 this.spawnObstacle();
                 this.state.distance = 0;
             }
 
-            // 4. 충돌 체크
+            // 4. 장애물 업데이트
             const pBox = { x: 150 + 10, y: this.state.playerY + 10, w: this.config.playerSize - 20, h: this.config.playerSize - 20 };
             for (let i = this.state.obstacles.length - 1; i >= 0; i--) {
                 const obs = this.state.obstacles[i];
                 obs.x -= this.state.gameSpeed;
+                
+                // [NEW] 움직이는 장애물 로직
+                if (obs.vy !== 0) {
+                    obs.y += obs.vy;
+                    // 화면 밖으로 나가면 반전
+                    if (obs.y < 0 || obs.y + obs.h > this.config.contentHeight) {
+                        obs.vy *= -1;
+                    }
+                    obs.el.style.top = `${obs.y}px`;
+                }
+                
                 obs.el.style.left = `${obs.x}px`;
 
+                // 충돌
                 if (pBox.x < obs.x + obs.w && pBox.x + pBox.w > obs.x && pBox.y < obs.y + obs.h && pBox.y + pBox.h > obs.y) {
                     this.gameOver();
                     return;
@@ -248,7 +286,6 @@
                     this.state.score += 100;
                     this.el.score.innerText = this.state.score;
                     Sound.playScore();
-                    // 점수 1000점마다 레벨업
                     if (this.state.score % 1000 === 0) {
                         this.state.level++;
                         this.el.level.innerText = `Lv.${this.state.level}`;

@@ -17,7 +17,8 @@
   box-shadow: 0 0 60px rgba(0, 210, 211, 0.2);
   border: 4px solid #353b48;
   overflow: hidden; 
-  transform: translateZ(0);
+  transform-origin: center center;
+  flex-shrink: 0;
 }
 
 /* 배경 */
@@ -29,7 +30,7 @@
   background-size: 100px 100px;
   transform: perspective(800px) rotateX(60deg);
   transform-origin: center 60%;
-  animation: moveGrid 0.5s linear infinite; /* 기본 속도 더 빠르게 */
+  animation: moveGrid 0.5s linear infinite;
   opacity: 0.3; pointer-events: none; z-index: 1;
 }
 
@@ -69,23 +70,34 @@
   filter: blur(5px); z-index: -1;
 }
 
-/* 장애물 공통 (너비 삭제 -> JS 제어) */
+/* 장애물 */
 .gr-obstacle {
   position: absolute; 
-  background: #ff4757; 
+  background: #ff4757; /* 기본 빨강 */
   box-shadow: 0 0 30px #ff4757;
   border: 3px solid #fff;
   z-index: 15;
 }
-
 .gr-obstacle.top { border-top: none; border-radius: 0 0 6px 6px; }
 .gr-obstacle.bottom { border-bottom: none; border-radius: 6px 6px 0 0; }
 .gr-obstacle.middle {
-  border-radius: 8px; background: #e67e22;
+  border-radius: 8px; background: #e67e22; /* 중간 오렌지 */
   box-shadow: 0 0 30px #e67e22; border: 3px solid #fff;
 }
 .gr-obstacle.middle::after {
   content: '⚠️'; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); font-size: 20px;
+}
+
+/* [NEW] 움직이는 장애물 (보라색) */
+.gr-obstacle.moving {
+  background: #8e44ad; /* 보라색 */
+  box-shadow: 0 0 40px #9b59b6;
+  border: 3px solid #fff;
+}
+.gr-obstacle.moving::after {
+  content: '↕️'; /* 움직임 표시 */
+  position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%); font-size: 20px;
 }
 
@@ -118,4 +130,16 @@
 @keyframes moveGrid { 
   from { transform: perspective(800px) rotateX(60deg) translateY(0); } 
   to { transform: perspective(800px) rotateX(60deg) translateY(100px); } 
+}
+
+/* 모바일 회전 안내 */
+#rotate-message {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: #000; z-index: 9999; flex-direction: column; justify-content: center; align-items: center;
+  color: #fff; text-align: center;
+}
+#rotate-icon { font-size: 4rem; margin-bottom: 20px; animation: rotatePhone 2s infinite; }
+@media screen and (orientation: portrait) {
+  #rotate-message { display: flex; }
+  .gr-wrapper { display: none; }
 }

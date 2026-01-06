@@ -2,10 +2,10 @@
   "id": "gravity-run",
   "title": "그래비티 런: 제로",
   "titleEn": "Gravity Run: Zero",
-  "description": "더 빠르고 거대해진 장애물! 4레벨마다 가속되는 익스트림 난이도에 도전하세요.",
-  "descriptionEn": "Faster and bigger obstacles! Challenge the extreme difficulty accelerating every 4 levels.",
+  "description": "Lv.40부터 움직이는 보라색 장애물이 등장합니다! 극한의 반응속도에 도전하세요.",
+  "descriptionEn": "From Lv.40, moving violet obstacles appear! Challenge your reaction speed.",
   "icon": "🏃",
   "category": "action",
   "difficulty": "hard",
-  "version": "3.4.0"
+  "version": "3.7.0"
 }
