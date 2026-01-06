@@ -1,0 +1,12 @@
+{
+    "id": "infinite-space",
+    "title": "인피니티 스페이스: 로그",
+    "titleEn": "Infinite Space: Rogue",
+    "description": "횡스크롤 슈팅! 적들의 돌진을 피하고 전함을 성장시키세요.",
+    "descriptionEn": "Horizontal Shooter! Dodge enemies and evolve your ship.",
+    "icon": "🚀",
+    "category": "shooting",
+    "difficulty": "hard",
+    "version": "2.2.0",
+    "orientation": "landscape"
+  }

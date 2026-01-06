@@ -170,5 +170,18 @@
     ],
     "popularity": 88,
     "releaseDate": "2024-02-01"
+  },
+  {
+    "id": "infinite-space",
+    "title": "인피니티 스페이스: 로그",
+    "titleEn": "Infinite Space: Rogue",
+    "category": "shooting",
+    "difficulty": "hard",
+    "description": "끝없는 우주 전쟁! 적을 파괴하고, 경험치를 모아 나만의 전함을 진화시키세요.",
+    "descriptionEn": "Endless space war! Gather EXP and evolve your ship with roguelike skills.",
+    "icon": "🚀",
+    "tags": ["슈팅", "로그라이크", "탄막", "성장"],
+    "popularity": 95,
+    "releaseDate": "2024-02-05"
   }
 ]
