@@ -1,0 +1,12 @@
+{
+  "id": "mystic-fortune",
+  "title": "오늘의 운세",
+  "titleEn": "Mystic Fortune",
+  "description": "별들이 속삭이는 당신의 하루 운세를 확인하세요.",
+  "descriptionEn": "Check your daily fortune whispered by the stars.",
+  "icon": "🔮",
+  "category": "lifestyle",
+  "difficulty": "easy",
+  "version": "1.0.0",
+  "orientation": "portrait"
+}

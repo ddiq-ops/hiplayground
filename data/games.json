@@ -183,5 +183,25 @@
     "tags": ["슈팅", "로그라이크", "탄막", "성장"],
     "popularity": 95,
     "releaseDate": "2024-02-05"
+  },
+  {
+    "id": "mystic-fortune",
+    "title": "오늘의 운세",
+    "titleEn": "Mystic Fortune",
+    "description": "별들이 속삭이는 당신의 하루 운세를 확인하세요.",
+    "descriptionEn": "Check your daily fortune whispered by the stars.",
+    "icon": "🔮",
+    "category": "lifestyle",
+    "difficulty": "easy",
+    "tags": [
+      "운세",
+      "별자리",
+      "라이프스타일",
+      "힐링"
+    ],
+    "popularity": 85,
+    "releaseDate": "2026-01-07",
+    "version": "1.0.0",
+    "orientation": "portrait"
   }
 ]

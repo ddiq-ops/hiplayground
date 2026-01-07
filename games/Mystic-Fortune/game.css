@@ -1,0 +1,173 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* === 기본 레이아웃 수정 === */
+.fortune-wrapper {
+    /* fixed로 변경하여 화면 전체를 덮도록 수정하고, z-index를 높여 맨 앞으로 가져옴 */
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-family: 'Pretendard', sans-serif;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; /* 수직 중앙 정렬 */
+    overflow: hidden; 
+    user-select: none;
+    z-index: 9999; /* 다른 요소보다 위에 표시 */
+    
+    /* 배경 그라데이션 */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 20%);
+}
+
+.fortune-container {
+    width: 100%; 
+    max-width: 480px; 
+    height: 100%;
+    max-height: 100vh; /* 화면 높이를 넘지 않도록 제한 */
+    position: relative;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start; /* 상단부터 배치하되 */
+    padding: 20px; 
+    /* 상단 여백 추가: 헤더 등에 가려지는 현상 방지 (safe-area 고려) */
+    padding-top: max(40px, env(safe-area-inset-top)); 
+    box-sizing: border-box;
+    overflow-y: auto; /* 내용이 길면 스크롤 */
+}
+
+/* 스크롤바 커스텀 */
+.fortune-container::-webkit-scrollbar { width: 6px; }
+.fortune-container::-webkit-scrollbar-track { background: transparent; }
+.fortune-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+/* === 컴포넌트 스타일 === */
+.glass-panel {
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 20px;
+    /* 애니메이션용 초기값 */
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.title-area { text-align: center; margin-bottom: 30px; margin-top: 10px; }
+.main-title {
+    font-size: 2.2rem; font-weight: 800;
+    background: linear-gradient(to right, #a5b4fc, #d8b4fe, #f9a8d4);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+.sub-title { font-size: 0.9rem; color: #94a3b8; }
+
+.input-group { margin-bottom: 20px; }
+.input-label { display: block; font-size: 0.9rem; font-weight: bold; color: #cbd5e1; margin-bottom: 8px; margin-left: 4px; }
+.input-field {
+    width: 100%; padding: 16px; box-sizing: border-box;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid #334155; border-radius: 12px;
+    color: white; font-size: 1rem;
+    transition: all 0.3s;
+}
+.input-field:focus { border-color: #8b5cf6; outline: none; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2); }
+
+/* 날짜 입력 그룹 */
+.date-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.date-field {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+}
+.date-separator {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 20px;
+    text-align: center;
+}
+
+.btn-fortune {
+    width: 100%; padding: 18px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border: none; border-radius: 12px;
+    color: white; font-weight: bold; font-size: 1.1rem;
+    cursor: pointer; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; justify-content: center; align-items: center; gap: 8px;
+}
+.btn-fortune:active { transform: scale(0.98); }
+
+/* === 결과 화면 === */
+.hidden { display: none !important; }
+
+.result-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px; margin-bottom: 20px;
+}
+.zodiac-icon { font-size: 3rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); animation: pulse 2s infinite; }
+
+.score-area { text-align: center; margin-bottom: 24px; }
+.score-val { font-size: 3.5rem; font-weight: 900; line-height: 1; }
+.score-label { font-size: 0.9rem; color: #94a3b8; margin-bottom: 4px; }
+
+.fortune-text-box { background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+.fortune-label { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: #818cf8; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.fortune-content { font-size: 0.95rem; line-height: 1.6; color: #e2e8f0; word-break: keep-all; text-align: justify; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.item-box {
+    background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.color-circle { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+
+/* 언어 스위치 */
+.lang-switch {
+    position: absolute; top: 20px; right: 20px; z-index: 100;
+    display: flex; background: rgba(0,0,0,0.3); border-radius: 20px; padding: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.lang-btn {
+    padding: 6px 12px; border-radius: 16px; font-size: 0.8rem; font-weight: bold;
+    color: #64748b; cursor: pointer; transition: all 0.2s;
+}
+.lang-btn.active { background: #6366f1; color: white; }
+
+/* 별 배경 */
+.star-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--duration) infinite ease-in-out; opacity: var(--opacity); }
+
+@keyframes twinkle { 0%, 100% { transform: scale(1); opacity: var(--opacity); } 50% { transform: scale(1.5); opacity: 1; } }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.slide-up { animation: slideUp 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
+
+/* 반응형 스타일 */
+@media (max-width: 480px) {
+    .date-input-group {
+        gap: 4px;
+    }
+    .date-field {
+        padding: 14px 8px;
+        font-size: 0.9rem;
+    }
+    .date-separator {
+        font-size: 0.8rem;
+        min-width: 16px;
+    }
+}
