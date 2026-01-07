@@ -149,6 +149,10 @@
     let containerElement = null;
 
     function renderInputScreen() {
+        if (!containerElement) {
+            console.error('[Mystic Fortune] containerElement is null in renderInputScreen');
+            return;
+        }
         const texts = UI_TEXTS[currentLang];
         containerElement.innerHTML = `
             <div class="glass-panel slide-up">
@@ -359,60 +363,79 @@
     // === Game 객체 (GameShell 인터페이스) ===
     const Game = {
         init: function(gameContainer, options = {}) {
-            container = gameContainer;
-            callbacks = options || {};
+            try {
+                if (!gameContainer) {
+                    console.error('[Mystic Fortune] Game container is null or undefined');
+                    throw new Error('Game container is required');
+                }
 
-            // 기존 내용 제거
-            container.innerHTML = '';
+                container = gameContainer;
+                callbacks = options || {};
 
-            // === DOM 요소 생성 ===
-            const wrapper = document.createElement('div');
-            wrapper.className = 'fortune-wrapper';
-            
-            // 별 배경 컨테이너
-            const starBg = document.createElement('div');
-            starBg.className = 'star-bg';
-            wrapper.appendChild(starBg);
+                // 기존 내용 제거
+                container.innerHTML = '';
 
-            // 언어 스위치
-            const langSwitch = document.createElement('div');
-            langSwitch.className = 'lang-switch';
-            langSwitch.innerHTML = `
-                <div class="lang-btn active" data-lang="ko">KR</div>
-                <div class="lang-btn" data-lang="en">EN</div>
-            `;
-            wrapper.appendChild(langSwitch);
+                // === DOM 요소 생성 ===
+                const wrapper = document.createElement('div');
+                wrapper.className = 'fortune-wrapper';
+                
+                // 별 배경 컨테이너
+                const starBg = document.createElement('div');
+                starBg.className = 'star-bg';
+                wrapper.appendChild(starBg);
 
-            // 메인 컨테이너
-            const fortuneContainer = document.createElement('div');
-            fortuneContainer.className = 'fortune-container';
-            wrapper.appendChild(fortuneContainer);
+                // 언어 스위치
+                const langSwitch = document.createElement('div');
+                langSwitch.className = 'lang-switch';
+                langSwitch.innerHTML = `
+                    <div class="lang-btn active" data-lang="ko">KR</div>
+                    <div class="lang-btn" data-lang="en">EN</div>
+                `;
+                wrapper.appendChild(langSwitch);
 
-            // container에 추가
-            container.appendChild(wrapper);
+                // 메인 컨테이너
+                const fortuneContainer = document.createElement('div');
+                fortuneContainer.className = 'fortune-container';
+                wrapper.appendChild(fortuneContainer);
 
-            // 별 배경 생성
-            createStarBackground(starBg);
+                // container에 추가
+                container.appendChild(wrapper);
 
-            // 컨테이너 요소 설정
-            containerElement = fortuneContainer;
+                // 별 배경 생성
+                createStarBackground(starBg);
 
-            // 언어 버튼 이벤트
-            langSwitch.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.onclick = (e) => {
-                    const lang = e.target.dataset.lang;
-                    if(currentLang === lang) return;
-                    currentLang = lang;
-                    langSwitch.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    
-                    // 화면 갱신
+                // 컨테이너 요소 설정
+                containerElement = fortuneContainer;
+
+                // 언어 버튼 이벤트
+                langSwitch.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.onclick = (e) => {
+                        const lang = e.target.dataset.lang;
+                        if(currentLang === lang) return;
+                        currentLang = lang;
+                        langSwitch.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        // 화면 갱신
+                        if (containerElement) {
+                            renderInputScreen();
+                        }
+                    };
+                });
+
+                // 첫 화면 렌더링
+                if (containerElement) {
                     renderInputScreen();
-                };
-            });
-
-            // 첫 화면 렌더링
-            renderInputScreen();
+                } else {
+                    console.error('[Mystic Fortune] containerElement is null');
+                }
+            } catch (error) {
+                console.error('[Mystic Fortune] Init error:', error);
+                if (container) {
+                    container.innerHTML = `<div style="padding: 20px; color: white;">게임 초기화 중 오류가 발생했습니다: ${error.message}</div>`;
+                }
+                throw error;
+            }
         },
 
         render: function() {
@@ -437,6 +460,9 @@
     // Export
     if (typeof window !== 'undefined') {
         window.Game = Game;
+        console.log('[Mystic Fortune] Game object exported:', typeof Game.init === 'function' ? 'OK' : 'FAILED');
+    } else {
+        console.error('[Mystic Fortune] window is undefined');
     }
 
 })();

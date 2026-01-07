@@ -1,0 +1,72 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+.wc-wrapper {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #f1f2f6; color: #2f3542;
+    font-family: 'Pretendard', sans-serif;
+    display: flex; flex-direction: column;
+    overflow: hidden; z-index: 9999;
+}
+
+/* 헤더 */
+.wc-header {
+    background: white; padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 10; padding-top: max(15px, env(safe-area-inset-top));
+}
+.wc-title { font-size: 1.2rem; font-weight: 800; color: #57606f; }
+.wc-score { font-size: 0.9rem; font-weight: bold; color: #ff6b81; }
+
+/* 채팅 영역 */
+.wc-chat-area {
+    flex: 1; padding: 20px;
+    overflow-y: auto; display: flex; flex-direction: column; gap: 15px;
+    background: #dfe4ea;
+}
+.wc-chat-area::-webkit-scrollbar { width: 5px; }
+.wc-chat-area::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+.msg {
+    max-width: 70%; padding: 12px 16px; border-radius: 16px;
+    font-size: 1rem; line-height: 1.4; position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.msg-bot {
+    align-self: flex-start; background: white; color: #2f3542;
+    border-top-left-radius: 4px;
+}
+.msg-user {
+    align-self: flex-end; background: #3742fa; color: white;
+    border-top-right-radius: 4px;
+}
+.msg-system {
+    align-self: center; background: rgba(0,0,0,0.1); color: #57606f;
+    font-size: 0.8rem; padding: 6px 12px; border-radius: 20px;
+    max-width: 90%; text-align: center;
+}
+
+/* 입력 영역 */
+.wc-input-area {
+    background: white; padding: 15px;
+    padding-bottom: max(15px, env(safe-area-inset-bottom));
+    display: flex; gap: 10px; border-top: 1px solid #eee;
+}
+.wc-input {
+    flex: 1; padding: 15px; border: 2px solid #f1f2f6; border-radius: 12px;
+    font-size: 1rem; transition: border 0.3s;
+}
+.wc-input:focus { outline: none; border-color: #3742fa; }
+.wc-btn {
+    padding: 0 20px; background: #3742fa; color: white; border: none;
+    border-radius: 12px; font-weight: bold; cursor: pointer;
+    transition: background 0.2s;
+}
+.wc-btn:active { background: #2f3542; }
+.wc-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+/* 타이머 바 */
+.timer-bar { height: 4px; background: #ff4757; width: 100%; position: absolute; top: 0; left: 0; transition: width 0.1s linear; }
+.msg-def { font-size: 0.7rem; color: #a4b0be; margin-top: 4px; display: block; }
+
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }

@@ -1,0 +1,12 @@
+{
+  "id": "word-chain",
+  "title": "무한 끝말잇기",
+  "titleEn": "Infinite Word Chain",
+  "description": "AI 쿵쿵따와 대결하세요! 두음법칙이 적용됩니다.",
+  "descriptionEn": "Play Word Chain against AI. Du-eum rule applied.",
+  "icon": "🗣️",
+  "category": "puzzle",
+  "difficulty": "normal",
+  "orientation": "portrait",
+  "version": "1.0.0"
+}
