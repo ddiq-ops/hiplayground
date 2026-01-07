@@ -1,0 +1,12 @@
+{
+  "id": "word-pop",
+  "title": "워드 팝",
+  "titleEn": "Word Pop",
+  "description": "떠오르는 영어 단어 방울을 터뜨리세요! 피버 모드와 폭탄을 주의하세요.",
+  "descriptionEn": "Pop the correct word bubbles! Watch out for bombs and enjoy Fever Mode.",
+  "icon": "🫧",
+  "category": "education",
+  "difficulty": "hard",
+  "version": "1.0.0",
+  "orientation": "portrait"
+}

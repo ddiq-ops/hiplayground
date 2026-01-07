@@ -1,0 +1,294 @@
+/* 게임 전체 컨테이너 */
+.cr-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f9ff;
+  color: #333;
+  font-family: 'Jua', sans-serif, system-ui;
+  overflow: hidden;
+  user-select: none;
+  position: relative;
+}
+
+/* 1. 상단 정보 표시줄 (레벨, 시간, 개수) */
+.cr-status-bar {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: white;
+  border-bottom: 2px solid #e1f0fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #555;
+  z-index: 10;
+}
+
+.cr-stat-group {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* 아이템 간 간격 */
+}
+
+/* 통계 아이템 (시간, CMD) */
+.cr-stat-item {
+  display: flex;
+  flex-direction: column; /* 라벨과 값/게이지를 위아래로 배치 */
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+}
+
+.cr-label {
+  font-size: 0.7rem;
+  color: #999;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+}
+
+.cr-value-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 800;
+}
+
+/* 타이머 게이지 바 */
+.cr-timer-bar-bg {
+  width: 60px;
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.cr-timer-bar-fill {
+  height: 100%;
+  background-color: #4CAF50; /* 기본 초록색 */
+  width: 100%;
+  transition: width 1s linear, background-color 0.3s;
+}
+
+/* 2. 메인 게임 보드 영역 */
+.cr-board-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: #e1f0fa;
+  overflow: hidden;
+  position: relative;
+}
+
+.cr-grid {
+  display: grid;
+  gap: 4px;
+  background-color: #bbdefb;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 6px 0 #90caf9;
+  transition: all 0.3s ease;
+}
+
+.cr-cell {
+  background-color: white;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.cr-cell-water {
+  background-color: #29b6f6;
+  box-shadow: inset 0 0 10px #0288d1;
+}
+.cr-cell-water::after {
+  content: '🌊';
+  font-size: 60%;
+  opacity: 0.7;
+}
+
+.cr-object {
+  width: 85%;
+  height: 85%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+  z-index: 5;
+}
+
+/* 3. 하단 컨트롤 패널 */
+.cr-controls {
+  flex: 0 0 auto;
+  background-color: white;
+  border-top: 2px solid #eee;
+  padding: 15px;
+  padding-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+  z-index: 20;
+}
+
+.cr-queue {
+  height: 55px;
+  background-color: #fafafa;
+  border: 2px dashed #ddd;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.cr-queue::-webkit-scrollbar { display: none; }
+
+.cr-queue.full {
+  border-color: #ff5252;
+  background-color: #ffebee;
+}
+
+.cr-cmd-block {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 0 #ccc;
+  cursor: pointer;
+}
+
+.cr-cmd-block.active {
+  border-color: #ff9800;
+  background-color: #fff3e0;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+}
+
+.cr-palette {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.cr-btn {
+  width: 65px;
+  height: 60px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.6rem;
+  background-color: white;
+  box-shadow: 0 4px 0 #cfd8dc;
+  border: 1px solid #eceff1;
+  transition: all 0.1s;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cr-btn:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.cr-btn-fwd { background-color: #4CAF50; color: white; box-shadow: 0 4px 0 #2E7D32; border: none; }
+.cr-btn-left { background-color: #2196F3; color: white; box-shadow: 0 4px 0 #1565C0; border: none; }
+.cr-btn-right { background-color: #2196F3; color: white; box-shadow: 0 4px 0 #1565C0; border: none; }
+.cr-btn-jump { 
+  background-color: #9c27b0; 
+  color: white; 
+  box-shadow: 0 4px 0 #7b1fa2; 
+  border: none;
+  font-size: 0.9rem !important;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.cr-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cr-action-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.1s;
+}
+
+.cr-action-btn:active { transform: scale(0.98); }
+
+.cr-btn-run { background-color: #ff9800; box-shadow: 0 4px 0 #f57c00; }
+.cr-btn-clear { background-color: #90a4ae; box-shadow: 0 4px 0 #607d8b; flex: 0.4; }
+
+.cr-btn-util {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.cr-modal {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.cr-modal.show { opacity: 1; pointer-events: auto; }
+
+.cr-modal-content {
+  background: white;
+  width: 80%;
+  max-width: 300px;
+  padding: 30px 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@media (max-height: 600px) {
+  .cr-board-area { padding: 5px; }
+  .cr-controls { padding: 10px; }
+  .cr-btn { height: 50px; }
+  .cr-queue { height: 45px; }
+}

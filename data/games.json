@@ -203,5 +203,33 @@
     "releaseDate": "2026-01-07",
     "version": "1.0.0",
     "orientation": "portrait"
+  },
+  {
+    "id": "code-rabbit",
+    "title": "코드 래빗",
+    "titleEn": "Code Rabbit",
+    "category": "education",
+    "difficulty": "medium",
+    "description": "토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)",
+    "descriptionEn": "Coding logic puzzle game",
+    "icon": "🐰",
+    "tags": ["교육", "퍼즐", "코딩"],
+    "popularity": 90,
+    "releaseDate": "2026-01-08",
+    "orientation": "portrait"
+  },
+  {
+    "id": "word-pop",
+    "title": "워드 팝",
+    "titleEn": "Word Pop",
+    "category": "education",
+    "difficulty": "hard",
+    "description": "영어 단어 방울을 터뜨리는 액션 게임",
+    "descriptionEn": "Bubble shooting action word game",
+    "icon": "🫧",
+    "tags": ["영어", "액션", "슈팅"],
+    "popularity": 88,
+    "releaseDate": "2026-01-08",
+    "orientation": "portrait"
   }
 ]

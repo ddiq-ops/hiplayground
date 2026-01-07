@@ -1,0 +1,12 @@
+{
+  "id": "code-rabbit",
+  "title": "코드 래빗",
+  "titleEn": "Code Rabbit",
+  "description": "토끼가 당근을 먹을 수 있도록 명령을 내려주세요! 코딩 논리를 배우는 두뇌 퍼즐입니다.",
+  "descriptionEn": "Help the rabbit reach the carrot! A logic puzzle game to learn basic coding sequences.",
+  "icon": "🐰",
+  "category": "education",
+  "difficulty": "medium",
+  "version": "1.0.0",
+  "orientation": "portrait"
+}
