@@ -1,11 +1,11 @@
 {
-  "id": "math-quiz",
-  "title": "매스 마스터",
-  "titleEn": "Math Master",
-  "description": "제한 시간 안에 정답을 맞추고 콤보를 쌓으세요! 두뇌 풀가동 수학 액션.",
-  "descriptionEn": "Solve math problems instantly! Keep the combo alive in this time-attack quiz.",
-  "icon": "🔢",
-  "category": "puzzle",
-  "difficulty": "variable",
-  "version": "2.0.0"
+  "id": "math-quiz-hard",
+  "title": "암산 천재 (고학년)",
+  "titleEn": "Mental Math Genius",
+  "description": "초등 고학년 도전! 큰 수 연산과 사칙연산 혼합 계산을 마스터하세요.",
+  "descriptionEn": "For Upper Elementary! Master mixed operations and large number calculations.",
+  "icon": "🧠",
+  "category": "education",
+  "difficulty": "hard",
+  "version": "1.0.0"
 }

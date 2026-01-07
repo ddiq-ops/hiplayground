@@ -1,5 +1,5 @@
-/* === 전체 레이아웃 (다크 모드) === */
-.math-wrapper {
+/* === 전체 레이아웃 (인텔리전트 블루 테마) === */
+.math-h-wrapper {
   width: 100%; height: 100%;
   display: flex; justify-content: center; align-items: center;
   background: #1e272e; font-family: 'Pretendard', sans-serif;
@@ -8,9 +8,9 @@
 
 .game-frame {
   position: relative; width: 800px; height: 600px;
-  background: #2f3640; border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  border: 4px solid #353b48;
+  background: #2c3e50; border-radius: 16px;
+  box-shadow: 0 0 50px rgba(52, 152, 219, 0.3);
+  border: 4px solid #34495e;
   display: flex; flex-direction: column; overflow: hidden;
 }
 
@@ -18,32 +18,29 @@
 .math-header {
   height: 80px; background: #1e272e;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 0 30px; border-bottom: 2px solid #353b48;
+  padding: 0 30px; border-bottom: 2px solid #34495e;
 }
 
 .stat-group { display: flex; gap: 20px; align-items: center; }
 .stat-badge {
-  background: #2c3e50; padding: 10px 20px; border-radius: 12px;
+  background: #34495e; padding: 10px 20px; border-radius: 12px;
   color: #bdc3c7; font-weight: bold; font-size: 1rem;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
 }
 .stat-value { color: #fff; font-size: 1.4rem; margin-left: 5px; }
-.accent { color: #f1c40f; }
+.accent { color: #3498db; text-shadow: 0 0 10px rgba(52, 152, 219, 0.5); }
 
 .combo-box {
-  font-size: 1.5rem; font-weight: 900; color: #e74c3c;
+  font-size: 1.8rem; font-weight: 900; color: #9b59b6;
   font-style: italic; opacity: 0; transform: scale(0.5);
-  transition: all 0.2s; text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+  transition: all 0.2s; text-shadow: 0 0 10px rgba(155, 89, 182, 0.8);
 }
 .combo-box.active { opacity: 1; transform: scale(1); }
 
 /* === 타이머 바 === */
-.timer-container {
-  width: 100%; height: 8px; background: #111;
-}
+.timer-container { width: 100%; height: 8px; background: #111; }
 .timer-bar {
   height: 100%; width: 100%;
-  background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
+  background: linear-gradient(90deg, #3498db, #9b59b6, #e74c3c);
   transition: width 0.1s linear;
 }
 
@@ -55,9 +52,9 @@
 }
 
 .question-box {
-  font-size: 5rem; font-weight: 900; color: #fff;
+  font-size: 4.5rem; font-weight: 900; color: #fff;
   margin-bottom: 40px; text-shadow: 4px 4px 0 #000;
-  font-family: 'Verdana', sans-serif; /* 숫자가 잘 보이는 폰트 */
+  font-family: 'Verdana', sans-serif; letter-spacing: 2px;
 }
 
 .answers-grid {
@@ -66,8 +63,8 @@
 }
 
 .btn-answer {
-  background: #353b48; color: #ecf0f1; border: none;
-  font-size: 2.5rem; font-weight: bold; padding: 30px;
+  background: #34495e; color: #ecf0f1; border: none;
+  font-size: 2.2rem; font-weight: bold; padding: 30px;
   border-radius: 16px; cursor: pointer;
   box-shadow: 0 8px 0 #2c3e50;
   transition: transform 0.1s, background 0.1s;
@@ -75,12 +72,12 @@
 .btn-answer:hover { background: #3d4655; transform: translateY(-2px); box-shadow: 0 10px 0 #2c3e50; }
 .btn-answer:active { transform: translateY(6px); box-shadow: 0 2px 0 #2c3e50; }
 
-.btn-answer.correct { background: #27ae60; box-shadow: 0 8px 0 #219150; animation: bounce 0.3s; }
-.btn-answer.wrong { background: #c0392b; box-shadow: 0 8px 0 #a93226; animation: shake 0.4s; }
+.btn-answer.correct { background: #2980b9; box-shadow: 0 8px 0 #1abc9c; animation: bounce 0.3s; }
+.btn-answer.wrong { background: #c0392b; box-shadow: 0 8px 0 #922b21; animation: shake 0.4s; }
 
 /* === 이펙트 === */
 .float-score {
-  position: absolute; color: #f1c40f; font-weight: 900; font-size: 2rem;
+  position: absolute; color: #3498db; font-weight: 900; font-size: 2rem;
   pointer-events: none; animation: floatUp 0.8s forwards; text-shadow: 2px 2px 0 #000;
 }
 
@@ -93,21 +90,18 @@
 }
 .math-modal.active { opacity: 1; pointer-events: auto; }
 .modal-content {
-  background: #2f3640; padding: 40px; border-radius: 20px;
+  background: #2c3e50; padding: 40px; border-radius: 20px;
   text-align: center; color: white; border: 2px solid #57606f;
   box-shadow: 0 20px 60px rgba(0,0,0,0.8);
 }
 .modal-title { font-size: 3rem; font-weight: 900; margin-bottom: 10px; }
 .btn-action {
-  padding: 15px 50px; background: #3498db; color: white; border: none;
+  padding: 15px 50px; background: #8e44ad; color: white; border: none;
   border-radius: 50px; font-size: 1.5rem; font-weight: bold; cursor: pointer;
-  box-shadow: 0 5px 0 #2980b9; margin-top: 20px;
+  box-shadow: 0 5px 0 #6c3483; margin-top: 20px;
 }
-.btn-action:active { transform: translateY(3px); box-shadow: 0 2px 0 #2980b9; }
+.btn-action:active { transform: translateY(3px); box-shadow: 0 2px 0 #6c3483; }
 
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
-}
+@keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(1.5); opacity: 0; } }
 @keyframes bounce { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }

@@ -1,11 +1,11 @@
 {
   "id": "omok",
-  "title": "오목 마스터",
-  "titleEn": "Omok Master",
-  "description": "총 12라운드의 극한 도전! 점차 강력해지는 AI를 꺾고 오목의 신이 되어보세요.",
-  "descriptionEn": "Challenge 12 rounds! Defeat the evolving AI and become the Omok God.",
-  "icon": "⚫",
+  "title": "오목 마스터: 헬 모드",
+  "titleEn": "Omok Master: Hell Mode",
+  "description": "1라운드부터 자비란 없습니다. 인간의 한계를 시험하는 12단계 극한 챌린지.",
+  "descriptionEn": "No mercy from Round 1. Test your limits against the ultimate AI.",
+  "icon": "👿",
   "category": "board",
-  "difficulty": "hard",
-  "version": "2.1.0"
+  "difficulty": "extreme",
+  "version": "2.2.0"
 }

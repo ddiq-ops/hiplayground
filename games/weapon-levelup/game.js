@@ -2,33 +2,33 @@
   'use strict';
 
   // ================= STORAGE HELPER =================
-  // 플랫폼 의존성 제거를 위한 로컬 스토리지 헬퍼
   const LocalStorage = {
       save: (key, data) => localStorage.setItem(key, JSON.stringify(data)),
       get: (key) => JSON.parse(localStorage.getItem(key))
   };
 
   // ================= DATA & CONFIG =================
-  // 레벨별 무기 아이콘 (이미지 대신 이모지 사용)
+  // 1~100레벨 무기 진화 리스트 (테마별 구성)
   const WEAPON_ICONS = [
-      '🗡️', '🗡️', '🗡️', '⚔️', '⚔️', '⚔️', '⛏️', '⛏️', '🪓', '🪓',
-      '🔨', '🔨', '🔱', '🔱', '🏹', '🏹', '🪄', '🪄', '🔮', '🔮',
-      '🔪', '🔪', '🛡️', '🛡️', '🪁', '🪁', '🧪', '🧪', '💎', '💎',
-      '🐲', '🐲', '👹', '👹', '💀', '💀', '👽', '👽', '🤖', '🤖',
-      '🌞', '🌞', '⭐', '⭐', '🌟', '🌟', '👑', '👑', '💍', '💍',
-      '🔥', '🔥', '🌊', '🌊', '⚡', '⚡', '🌈', '🌈', '🪐', '🪐',
-      '🚀', '🚀', '🛸', '🛸', '🌌', '🌌', '⚛️', '⚛️', '♾️', '♾️',
-      '💠', '💠', '🧿', '🧿', '🧬', '🧬', '🦠', '🦠', '💊', '💊',
-      '🕯️', '🕯️', '🔦', '🔦', '💡', '💡', '📡', '📡', '🔭', '🔭',
-      '🏆', '🏆', '🥇', '🥇', '🥈', '🥈', '🥉', '🥉', '🏵️', '🏵️'
-  ]; // 100레벨까지 대응
+      '🪵', '🦴', '🥄', '🔪', '🪡', '📌', '🎋', '🧹', '🏏', '🪃',
+      '🔨', '🔧', '🔩', '⛏️', '⛓️', '🪝', '⚙️', '🗜️', '✂️', '🦯',
+      '🗡️', '🛡️', '🏹', '⚔️', '🤺', '🥊', '🥋', '🪓', '🔱', '🔫',
+      '🪄', '🔮', '🧿', '🕯️', '🔥', '💧', '⚡', '❄️', '🌪️', '🧪',
+      '🐲', '🦖', '🐊', '🐍', '🦂', '🕷️', '💀', '☠️', '👹', '👺',
+      '📀', '⚜️', '⚱️', '🏺', '🗿', '💎', '💍', '👑', '🏆', '🥇',
+      '🦾', '🦿', '🕶️', '💾', '💿', '📡', '🔭', '🔬', '🧬', '🤖',
+      '🛸', '👽', '👾', '🚀', '🛰️', '☄️', '🌑', '🌕', '🌍', '🪐',
+      '⭐', '🌟', '✨', '❇️', '✴️', '⚛️', '🌌', '🌫️', '🌀', '♾️',
+      '☀️', '🌩️', '🌈', '🎪', '🎡', '🎢', '⛲', '🗽', '🗼', '🏯',
+      '🐲👑' 
+  ]; 
 
   const POTIONS = [
       { id: 1, name: '확률 포션 (1.2배)', icon: '🧪', price: 1000, desc: '성공 확률 1.2배 증가' },
       { id: 2, name: '고급 확률 (1.5배)', icon: '⚗️', price: 3000, desc: '성공 확률 1.5배 증가' },
       { id: 3, name: '보호막 (50%)', icon: '🛡️', price: 10000, desc: '실패 시 50% 확률로 유지' },
       { id: 4, name: '강철 보호 (80%)', icon: '🏰', price: 30000, desc: '실패 시 80% 확률로 유지' },
-      { id: 5, name: '랜덤 박스', icon: '🎁', price: 3000, desc: '무작위 포션 획득' }
+      { id: 5, name: '랜덤 박스', icon: '🎁', price: 3000, desc: '사용 시 포션 1개 획득' }
   ];
 
   // ================= GAME LOGIC =================
@@ -55,7 +55,6 @@
           const saved = LocalStorage.get('wl_save_v1');
           if(saved) {
               this.state = { ...this.state, ...saved };
-              // 최대 레벨 등 데이터 보정
               this.state.weaponLevel = Math.max(1, Math.min(100, this.state.weaponLevel));
           }
       },
@@ -66,24 +65,18 @@
 
       // --- CORE CALCULATIONS ---
       getUpgradeCost: function() {
-          // 비용: (레벨 * 20) + 15
           return Math.floor(this.state.weaponLevel * 20 + 15);
       },
 
       getSuccessRate: function() {
-          // 기본 확률: 100 - 레벨 (최소 10%)
           let rate = Math.max(10, 100 - this.state.weaponLevel);
-          
-          // 포션 적용
-          if(this.state.activePotion === 0) rate *= 1.2; // 1번 포션
-          if(this.state.activePotion === 1) rate *= 1.5; // 2번 포션
-          
+          if(this.state.activePotion === 0) rate *= 1.2; 
+          if(this.state.activePotion === 1) rate *= 1.5; 
           return Math.min(100, rate);
       },
 
       getSellPrice: function() {
           const lv = this.state.weaponLevel;
-          // 판매가: 레벨^2 * 25 + 레벨 * 60 + 30
           return Math.floor(lv * lv * 25 + lv * 60 + 30);
       },
 
@@ -100,10 +93,9 @@
           const roll = Math.random() * 100;
           const isSuccess = roll < rate;
 
-          // UI 애니메이션
           const weaponEl = document.querySelector('.weapon-stage');
-          weaponEl.className = 'weapon-stage'; // reset
-          void weaponEl.offsetWidth; // trigger reflow
+          weaponEl.className = 'weapon-stage'; 
+          void weaponEl.offsetWidth; 
 
           if(isSuccess) {
               this.state.weaponLevel++;
@@ -111,7 +103,6 @@
               this.showMsg("강화 성공! 레벨 업!", "success");
               weaponEl.classList.add('anim-success');
           } else {
-              // 실패 로직
               let isProtected = false;
               if(this.state.activePotion === 2 && Math.random() < 0.5) isProtected = true;
               if(this.state.activePotion === 3 && Math.random() < 0.8) isProtected = true;
@@ -129,7 +120,6 @@
               weaponEl.classList.add('anim-fail');
           }
 
-          // 포션 소모
           this.state.activePotion = null;
           this.saveProgress();
           this.updateUI();
@@ -167,22 +157,38 @@
           if(this.state.gold < item.price) return alert("골드가 부족합니다.");
 
           this.state.gold -= item.price;
+          this.state.inventory[idx]++; // [수정] 랜덤박스도 일단 인벤토리에 들어감
           
-          if(idx === 4) { // 랜덤박스
-              const resultIdx = Math.random() < 0.7 ? 0 : (Math.random() < 0.9 ? 1 : (Math.random() < 0.98 ? 2 : 3));
-              this.state.inventory[resultIdx]++;
-              alert(`랜덤박스 결과: ${POTIONS[resultIdx].name} 획득!`);
-          } else {
-              this.state.inventory[idx]++;
-          }
-          
+          this.showMsg(`${item.name} 구매 완료!`, "success");
           this.saveProgress();
           this.updateUI();
-          this.renderShop(); // 버튼 상태 갱신
+          this.renderShop(); 
       },
 
       usePotion: function(idx) {
           if(this.state.inventory[idx] <= 0) return;
+
+          // [수정] 랜덤박스(idx 4) 사용 시 로직
+          if(idx === 4) {
+              this.state.inventory[idx]--; // 랜덤박스 소모
+
+              const r = Math.random();
+              let rewardIdx = 0;
+              // 확률: 1번(70%), 2번(20%), 3번(8%), 4번(2%)
+              if(r < 0.7) rewardIdx = 0;
+              else if(r < 0.9) rewardIdx = 1;
+              else if(r < 0.98) rewardIdx = 2;
+              else rewardIdx = 3;
+
+              this.state.inventory[rewardIdx]++; // [핵심] 해당 아이템 개수 증가
+              this.showMsg(`🎁 랜덤박스 결과: ${POTIONS[rewardIdx].name} 획득!`, "success");
+              
+              this.saveProgress();
+              this.updateUI();
+              return; // 강화 효과 적용 안 하고 종료
+          }
+
+          // 일반 포션 로직
           if(this.state.activePotion !== null) return this.showMsg("이미 사용 중인 포션이 있습니다.", "warning");
 
           this.state.inventory[idx]--;
@@ -238,9 +244,7 @@
                           </div>
                       </div>
 
-                      <div class="wl-inventory" id="inventory-bar">
-                          <span class="inv-title">가방:</span>
-                          </div>
+                      <div class="wl-inventory" id="inventory-bar"></div>
 
                       <div class="modal-overlay" id="shop-modal">
                           <div class="modal-box">
@@ -263,10 +267,9 @@
           document.getElementById('val-lv').innerText = this.state.weaponLevel;
           document.getElementById('val-gold').innerText = this.state.gold.toLocaleString();
           document.getElementById('val-rate').innerText = Math.floor(this.getSuccessRate()) + '%';
-          
           document.getElementById('badge-lv').innerText = `Lv.${this.state.weaponLevel}`;
           
-          // Icon (이모지 매핑)
+          // Icon
           const iconIdx = Math.min(this.state.weaponLevel - 1, WEAPON_ICONS.length - 1);
           document.getElementById('weapon-icon').innerText = WEAPON_ICONS[iconIdx];
 
@@ -274,7 +277,7 @@
           document.getElementById('cost-upgrade').innerText = this.getUpgradeCost().toLocaleString();
           document.getElementById('cost-sell').innerText = this.getSellPrice().toLocaleString();
           
-          // Stored Info
+          // Stored
           const storedText = this.state.storedWeapon > 0 ? `Lv.${this.state.storedWeapon}` : "없음";
           document.getElementById('val-stored').innerText = storedText;
           document.getElementById('txt-fail-risk').innerText = this.state.storedWeapon > 0 
@@ -290,18 +293,16 @@
               pStatus.style.display = 'none';
           }
 
-          // Inventory Bar
+          // Inventory Bar (전체 포션 표시)
           const invBar = document.getElementById('inventory-bar');
           let invHtml = '<span class="inv-title">가방:</span>';
           POTIONS.forEach((p, idx) => {
-              if(idx < 5) { // 보여줄 포션들
-                  invHtml += `
-                      <div class="inv-slot" onclick="Game.usePotion(${idx})" title="${p.name}">
-                          ${p.icon}
-                          <span class="inv-count">${this.state.inventory[idx]}</span>
-                      </div>
-                  `;
-              }
+              invHtml += `
+                  <div class="inv-slot" onclick="Game.usePotion(${idx})" title="${p.name} (클릭하여 사용)">
+                      ${p.icon}
+                      <span class="inv-count">${this.state.inventory[idx]}</span>
+                  </div>
+              `;
           });
           invBar.innerHTML = invHtml;
       },
@@ -330,7 +331,6 @@
           document.getElementById('btn-sell').onclick = () => this.sell();
           document.getElementById('btn-store').onclick = () => this.store();
           
-          // Modal
           const modal = document.getElementById('shop-modal');
           document.getElementById('btn-open-shop').onclick = () => {
               this.renderShop();

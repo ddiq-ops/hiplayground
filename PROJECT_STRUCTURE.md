@@ -7,7 +7,7 @@
 **Hi Playground**는 초등학생을 대상으로 한 미니 게임 플랫폼입니다.
 - **기술 스택**: HTML, CSS, JavaScript (순수 프론트엔드, 빌드 도구 없음)
 - **목표**: 확장 가능한 구조로 100개 이상의 게임을 호스팅
-- **타겟**: 초등학생 (태블릿 PC, 모바일 최적화)
+- **타겟**: 일반인 (태블릿 PC, 모바일 최적화)
 
 ## 디렉토리 구조
 
@@ -50,9 +50,15 @@ hiplayground/
 │   ├── clicker/
 │   ├── memory/
 │   ├── math-quiz/
+│   ├── math-quiz-hard/
 │   ├── chess/
 │   ├── omok/
-│   └── weapon-levelup/
+│   ├── weapon-levelup/
+│   ├── speed-number/
+│   ├── physics-box/
+│   ├── gravity-run/
+│   ├── infinite-space/
+│   └── mystic-fortune/
 ├── shared/                    # 공유 컴포넌트
 │   ├── game-shell.js         # 게임 래퍼 (게임 로딩 및 UI)
 │   ├── game-shell.css        # 게임 쉘 스타일
@@ -131,9 +137,16 @@ hiplayground/
 1. `pages/play.html?id={game-id}` 접속
 2. `GameShell.init(gameId)` 호출
 3. `games/{game-id}/manifest.json` 로드
-4. `games/{game-id}/game.css` 로드 (자동)
-5. `games/{game-id}/game.js` 로드
-6. `window.Game.init(gameContainer, callbacks)` 호출
+4. `games/{game-id}/game.css` 로드 (자동, `<link>` 태그로 추가)
+5. `games/{game-id}/game.js` 로드 (동적 `<script>` 태그로 추가)
+6. 스크립트 로드 완료 후 100ms 대기 (IIFE 실행 보장)
+7. `window.Game` 객체 확인
+8. `window.Game.init(gameContainer, callbacks)` 호출
+9. 게임 초기화 완료
+
+**오류 처리**:
+- `window.Game`이 없거나 `init` 메서드가 없으면 오류 표시
+- `init` 메서드 실행 중 오류 발생 시 오류 메시지 표시
 
 ### 2. 데이터 시스템
 
@@ -141,20 +154,27 @@ hiplayground/
 ```json
 [
   {
-    "id": "game-id",              // 고유 ID (디렉토리 이름과 일치)
+    "id": "game-id",              // 고유 ID (디렉토리 이름과 정확히 일치, 소문자 하이픈)
     "title": "게임 제목",          // 한국어 제목
     "titleEn": "Game Title",       // 영어 제목
     "category": "action",          // 카테고리 ID
-    "difficulty": "medium",        // easy | medium | hard
+    "difficulty": "easy",          // easy | medium | hard
     "description": "설명",
     "descriptionEn": "Description",
-    "icon": "🎮",                  // 이모지 또는 경로
+    "icon": "🎮",                  // 이모지 또는 경로 (예: "assets/games/omok/icon/icon.webp")
     "tags": ["태그1", "태그2"],
     "popularity": 85,              // 인기 점수 (0-100)
-    "releaseDate": "2024-01-01"    // YYYY-MM-DD 형식
+    "releaseDate": "2024-01-01",   // YYYY-MM-DD 형식
+    "version": "1.0.0",            // 선택적: 버전 정보
+    "orientation": "portrait"      // 선택적: portrait | landscape
   }
 ]
 ```
+
+**중요 규칙**:
+- `id` 필드는 폴더 이름과 정확히 일치해야 함 (대소문자 구분)
+- 폴더 이름은 소문자 하이픈 형식 권장 (예: `mystic-fortune`)
+- `icon` 필드는 이모지 문자열 또는 이미지 경로 문자열
 
 #### categories.json 구조
 ```json
@@ -195,13 +215,66 @@ hiplayground/
 - 지원 언어: 영어 (en)
 - `I18n.t(key)` - 번역 텍스트 가져오기
 
+### 6. App API
+
+**assets/js/app.js**의 `App` 객체가 게임 데이터를 관리합니다.
+
+#### 주요 메서드
+```javascript
+// App 초기화 (필수, 페이지 로드 시 호출)
+await App.init();
+
+// 모든 게임 가져오기
+const allGames = App.getGames();
+
+// ID로 게임 찾기
+const game = App.getGameById('game-id');
+
+// 카테고리로 게임 필터링
+const games = App.getGamesByCategory('puzzle');
+
+// 게임 검색 (제목, 설명, 태그에서 검색)
+const results = App.searchGames('검색어');
+
+// 필터 및 정렬
+const filtered = App.filterAndSortGames(allGames, {
+  category: 'puzzle',      // 카테고리 필터
+  difficulty: 'medium',    // 난이도 필터
+  sort: 'popular'          // 정렬: 'popular' | 'new'
+});
+
+// 카테고리 목록 가져오기
+const categories = App.getCategories();
+
+// ID로 카테고리 찾기
+const category = App.getCategoryById('puzzle');
+```
+
+#### UI API (shared/ui.js)
+
+```javascript
+// 게임 카드 렌더링
+UI.renderGameCards(containerElement, gamesArray);
+
+// 카테고리 카드 렌더링
+UI.renderCategoryCards(containerElement, categoriesArray);
+
+// 아이콘 렌더링 (이모지/이미지 자동 감지)
+const iconHTML = UI.renderIcon(game.icon);
+
+// 디바운스 함수 (검색 등에 사용)
+const debouncedSearch = UI.debounce((query) => {
+  // 검색 로직
+}, 300);
+```
+
 ## 주요 페이지 구조
 
 ### index.html (메인 페이지)
-- 카테고리 그리드
-- 인기 게임 목록 (6개)
-- 이어서 하기 (마지막 플레이 게임)
-- 검색 기능
+- **모든 게임 섹션**: 모든 게임을 한 번에 표시 (카테고리/인기 게임 구분 없음)
+- 이어서 하기 (마지막 플레이 게임, 선택적)
+- 검색 기능 (실시간 필터링)
+- **참고**: 카테고리 섹션과 인기 게임 섹션은 제거됨
 
 ### pages/games.html (게임 목록)
 - 모든 게임 표시
@@ -225,18 +298,44 @@ hiplayground/
 1. **window.Game 객체 노출**
    - IIFE 패턴으로 구현
    - `window.Game = Game` 형태로 노출
+   - **중요**: 자동 실행 코드 금지 (DOMContentLoaded 이벤트 리스너나 즉시 실행 init 호출 금지)
 
-2. **init 메서드 구현**
+2. **init 메서드 구현** (필수)
    ```javascript
    init: function(gameContainer, options = {}) {
-     // gameContainer: DOM 요소
+     // gameContainer: DOM 요소 (GameShell이 제공)
      // options.onScoreUpdate(score) - 점수 업데이트 콜백
      // options.onGameOver(data) - 게임 종료 콜백
      // options.onLevelChange(level) - 레벨 변경 콜백
+     
+     // 필수: container에 게임 UI 렌더링
+     container.innerHTML = '';
+     // 게임 초기화 및 렌더링 로직
    }
    ```
 
-3. **반응형 디자인**
+3. **render 메서드** (선택적)
+   ```javascript
+   render: function() {
+     // 게임 UI 재렌더링
+   }
+   ```
+
+4. **reset 메서드** (선택적)
+   ```javascript
+   reset: function() {
+     // 게임 상태 초기화 및 재시작
+   }
+   ```
+
+5. **setMuted 메서드** (선택적)
+   ```javascript
+   setMuted: function(muted) {
+     // 사운드 음소거 처리
+   }
+   ```
+
+6. **반응형 디자인**
    - 태블릿 및 모바일 최적화
    - 터치 이벤트 지원 권장
 
@@ -267,20 +366,25 @@ if (callbacks.onLevelChange) {
 
 1. **clicker** - 클리커 게임 (액션, 쉬움)
 2. **memory** - 기억력 게임 (퍼즐, 보통)
-3. **math-quiz** - 수학 퀴즈 (수학, 보통)
-4. **chess** - 체스 (보드, 어려움)
-5. **omok** - 오목 (퍼즐, 보통)
-6. **weapon-levelup** - 내 무기만 레벨업 (퍼즐, 보통)
+3. **math-quiz** - 초등 수학 마스터 (교육, 보통)
+4. **math-quiz-hard** - 암산 천재 (고학년) (교육, 어려움)
+5. **chess** - 체스 (보드, 어려움)
+6. **omok** - 오목 마스터 (보드, 어려움)
+7. **weapon-levelup** - 내 무기만 레벨업 (퍼즐, 보통)
+8. **speed-number** - 순발력 숫자 터치 (액션, 쉬움)
+9. **physics-box** - 와르르 상자 (액션, 보통)
+10. **gravity-run** - 그래비티 런: 제로 (액션, 어려움)
+11. **infinite-space** - 인피니티 스페이스: 로그 (슈팅, 어려움)
+12. **mystic-fortune** - 오늘의 운세 (라이프스타일, 쉬움)
 
 ## 카테고리 목록
 
 1. **action** - 액션
 2. **puzzle** - 퍼즐
-3. **math** - 수학
-4. **memory** - 기억력
-5. **board** - 보드 게임
-6. **casual** - 캐주얼
-7. **sports** - 스포츠
+3. **education** - 교육 (수학 포함)
+4. **board** - 보드 게임
+5. **shooting** - 슈팅
+6. **lifestyle** - 라이프스타일
 
 ## 기술 스택 상세
 
@@ -292,22 +396,151 @@ if (callbacks.onLevelChange) {
 
 ## 파일 확장 규칙
 
-- 게임 ID는 하이픈으로 구분 (예: `weapon-levelup`)
-- 디렉토리 이름과 게임 ID는 일치해야 함
-- manifest.json의 id 필드와 디렉토리 이름은 일치해야 함
+- **게임 ID는 소문자 하이픈으로 구분** (예: `mystic-fortune`, `weapon-levelup`)
+- **디렉토리 이름과 게임 ID는 정확히 일치해야 함** (대소문자 구분)
+- **manifest.json의 id 필드와 디렉토리 이름은 일치해야 함**
+- **중요**: 웹 서버는 대소문자를 구분하므로, 폴더 이름도 소문자 하이픈 형식을 사용해야 함
 
 ## 주의사항
 
-1. 게임은 `window.Game` 객체로 노출되어야 함
-2. 게임 CSS는 게임 ID를 prefix로 사용 권장 (충돌 방지)
-3. 게임은 독립적으로 작동해야 함 (다른 게임에 의존하면 안 됨)
-4. 모든 게임은 모바일/태블릿에서 테스트 필요
+1. **게임은 `window.Game` 객체로 노출되어야 함** (GameShell 인터페이스 필수)
+2. **Game 객체는 반드시 `init(gameContainer, options)` 메서드를 가져야 함**
+3. 게임 CSS는 게임 ID를 prefix로 사용 권장 (충돌 방지)
+4. 게임은 독립적으로 작동해야 함 (다른 게임에 의존하면 안 됨)
+5. 모든 게임은 모바일/태블릿에서 테스트 필요
+6. **폴더 이름은 소문자 하이픈 형식 사용** (예: `mystic-fortune`, `weapon-levelup`)
+7. **게임 아이콘은 이모지 또는 이미지 경로 지원** (이미지 사용 시 WebP 권장)
 
 ## 추가 리소스
 
 - 게임 에셋은 `assets/games/{game-id}/`에 저장
 - 게임 로직은 `games/{game-id}/game.js`에만 구현
 - 공통 UI는 `shared/game-shell.js`를 통해 제공
+
+## UI 컴포넌트 시스템
+
+### 게임 카드 렌더링
+
+**shared/ui.js**의 `renderGameCards()` 함수가 게임 카드를 렌더링합니다.
+
+#### 아이콘 처리
+- **이모지 아이콘**: `"icon": "🎮"` (문자열)
+- **이미지 아이콘**: `"icon": "assets/games/omok/icon/icon.webp"` (경로)
+- `UI.renderIcon()` 메서드가 자동으로 타입을 감지하여 처리
+- **중요**: 이미지와 이모지 아이콘의 높이를 동일하게 맞춰야 텍스트 정렬이 일치함
+  - CSS에서 `.game-card-icon`에 `height: 4rem`과 `line-height: 4rem` 설정 필수
+  - 이미지 아이콘은 `.game-icon-image` 클래스가 자동 추가됨
+
+#### 게임 카드 구조
+```html
+<div class="card game-card" data-game-id="game-id">
+  <div class="game-card-icon">🎮</div> <!-- 또는 <img> -->
+  <div class="game-card-title">게임 제목</div>
+  <div class="game-card-description">게임 설명</div>
+  <button class="btn btn-primary">플레이</button>
+</div>
+```
+
+### 메인 페이지 구조
+
+**index.html**의 메인 콘텐츠 구조:
+```html
+<main class="container">
+  <!-- 검색 박스 -->
+  <div class="search-box">...</div>
+  
+  <!-- 이어서 하기 (선택적) -->
+  <section class="continue-section" id="continue-section" style="display: none;">
+    <h2>이어서 하기</h2>
+    <div id="continue-game"></div>
+  </section>
+  
+  <!-- 모든 게임 섹션 -->
+  <section class="section">
+    <h2>모든 게임</h2>
+    <div class="grid grid-3" id="all-games-grid">
+      <!-- 게임 카드들이 동적으로 추가됨 -->
+    </div>
+  </section>
+</main>
+```
+
+**초기화 스크립트**:
+```javascript
+// 모든 게임 로드
+const allGames = App.getGames();
+const allGamesGrid = document.getElementById('all-games-grid');
+UI.renderGameCards(allGamesGrid, allGames);
+
+// 검색 기능
+const handleSearch = UI.debounce((query) => {
+  if (!query.trim()) {
+    UI.renderGameCards(allGamesGrid, allGames);
+    return;
+  }
+  const results = App.searchGames(query);
+  UI.renderGameCards(allGamesGrid, results);
+}, 300);
+```
+
+## GameShell 인터페이스
+
+모든 게임은 다음 인터페이스를 구현해야 합니다:
+
+```javascript
+const Game = {
+  init: function(gameContainer, options = {}) {
+    // gameContainer: DOM 요소 (게임을 렌더링할 컨테이너)
+    // options: { onScoreUpdate, onGameOver, onLevelChange }
+    // 필수: container에 게임 UI를 렌더링
+  },
+  
+  render: function() {
+    // 선택적: 게임 UI 재렌더링
+  },
+  
+  reset: function() {
+    // 선택적: 게임 리셋
+  },
+  
+  setMuted: function(muted) {
+    // 선택적: 사운드 음소거 처리
+  }
+};
+
+// 필수: window.Game으로 export
+if (typeof window !== 'undefined') {
+  window.Game = Game;
+}
+```
+
+**중요**: 
+- 게임은 자동 실행되면 안 됨 (IIFE 내부에서 자동 init 호출 금지)
+- GameShell이 `Game.init()`을 호출할 때까지 대기해야 함
+- `gameContainer`는 GameShell이 제공하는 DOM 요소임
+
+## 최근 주요 변경 사항
+
+### 메인 페이지 구조 변경
+- **카테고리 섹션 제거**: 메인 페이지에서 카테고리 그리드 제거
+- **인기 게임 섹션 제거**: 인기 게임만 보여주던 섹션 제거
+- **모든 게임 섹션 추가**: 모든 게임을 한 번에 표시하는 단일 섹션으로 통합
+- 검색 기능은 유지되어 실시간으로 게임을 필터링할 수 있음
+
+### 게임 카드 아이콘 정렬
+- 이미지 아이콘과 이모지 아이콘의 높이를 동일하게 맞춤
+- CSS에서 `.game-card-icon`에 `height: 4rem`과 `line-height: 4rem` 설정 필수
+- 이미지 아이콘은 `.game-icon-image` 클래스가 자동 추가됨
+
+### 폴더 이름 규칙 강화
+- **게임 ID와 폴더 이름은 정확히 일치해야 함** (대소문자 구분)
+- **소문자 하이픈 형식 권장** (예: `mystic-fortune`, `weapon-levelup`)
+- 웹 서버는 대소문자를 구분하므로 일치하지 않으면 게임 로드 실패
+
+### GameShell 인터페이스 필수화
+- 모든 게임은 `window.Game` 객체를 export해야 함
+- `Game.init(gameContainer, options)` 메서드 필수
+- 자동 실행 코드 금지 (GameShell이 init을 호출할 때까지 대기)
 
 ---
 

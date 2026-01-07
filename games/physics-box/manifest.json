@@ -1,12 +1,12 @@
 {
   "id": "physics-box",
-  "title": "와르르 상자 무너뜨리기",
-  "titleEn": "Physics Box Crash",
-  "description": "공을 당겨서 쏘세요! 물리 법칙을 이용해 쌓여있는 상자를 모두 바닥으로 떨어뜨려야 합니다.",
-  "descriptionEn": "Drag and shoot! Knock down all boxes using physics.",
+  "title": "와르르 상자: 디스트로이어",
+  "titleEn": "Physics Box: Destroyer",
+  "description": "공을 당겨 구조물을 파괴하세요! 주어진 기회 안에 모든 상자를 무너뜨려야 합니다.",
+  "descriptionEn": "Destroy structures with limited shots! Angry Birds style physics puzzle.",
   "icon": "💣",
   "category": "action",
-  "difficulty": "medium",
-  "version": "1.0.0",
+  "difficulty": "hard",
+  "version": "2.0.0",
   "orientation": "landscape"
 }

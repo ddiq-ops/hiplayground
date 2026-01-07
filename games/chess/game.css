@@ -54,7 +54,7 @@
 
 .chess-board {
   width: 600px; height: 600px;
-  background: #deb887; /* 밝은 칸 (나무) */
+  background: #deb887;
   border: 15px solid #5d4037;
   border-radius: 4px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
@@ -82,7 +82,7 @@
   border-radius: 50%; pointer-events: none;
 }
 .square.capture-hint .hint-dot {
-  background: rgba(255, 0, 0, 0.4); /* 공격 가능 시 붉은 점 */
+  background: rgba(255, 0, 0, 0.4); 
   width: 40px; height: 40px; border: 4px solid rgba(255,0,0,0.4); background: none;
 }
 
@@ -110,6 +110,10 @@
   border: 2px solid #57606f; color: white; min-width: 300px;
 }
 .modal-title { font-size: 2.5rem; font-weight: bold; margin-bottom: 15px; }
+/* 승리/패배 색상 */
+.title-win { color: #f1c40f; }
+.title-lose { color: #e74c3c; }
+
 .modal-desc { font-size: 1.1rem; color: #bdc3c7; margin-bottom: 30px; }
 .btn-action {
   padding: 12px 35px; background: #3498db; color: white; border: none;
