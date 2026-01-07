@@ -203,25 +203,5 @@
     "releaseDate": "2026-01-07",
     "version": "1.0.0",
     "orientation": "portrait"
-  },
-  {
-    "id": "word-chain",
-    "title": "무한 끝말잇기",
-    "titleEn": "Infinite Word Chain",
-    "description": "AI와 함께하는 끝없는 단어 대결! 두음법칙도 완벽 지원합니다.",
-    "descriptionEn": "Endless word battle with AI! Fully supports the Du-eum rule.",
-    "icon": "🗣️",
-    "category": "puzzle",
-    "difficulty": "normal",
-    "tags": [
-      "단어",
-      "퍼즐",
-      "두뇌",
-      "학습"
-    ],
-    "popularity": 90,
-    "releaseDate": "2026-01-07",
-    "version": "1.0.0",
-    "orientation": "portrait"
   }
 ]
