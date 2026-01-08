@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>하이 플레이그라운드 - 재미있는 미니 게임 놀이터</title>
+    <link>https://hiplayground.com/</link>
+    <description>어린이를 위한 안전하고 재미있는 미니 게임 플랫폼. 액션, 퍼즐, 교육, 보드게임 등 다양한 게임을 무료로 즐기세요!</description>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 08 Jan 2026 00:00:00 +0900</lastBuildDate>
+    <pubDate>Tue, 08 Jan 2026 00:00:00 +0900</pubDate>
+    <managingEditor>hiplayground@example.com (하이 플레이그라운드)</managingEditor>
+    <webMaster>hiplayground@example.com (하이 플레이그라운드)</webMaster>
+    <atom:link href="https://hiplayground.com/rss.xml" rel="self" type="application/rss+xml"/>
+    
+    <!-- 최신 게임 추가 -->
+    <item>
+      <title>🫧 워드 팝 - 영어 단어 방울을 터뜨리는 액션 게임</title>
+      <link>https://hiplayground.com/pages/play.html?id=word-pop</link>
+      <description>영어 단어 방울을 터뜨리는 액션 게임. 영어 학습과 재미를 동시에!</description>
+      <pubDate>Wed, 08 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=word-pop</guid>
+    </item>
+    
+    <item>
+      <title>🐰 코드 래빗 - 토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)</title>
+      <link>https://hiplayground.com/pages/play.html?id=code-rabbit</link>
+      <description>토끼가 당근을 먹게 도와주세요! 코딩 로직 퍼즐 게임으로 논리적 사고력을 기르세요.</description>
+      <pubDate>Tue, 08 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=code-rabbit</guid>
+    </item>
+    
+    <item>
+      <title>🔮 오늘의 운세 - 별들이 속삭이는 당신의 하루 운세</title>
+      <link>https://hiplayground.com/pages/play.html?id=mystic-fortune</link>
+      <description>별들이 속삭이는 당신의 하루 운세를 확인하세요. 라이프스타일 게임으로 힐링하세요.</description>
+      <pubDate>Wed, 07 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=mystic-fortune</guid>
+    </item>
+    
+    <item>
+      <title>🚀 인피니티 스페이스: 로그 - 끝없는 우주 전쟁!</title>
+      <link>https://hiplayground.com/pages/play.html?id=infinite-space</link>
+      <description>끝없는 우주 전쟁! 적을 파괴하고, 경험치를 모아 나만의 전함을 진화시키세요. 로그라이크 슈팅 게임.</description>
+      <pubDate>Mon, 05 Feb 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=infinite-space</guid>
+    </item>
+    
+    <item>
+      <title>🏃 그래비티 런: 제로 - 중력을 거스르는 질주!</title>
+      <link>https://hiplayground.com/pages/play.html?id=gravity-run</link>
+      <description>중력을 거스르는 질주! 터치 한 번으로 위아래를 뒤집으세요. 극한의 속도감에 도전하라.</description>
+      <pubDate>Thu, 01 Feb 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=gravity-run</guid>
+    </item>
+    
+    <item>
+      <title>🔢 순발력 숫자 터치 - 눈보다 빠른 손!</title>
+      <link>https://hiplayground.com/pages/play.html?id=speed-number</link>
+      <description>눈보다 빠른 손! 1부터 50까지 숫자를 순서대로 찾아 터치하세요. 난이도별 10단계 스테이지 도전!</description>
+      <pubDate>Wed, 31 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=speed-number</guid>
+    </item>
+    
+    <item>
+      <title>🧠 암산 천재 (고학년) - 초등 고학년 도전!</title>
+      <link>https://hiplayground.com/pages/play.html?id=math-quiz-hard</link>
+      <description>초등 고학년 도전! 큰 수 연산과 사칙연산 혼합 계산을 마스터하세요.</description>
+      <pubDate>Fri, 26 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=math-quiz-hard</guid>
+    </item>
+    
+    <item>
+      <title>⚫ 오목 마스터 - 5개를 연속으로 놓아 승리하세요!</title>
+      <link>https://hiplayground.com/pages/play.html?id=omok</link>
+      <description>5개를 연속으로 놓아 승리하세요! 고스트 스톤과 마지막 수 표시로 더 편리하게 즐기세요.</description>
+      <pubDate>Mon, 29 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=omok</guid>
+    </item>
+    
+    <item>
+      <title>💣 와르르 상자 - 물리 엔진으로 상자탑을 무너뜨리세요!</title>
+      <link>https://hiplayground.com/pages/play.html?id=physics-box</link>
+      <description>공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요.</description>
+      <pubDate>Tue, 09 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=physics-box</guid>
+    </item>
+    
+    <item>
+      <title>♟️ 체스 - 전략적 사고가 필요한 체스 게임!</title>
+      <link>https://hiplayground.com/pages/play.html?id=chess</link>
+      <description>전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.</description>
+      <pubDate>Sat, 06 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=chess</guid>
+    </item>
+    
+    <item>
+      <title>⚔️ 내 무기만 레벨업 - 대장간에서 무기를 강화하고 상점에서 판매하세요!</title>
+      <link>https://hiplayground.com/pages/play.html?id=weapon-levelup</link>
+      <description>대장간에서 무기를 강화하고 상점에서 판매하세요! 전략적 업그레이드 게임.</description>
+      <pubDate>Thu, 04 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=weapon-levelup</guid>
+    </item>
+    
+    <item>
+      <title>💯 초등 수학 마스터 - 덧셈, 뺄셈, 구구단, 나눗셈 게임으로 훈련하세요</title>
+      <link>https://hiplayground.com/pages/play.html?id=math-quiz</link>
+      <description>초등 저학년 필수! 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요.</description>
+      <pubDate>Wed, 03 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=math-quiz</guid>
+    </item>
+    
+    <item>
+      <title>🧠 기억력 게임 - 카드를 뒤집어서 같은 그림을 찾아보세요!</title>
+      <link>https://hiplayground.com/pages/play.html?id=memory</link>
+      <description>카드를 뒤집어서 같은 그림을 찾아보세요! 기억력과 집중력을 키우는 퍼즐 게임.</description>
+      <pubDate>Tue, 02 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=memory</guid>
+    </item>
+    
+    <item>
+      <title>🎯 클리커 게임 - 빠르게 클릭해서 점수를 모아보세요!</title>
+      <link>https://hiplayground.com/pages/play.html?id=clicker</link>
+      <description>빠르게 클릭해서 점수를 모아보세요! 간단하고 재미있는 반응속도 게임.</description>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=clicker</guid>
+    </item>
+  </channel>
+</rss>
+
