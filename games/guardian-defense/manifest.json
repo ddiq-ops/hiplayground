@@ -1,0 +1,12 @@
+{
+  "id": "guardian-defense",
+  "title": "가디언 디펜스",
+  "titleEn": "Guardian Defense",
+  "description": "타워 디펜스와 로그라이크의 만남! 카드를 선택해 전략을 완성하세요.",
+  "descriptionEn": "Tower Defense meets Roguelike. Draft cards to build your defense.",
+  "icon": "🛡️",
+  "category": "strategy",
+  "difficulty": "hard",
+  "version": "1.0.0",
+  "orientation": "any"
+}

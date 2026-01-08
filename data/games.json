@@ -247,17 +247,32 @@
     "orientation": "portrait"
   },
   {
-    "id": "neon-beat",
-    "title": "네온 비트",
-    "titleEn": "Neon Beat",
-    "category": "action",
-    "difficulty": "hard",
-    "description": "사이버펑크 리듬 액션",
-    "descriptionEn": "Cyberpunk Rhythm Action",
-    "icon": "🎹",
-    "tags": ["리듬", "음악", "액션"],
-    "popularity": 92,
-    "releaseDate": "2026-01-08",
-    "orientation": "portrait"
-  }
+  "id": "neon-beat",
+  "title": "네온 비트",
+  "titleEn": "Neon Beat",
+  "category": "action",
+  "difficulty": "hard",
+  "description": "20곡의 EDM과 함께하는 4/6/8키 리듬 게임",
+  "descriptionEn": "Cyberpunk Rhythm Action with 20 tracks & 3 modes.",
+  "icon": "🎹",
+  "tags": ["리듬", "음악", "액션"],
+  "popularity": 95,
+  "releaseDate": "2026-01-09",
+  "orientation": "any"
+},
+{
+  "id": "guardian-defense",
+  "title": "가디언 디펜스",
+  "titleEn": "Guardian Defense",
+  "category": "strategy",
+  "difficulty": "hard",
+  "description": "타워 디펜스와 로그라이크의 만남! 카드를 선택해 전략을 완성하세요.",
+  "descriptionEn": "Tower Defense meets Roguelike. Draft cards to build your defense.",
+  "icon": "🛡️",
+  "tags": ["전략", "디펜스", "로그라이크"],
+  "popularity": 96,
+  "releaseDate": "2026-01-09",
+  "orientation": "any"
+}
+  
 ]
