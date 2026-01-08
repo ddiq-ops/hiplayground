@@ -233,17 +233,17 @@
     "orientation": "portrait"
   },
   {
-    "id": "math-kingdom",
-    "title": "매쓰 킹덤",
-    "titleEn": "Math Kingdom",
-    "category": "education",
-    "difficulty": "hard",
-    "description": "수학 대포로 몬스터를 막는 디펜스 게임",
-    "descriptionEn": "Math Defense Game",
-    "icon": "🏰",
-    "tags": ["수학", "디펜스", "액션"],
-    "popularity": 95,
+    "id": "jelly-legend",
+    "title": "젤리 레전드",
+    "titleEn": "Jelly Legend",
+    "category": "puzzle",
+    "difficulty": "medium",
+    "description": "젤리 합치기 로그라이크 게임",
+    "descriptionEn": "Merge Puzzle Roguelike",
+    "icon": "🍮",
+    "tags": ["퍼즐", "물리", "합치기"],
+    "popularity": 98,
     "releaseDate": "2026-01-08",
-    "orientation": "landscape"
+    "orientation": "portrait"
   }
 ]

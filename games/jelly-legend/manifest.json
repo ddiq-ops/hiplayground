@@ -1,0 +1,12 @@
+{
+  "id": "jelly-legend",
+  "title": "젤리 레전드",
+  "titleEn": "Jelly Legend",
+  "description": "젤리를 합쳐서 레벨업! 스킬을 선택해 살아남으세요.",
+  "descriptionEn": "Merge jellies, level up, and choose roguelike skills!",
+  "icon": "🍮",
+  "category": "puzzle",
+  "difficulty": "medium",
+  "version": "1.0.0",
+  "orientation": "portrait"
+}
