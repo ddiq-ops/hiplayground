@@ -13,6 +13,126 @@
   <link rel="stylesheet" href="../assets/css/theme.css">
   <link rel="stylesheet" href="../assets/css/components.css">
   <link rel="stylesheet" href="../shared/game-shell.css">
+  
+  <style>
+    /* Game Description Section Styles (SEO optimized) */
+    .game-description-section {
+      background-color: #f9f9f9;
+      padding: var(--spacing-2xl) 0;
+      margin-top: 0;
+      border-top: 2px solid var(--color-border);
+    }
+    
+    .game-description-section .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-lg);
+    }
+    
+    .description-block {
+      background-color: #ffffff;
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .description-block:last-child {
+      margin-bottom: 0;
+    }
+    
+    .description-block h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0 0 var(--spacing-lg) 0;
+      padding-bottom: var(--spacing-md);
+      border-bottom: 2px solid var(--color-primary);
+    }
+    
+    .description-block p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      margin: 0 0 var(--spacing-md) 0;
+    }
+    
+    .description-block p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .description-block ol,
+    .description-block ul {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      margin: 0 0 var(--spacing-md) 0;
+      padding-left: var(--spacing-xl);
+    }
+    
+    .description-block li {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .description-block li:last-child {
+      margin-bottom: 0;
+    }
+    
+    .description-block ol li {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .game-description-section {
+        padding: var(--spacing-xl) 0;
+      }
+      
+      .game-description-section .container {
+        padding: 0 var(--spacing-md);
+      }
+      
+      .description-block {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+      }
+      
+      .description-block h2 {
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-md);
+      }
+      
+      .description-block p,
+      .description-block ol,
+      .description-block ul {
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+      
+      .description-block ol,
+      .description-block ul {
+        padding-left: var(--spacing-lg);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .description-block h2 {
+        font-size: 1.25rem;
+      }
+      
+      .description-block p,
+      .description-block ol,
+      .description-block ul {
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      
+      .description-block ol,
+      .description-block ul {
+        padding-left: var(--spacing-md);
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="game-area">
@@ -52,15 +172,117 @@
     </div>
   </div>
 
+  <!-- Game Description Section (SEO optimized) -->
+  <section id="game-description-section" class="game-description-section" style="display: none;">
+    <div class="container">
+      <div id="game-description-content"></div>
+    </div>
+  </section>
+
   <!-- JavaScript -->
   <script src="../assets/js/storage.js"></script>
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/analytics.js"></script>
   <script src="../assets/js/router.js"></script>
   <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/game-descriptions.js"></script>
   <script src="../shared/game-shell.js"></script>
   
   <script>
+    /**
+     * Load and render game description for SEO
+     */
+    function loadGameDescription(gameId) {
+      try {
+        // Check if GameDescriptions is loaded
+        if (typeof GameDescriptions === 'undefined') {
+          console.warn('GameDescriptions not loaded yet');
+          // Try again after a short delay
+          setTimeout(() => loadGameDescription(gameId), 500);
+          return;
+        }
+        
+        const descriptionData = GameDescriptions[gameId];
+        if (!descriptionData) {
+          // If no specific description, use default from game data
+          const game = App.getGameById(gameId);
+          if (game) {
+            renderDefaultDescription(game);
+          }
+          return;
+        }
+        
+        const section = document.getElementById('game-description-section');
+        const content = document.getElementById('game-description-content');
+        
+        if (!section || !content) return;
+        
+        let html = '';
+        
+        // How to Play section
+        if (descriptionData.howToPlay) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.howToPlay.title}</h2>`;
+          html += '<ol>';
+          descriptionData.howToPlay.steps.forEach(step => {
+            html += `<li>${step}</li>`;
+          });
+          html += '</ol>';
+          html += '</div>';
+        }
+        
+        // Strategy section
+        if (descriptionData.strategy) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.strategy.title}</h2>`;
+          html += '<ul>';
+          descriptionData.strategy.tips.forEach(tip => {
+            html += `<li>${tip}</li>`;
+          });
+          html += '</ul>';
+          html += '</div>';
+        }
+        
+        // About section
+        if (descriptionData.about) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.about.title}</h2>`;
+          html += `<p>${descriptionData.about.description}</p>`;
+          html += '</div>';
+        }
+        
+        content.innerHTML = html;
+        section.style.display = 'block';
+      } catch (error) {
+        console.error('Error loading game description:', error);
+      }
+    }
+    
+    /**
+     * Render default description if specific one doesn't exist
+     */
+    function renderDefaultDescription(game) {
+      const section = document.getElementById('game-description-section');
+      const content = document.getElementById('game-description-content');
+      
+      if (!section || !content) return;
+      
+      let html = '';
+      html += '<div class="description-block">';
+      html += '<h2>게임 방법 (How to Play)</h2>';
+      html += `<p>${game.description}</p>`;
+      html += '<p>게임을 시작하여 즐기세요. 상세한 게임 방법은 게임 내에서 안내됩니다.</p>';
+      html += '</div>';
+      
+      html += '<div class="description-block">';
+      html += '<h2>게임 소개 (About)</h2>';
+      html += `<p>${game.title}은(는) ${game.category} 카테고리의 게임으로, 재미있고 교육적인 경험을 제공합니다. 게임을 통해 두뇌 회전과 재미를 동시에 느낄 수 있으며, 다양한 능력을 향상시킬 수 있습니다.</p>`;
+      html += '</div>';
+      
+      content.innerHTML = html;
+      section.style.display = 'block';
+    }
+    
     // Page-specific script
     (async function() {
       await App.init();
@@ -85,6 +307,9 @@
       
       // Initialize game shell
       await GameShell.init(gameId);
+      
+      // Load and display game description (after game is loaded)
+      loadGameDescription(gameId);
       
       // Track page view
       Analytics.trackPageView(`play:${gameId}`);

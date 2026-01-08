@@ -231,5 +231,19 @@
     "popularity": 88,
     "releaseDate": "2026-01-08",
     "orientation": "portrait"
+  },
+  {
+    "id": "math-kingdom",
+    "title": "매쓰 킹덤",
+    "titleEn": "Math Kingdom",
+    "category": "education",
+    "difficulty": "hard",
+    "description": "수학 대포로 몬스터를 막는 디펜스 게임",
+    "descriptionEn": "Math Defense Game",
+    "icon": "🏰",
+    "tags": ["수학", "디펜스", "액션"],
+    "popularity": 95,
+    "releaseDate": "2026-01-08",
+    "orientation": "landscape"
   }
 ]
