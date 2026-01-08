@@ -245,5 +245,19 @@
     "popularity": 98,
     "releaseDate": "2026-01-08",
     "orientation": "portrait"
+  },
+  {
+    "id": "neon-beat",
+    "title": "네온 비트",
+    "titleEn": "Neon Beat",
+    "category": "action",
+    "difficulty": "hard",
+    "description": "사이버펑크 리듬 액션",
+    "descriptionEn": "Cyberpunk Rhythm Action",
+    "icon": "🎹",
+    "tags": ["리듬", "음악", "액션"],
+    "popularity": 92,
+    "releaseDate": "2026-01-08",
+    "orientation": "portrait"
   }
 ]

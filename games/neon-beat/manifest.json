@@ -1,0 +1,12 @@
+{
+  "id": "neon-beat",
+  "title": "네온 비트",
+  "titleEn": "Neon Beat",
+  "description": "비트에 맞춰 노트를 터치하세요! 10단계의 사이버펑크 리듬 게임.",
+  "descriptionEn": "Cyberpunk Rhythm Game. Tap to the beat!",
+  "icon": "🎹",
+  "category": "action",
+  "difficulty": "hard",
+  "version": "1.0.0",
+  "orientation": "portrait"
+}
