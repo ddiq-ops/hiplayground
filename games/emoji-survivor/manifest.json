@@ -1,0 +1,12 @@
+{
+  "id": "emoji-survivor",
+  "title": "이모지 서바이버",
+  "titleEn": "Emoji Survivor",
+  "description": "몰려오는 이모지 군단을 막아내세요! 무한 성장 액션 로그라이크.",
+  "descriptionEn": "Survive the emoji horde! Action Roguelike.",
+  "icon": "🧙‍♂️",
+  "category": "action",
+  "difficulty": "normal",
+  "version": "1.0.0",
+  "orientation": "any"
+}

@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+
+/* 전체 래퍼 */
+.es-wrapper {
+  width: 100%; height: 100%;
+  background: #111; color: #fff;
+  font-family: 'Black Han Sans', sans-serif;
+  overflow: hidden; user-select: none; position: relative;
+  touch-action: none; /* 터치 스크롤 방지 */
+}
+
+/* 게임 캔버스 */
+canvas { display: block; width: 100%; height: 100%; }
+
+/* 상단 HUD */
+.es-hud {
+  position: absolute; top: 0; left: 0; width: 100%;
+  padding: 10px 20px; pointer-events: none;
+  display: flex; flex-direction: column; gap: 5px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+}
+
+.es-top-row { display: flex; justify-content: space-between; align-items: center; font-size: 1.2rem; }
+.es-timer { color: #ffd700; text-shadow: 2px 2px 0 #000; font-size: 1.5rem; }
+.es-kill { color: #ff5555; text-shadow: 1px 1px 0 #000; }
+
+/* 경험치 바 */
+.es-exp-bar {
+  width: 100%; height: 10px; background: #333;
+  border: 2px solid #000; border-radius: 5px; overflow: hidden;
+}
+.es-exp-fill {
+  height: 100%; background: #00ff00; width: 0%;
+  box-shadow: 0 0 10px #00ff00; transition: width 0.2s;
+}
+.es-level-badge {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  background: #000; border: 2px solid #fff; border-radius: 50%;
+  width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;
+  font-size: 1rem; color: #fff; z-index: 10;
+}
+
+/* 가상 조이스틱 (모바일용) */
+.es-joystick-zone {
+  position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
+  width: 150px; height: 150px;
+  border-radius: 50%; border: 2px solid rgba(255,255,255,0.1);
+  display: flex; justify-content: center; align-items: center;
+  pointer-events: auto; /* 터치 가능 */
+}
+.es-knob {
+  width: 60px; height: 60px; background: rgba(255,255,255,0.3);
+  border-radius: 50%; transform: translate(0px, 0px);
+  pointer-events: none;
+}
+
+/* 레벨업 모달 */
+.es-modal {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.es-modal.active { opacity: 1; pointer-events: auto; }
+
+.es-levelup-title {
+  font-size: 3rem; color: #ffd700; margin-bottom: 20px;
+  text-shadow: 0 0 20px #ff9800; animation: bounce 0.5s infinite alternate;
+}
+.es-cards { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 800px; }
+.es-card {
+  width: 140px; height: 200px; background: #222; border: 2px solid #444;
+  border-radius: 10px; padding: 10px; text-align: center; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.es-card:hover { transform: scale(1.05); border-color: #fff; background: #333; }
+.es-card-icon { font-size: 3rem; margin-bottom: 10px; }
+.es-card-name { font-size: 1.1rem; color: #fff; margin-bottom: 5px; }
+.es-card-desc { font-size: 0.8rem; color: #aaa; line-height: 1.2; }
+.es-card-lv { color: #00ff00; font-size: 0.8rem; margin-top: 5px; }
+
+@keyframes bounce { to { transform: translateY(-10px); } }
+
+/* 게임오버/시작 화면 */
+.es-btn {
+  background: #ff5555; color: white; border: none; padding: 15px 40px;
+  font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-family: inherit;
+  box-shadow: 0 5px 0 #c2185b; margin-top: 20px;
+}
+.es-btn:active { transform: translateY(5px); box-shadow: none; }

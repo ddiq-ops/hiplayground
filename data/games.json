@@ -273,6 +273,20 @@
   "popularity": 96,
   "releaseDate": "2026-01-09",
   "orientation": "any"
+},
+{
+  "id": "emoji-survivor",
+  "title": "이모지 서바이버",
+  "titleEn": "Emoji Survivor",
+  "category": "action",
+  "difficulty": "normal",
+  "description": "몰려오는 이모지 군단을 막아내세요! 로그라이크 액션.",
+  "descriptionEn": "Survive the emoji horde! Action Roguelike.",
+  "icon": "🧙‍♂️",
+  "tags": ["액션", "서바이버", "이모지"],
+  "popularity": 97,
+  "releaseDate": "2026-01-09",
+  "orientation": "any"
 }
   
 ]
