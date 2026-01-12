@@ -1,6 +1,30 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
+            const fullKey = `gameDetails.jelly-legend.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
+    // Helper function to get skill info
+    function getSkillInfo(skillId) {
+        const titleKey = `skills.${skillId}.title`;
+        const descKey = `skills.${skillId}.desc`;
+        const defaultSkill = SKILLS.find(s => s.id === skillId) || {};
+        return {
+            title: getUIText(titleKey, defaultSkill.title || ''),
+            desc: getUIText(descKey, defaultSkill.desc || '')
+        };
+    }
+
     // ================= CONFIG & DATA =================
     // 젤리 단계별 설정 (반지름, 색상, 점수)
     const TIERS = [
@@ -358,12 +382,13 @@
             const container = document.getElementById('ui-cards');
             container.innerHTML = '';
             choices.forEach(skill => {
+                const skillInfo = getSkillInfo(skill.id);
                 const card = document.createElement('div');
                 card.className = 'jl-card';
                 card.innerHTML = `
                     <div class="jl-card-icon">${skill.icon}</div>
-                    <div class="jl-card-title">${skill.title}</div>
-                    <div class="jl-card-desc">${skill.desc}</div>
+                    <div class="jl-card-title">${skillInfo.title}</div>
+                    <div class="jl-card-desc">${skillInfo.desc}</div>
                 `;
                 card.onclick = () => this.applySkill(skill);
                 container.appendChild(card);

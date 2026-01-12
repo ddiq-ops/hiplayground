@@ -223,11 +223,61 @@
     },
     "memory": {
       "title": "Memory Game",
-      "description": "Flip cards to find matching pairs!"
+      "description": "Flip cards to find matching pairs!",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, cards are displayed face down on the screen.",
+          "Click a card to reveal its face, showing a picture or emoji.",
+          "You need to find two cards with the same picture and click them consecutively.",
+          "When you find a matching pair, the cards are removed and your score increases.",
+          "If you select an incorrect pair, the cards flip back and your chances decrease.",
+          "Once all card pairs are found, you progress to the next level, and the difficulty gradually increases.",
+          "Each level has a time limit, so it's important to quickly judge and remember."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Remembering card positions is key. When flipping the first few cards, focus on their positions rather than the images, and visualize a grid in your mind. For example, remembering \"an apple was in the top-left corner\" spatially helps you remember longer.",
+          "Use a systematic strategy of flipping two cards at a time. When you flip the first card, develop the habit of scanning the remaining cards to find where that image appears again, which saves time. Also, focusing on the same row or column to narrow your search range is effective.",
+          "Utilize the combo system. Matching cards consecutively triggers combo bonuses, significantly increasing your score. Practice remembering the positions of the first few cards accurately and clicking quickly to match them consecutively as fast as possible.",
+          "At higher levels, time pressure intensifies, so it's important to train both memory and reaction speed simultaneously in early levels. You can aim for high scores by practicing to minimize mistakes and increase accuracy."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Memory Game is an educational puzzle game that helps improve working memory abilities of the brain. The card matching process utilizes both short-term memory and spatial perception abilities simultaneously, contributing to overall improvement in cognitive abilities. It's particularly effective for training attention and observation skills, and can improve quick judgment and visual processing speed. As levels increase, the number of cards increases and time limits decrease, maintaining a continuous sense of challenge through progressive difficulty increases. It's an excellent learning tool that helps elementary school students' brain development and memory improvement."
+      }
     },
     "math-quiz": {
       "title": "Elementary Math Master",
       "description": "Essential for lower elementary! Fun training for addition, subtraction, multiplication, and division.",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, math problems appear on the screen.",
+          "Problem types include addition, subtraction, multiplication (times tables), division, etc.",
+          "Select the correct answer by clicking one of the 4 choices.",
+          "Correct answers increase your score and build combos.",
+          "Incorrect answers reset your combo and may decrease time.",
+          "As levels increase, the number range widens and calculations become more difficult.",
+          "Answer as many problems correctly as possible within the time limit to achieve a high score."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Mastering basic calculations quickly is key. Especially if you memorize multiplication tables, you can solve multiplication problems very quickly. Practicing multiplication tables daily will greatly improve your game skills. Also, developing the habit of calculating common patterns like complements of 10 or multiples of 5 first can save time.",
+          "Use mental math for simple calculations to find answers immediately, and for complex calculations, use inference to find reasonable answers from the choices. For example, in multiplication problems with large numbers, you can infer the answer by checking the last digit. Also, when dividing by 2 or multiplying by 5, you can quickly find the answer by checking only the last digit.",
+          "Maintaining the combo system is important for score increases. Prioritize accuracy and choose carefully for uncertain problems. Consecutive correct answer bonuses greatly affect your score, so focus on accuracy first and gradually increase speed.",
+          "To reduce mistakes, proceed with calculations slowly but efficiently in your mind. For example, for problems like 23 + 47, breaking it down step by step (23 + 40 = 63, 63 + 7 = 70) can reduce errors."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Elementary Math Master is an educational game that can interestingly improve elementary school students' math skills. It naturally trains core arithmetic abilities learned in elementary school, such as addition, subtraction, multiplication, and division, through games. In particular, it gamifies multiplication table memorization, allowing repetitive learning without boredom, and helps develop fast mental arithmetic abilities. The quiz format with time limits improves learners' concentration and cognitive speed, and provides motivation through the combo system. Designed to reduce fear of math and allow enjoyment through games, it greatly helps elementary students improve their basic math skills and form positive attitudes toward mathematics."
+      },
       "ui": {
         "modal": {
           "start": {
@@ -248,6 +298,31 @@
     "weapon-levelup": {
       "title": "Weapon Level Up",
       "description": "Upgrade your weapon at the blacksmith and sell it at the shop!",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, you can select a weapon and take it to the blacksmith.",
+          "Upgrading a weapon at the blacksmith increases its level and selling price.",
+          "Upgrading costs money, and the higher the level, the more the upgrade cost increases significantly.",
+          "You can sell upgraded weapons at the shop to earn money.",
+          "With the money from sales, you can buy better weapons or further upgrade existing weapons.",
+          "You must manage resources while balancing weapon performance and selling price.",
+          "The goal is to maximize profit through optimal strategy."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Early on, it's efficient to buy cheap weapons, upgrade them to around level 2-3, then sell them quickly. When capital is low, increasing turnover by trading multiple times helps accumulate large profits. As weapon levels increase, upgrade costs increase exponentially, so selling at appropriate levels early on is good.",
+          "When capital is sufficient, consider investing in premium weapons. Premium weapons have high initial costs but large selling price increases when upgraded, allowing larger long-term profits. Especially weapons at level 5 or higher have greatly increased selling prices, so when some capital accumulates, establish strategies centered on premium weapons.",
+          "It's important to calculate the ratio of upgrade costs to selling prices to find highly profitable moments. If the cost to raise a weapon one more level is greater than the selling price increase, selling at that point is rational. You can determine optimal selling moments through simple math calculations.",
+          "Resource management is key. Rather than blindly raising levels, it's important to create the most efficient investment plan with currently held funds. Focusing on one weapon to quickly create a high level then selling is also effective, rather than managing multiple weapons simultaneously."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Weapon Level Up is a strategy simulation game that can develop resource management and economic thinking. Through the process of upgrading weapons at the blacksmith and selling them at the shop, you can naturally learn the relationship between investment and profit. Through the game, you can develop the ability to calculate cost-effectiveness and thinking power to make optimal decisions, and experience the importance of resource management. Also, it simultaneously utilizes mathematical calculation abilities and logical reasoning abilities, helping comprehensive brain development. Economic concepts can be easily and enjoyably understood through games, making it a very useful learning tool for elementary school students' economic education and improvement of mathematical thinking."
+      },
       "ui": {
         "messages": {
           "notEnoughGold": "Not enough gold!",
@@ -265,6 +340,31 @@
     "omok": {
       "title": "Omok Master",
       "description": "Place 5 in a row to win! Features ghost stone guide and last move marker.",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "Place stones alternately on the omok board.",
+          "Black starts first, then black and white take turns placing one stone at a time.",
+          "You win by placing 5 stones in a row in any direction: horizontal, vertical, or diagonal.",
+          "The ghost stone feature allows you to preview where to place your next stone.",
+          "The last move is marked with a special indicator for easy game progress tracking.",
+          "You must defend when your opponent tries to place forbidden moves like 3-3 (double three) or 4-4 (double four).",
+          "Play the game by balancing offense and defense."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "It's good to focus on the center area of the board in the early stages. Starting from the center allows you to create attack paths in all directions, which is advantageous. Also, it's important to place your stones around your opponent's stones to create attack opportunities while also defending. A single stone alone isn't a threat, but when two or more are connected, the danger level increases significantly.",
+          "Create attack patterns like 3-3 and 4-4, but if your opponent blocks them, use that to develop attacks in other directions - this is advanced strategy. Rather than focusing on one place, the key is to create simultaneous threats in multiple places, making it difficult for your opponent to defend. Also, launching additional attacks near your opponent's stones that block your 3 or 4 enables chain attacks.",
+          "The balance between defense and offense is important. If you only block your opponent's attacks, you'll eventually fail to block one place and lose. Active defense is needed - blocking your opponent's threats while simultaneously creating your own attack opportunities. By placing a stone at a position your opponent must block, you can develop attacks elsewhere while they block that spot.",
+          "Learning endgame techniques is important for improving win rate. When you have 4 stones in a row with one end blocked, you can win by placing at the other end. It's important to learn these basic endgame patterns and not miss such opportunities during the game."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Omok Master is a strategy game that digitally implements the traditional board game Omok. While the rules are simple, it's a game that requires deep strategy, making it very effective for improving strategic thinking and reading ability. Through the game, you can develop logical thinking that involves thinking before acting, and train prediction abilities and situation judgment by understanding and responding to your opponent's intentions. The ghost stone and last move marker features improve game readability, making it easy even for beginners to enjoy, and you can gradually improve your skills. It's a highly educational brain game that simultaneously improves strategic thinking and concentration."
+      },
       "ui": {
         "modal": {
           "miracle": {
@@ -322,6 +422,31 @@
     "speed-number": {
       "title": "Speed Number Tap",
       "description": "Faster than eyes! Tap numbers in order up to 50. Challenge 10 stages with difficulty levels!",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, numbers from 1 to 50 are randomly arranged on the screen.",
+          "You must find and tap numbers in order starting from 1.",
+          "Tapping in the correct order increases your score and progresses to the next number.",
+          "Tapping the wrong number results in failure, reducing time or chances.",
+          "Finding all numbers in order clears the stage and progresses to the next difficulty level.",
+          "As difficulty increases, more numbers appear and time limits become shorter.",
+          "The goal is to clear all 10 stages."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Learning number-finding patterns is important. Develop the habit of systematically scanning the screen. For example, maintaining a consistent order like from top-left to right, then moving to the next line reduces missed numbers. Also, repeating and remembering the next number to find in your mind helps reduce mistakes.",
+          "Utilize visual memory. Remembering the position briefly after tapping a number helps when searching for similar numbers later. Especially visualizing areas where large numbers (40s, 30s, etc.) are grouped in your mind enables quick searching.",
+          "Developing concentration and quick reflexes simultaneously is key. Clicking too fast increases mistakes, so it's good to secure accuracy first, then gradually increase speed. Especially when finding the last numbers (40s), it's important not to click hastily and to check the surroundings once more.",
+          "Time management is important in high difficulty. Use the strategy of quickly processing easy numbers (1~10) and spending more time finding large numbers. Also, when you accidentally tap the wrong number, it's necessary to have the mindset to calmly start over without panicking."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Speed Number Tap is an action game that improves instant judgment and visual processing speed. Through the game, you can simultaneously train number recognition abilities and spatial exploration abilities, and greatly improve concentration and reaction speed. In the process of quickly finding specific numbers among randomly arranged numbers, attention and observation improve, and sequential thinking abilities can also be developed. The structure with increasing difficulty by stage promotes gradual skill improvement, and time limits train the ability to make accurate judgments even in stressful situations. It's a fun and educational game that helps improve elementary school students' visual processing abilities and cognitive speed."
+      },
       "ui": {
         "title": "SPEED NUMBER",
         "subtitle": "OVERCLOCK EDITION",
@@ -354,11 +479,61 @@
     },
     "physics-box": {
       "title": "Physics Box",
-      "description": "Drag, Shoot, and Crash! Knock down the box tower."
+      "description": "Drag, Shoot, and Crash! Knock down the box tower.",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "A tower of boxes is displayed on the screen.",
+          "Drag the ball with your mouse to pull it, and the trajectory will be shown.",
+          "You must launch the ball at the desired angle and force to knock down the box tower.",
+          "Clear the stage by removing enough boxes.",
+          "You must achieve the goal within the limited number of balls.",
+          "Using a physics engine, boxes fall and collide realistically.",
+          "The key is to efficiently remove boxes by adjusting the angle and force."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Attacking the base support first is effective. Removing the bottom part of the box tower causes the upper boxes to collapse, removing many boxes in a chain reaction. Especially hitting the center-bottom part of the tower makes the entire structure unstable, dealing great damage.",
+          "Adjust the ball's angle and force carefully. Since you can preview the trajectory, it's important to find the angle that can accurately hit the target point. Shooting at an angle close to horizontal can effectively attack the bottom, and shooting at a high angle can hit the top. Practice finding the optimal launch angle for each stage's structure.",
+          "Utilize chain reactions. To remove as many boxes as possible with one ball, you must consider the physics effects of boxes colliding and falling. Accurately hitting a specific point to induce a chain collapse can remove many boxes with few balls.",
+          "It's important to conserve balls. The fewer balls remaining, the greater the pressure, so it's good to make sure hits in the early stages. Also, finding the weak parts of the box tower and focusing your attack is efficient."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Physics Box is a destruction simulation game using a physics engine, allowing you to experience physical principles in a fun way. Through the game, you can intuitively understand basic physics concepts such as angles, force, and trajectory, and naturally learn about the principles of object motion and collision. It improves visual problem-solving abilities along with strategic thinking, and trains spatial perception and prediction abilities. By observing object movements similar to reality through the game's physics engine, it stimulates scientific curiosity and develops a learning attitude through experimentation and observation. It's a highly educational game that helps increase elementary school students' scientific thinking and interest in physics."
+      }
     },
     "math-quiz-hard": {
       "title": "Mental Math Genius",
       "description": "Master mixed operations and large numbers.",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the upper elementary math quiz, complex math problems appear on the screen.",
+          "Problem types include large number arithmetic operations and mixed calculations (addition and multiplication combined, etc.).",
+          "You must select the correct answer from 4 choices.",
+          "Correct answers significantly increase your score, while incorrect answers deduct chances.",
+          "You must accurately apply the order of operations (multiplication and division before addition and subtraction).",
+          "There is a time limit, so fast calculation ability is required.",
+          "As levels increase, numbers get larger and calculations become more complex."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Understanding the order of operations accurately is most important. In mixed calculation problems, if there are parentheses, calculate inside the parentheses first, then calculate multiplication and division before addition and subtraction. For example, 5 + 3 × 2 is 5 + 6 = 11, not 8 × 2 = 16. You must firmly imprint these basic principles in your mind.",
+          "When calculating large numbers, dividing the calculation into steps can improve both accuracy and speed. For example, 347 + 285 can be calculated as 300 + 200 = 500, 47 + 85 = 132, 500 + 132 = 632 to reduce errors. Also, starting from the last digit to quickly verify is useful.",
+          "Use inference strategies using the answer choices. You can find a reasonable answer without calculating all choices. For example, in multiplication of large numbers, you can check only the last digit or compare approximate sizes to first exclude obviously wrong answers.",
+          "It's important to improve calculation speed through continuous practice. Practicing a little each day to become familiar with large number calculations will make the calculation process automatically proceed in your mind, greatly saving time."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Mental Math Genius (Upper Elementary) is an advanced math learning game for upper elementary school students. It's designed to raise mathematical thinking ability one level through large number operations and mixed calculations. Through the game, you can naturally learn the principles of order of operations and develop the ability to solve complex calculation problems. The quiz format with time limits improves cognitive processing speed and simultaneously trains logical thinking and problem-solving abilities. It's a highly educational game that helps solidify the foundation of mathematics and prepares the groundwork for future middle school math learning."
+      },
       "ui": {
         "modal": {
           "start": {
@@ -400,7 +575,44 @@
     },
     "infinite-space": {
       "title": "Infinite Space: Rogue",
-      "description": "Endless space war! Gather EXP and evolve your ship with roguelike skills."
+      "description": "Endless space war! Gather EXP and evolve your ship with roguelike skills.",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "The player's spaceship is positioned at the center bottom of the screen.",
+          "Move your mouse and the spaceship will follow.",
+          "The spaceship automatically fires bullets to attack enemies.",
+          "Destroying enemy spaceships gives you EXP and score.",
+          "Collecting EXP levels you up, and you can choose ability enhancements.",
+          "Ability enhancements include various options such as attack power increase, fire rate increase, health recovery, etc.",
+          "Taking enemy attacks decreases your health, and when health reaches 0, the game ends.",
+          "It's an endlessly progressing game where you challenge for the highest score."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Early leveling is important. Quickly defeating the first few enemies to reach level 2-3 quickly allows you to choose ability enhancement options, greatly increasing survivability. Not dying early and collecting EXP is key to extending the game.",
+          "Ability enhancement selection determines victory or defeat. Balancing attack power increases and fire rate increases allows you to quickly defeat enemies and gain more EXP. Also, occasionally selecting health recovery abilities to maintain survivability is important. Creating a balanced build is better than focusing on just one ability.",
+          "Avoiding enemy bullets is key to survival. Understand and predict enemy attack patterns to move. Especially in sections where many enemies appear, it's important to check the entire screen and move to safe spaces. Securing your own safety first before attacking is the way to survive longer, rather than blindly chasing enemies.",
+          "Learn enemy spawn patterns. As the game progresses, enemy types and attack patterns become more diverse, but understanding basic patterns makes responses easier. Understand the characteristics of fast-moving enemies and slow but multi-bullet-firing enemies, and use appropriate response strategies for each."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Infinite Space: Rogue is a shooting game combining roguelike elements, an action game that simultaneously trains strategic thinking and reaction speed. Through the game, you can improve visual attention and multitasking abilities, and develop response capabilities to rapidly changing situations. In the process of strategic decision-making through ability enhancement selection, logical thinking and planning abilities improve, and in the process of understanding and responding to enemy patterns, observation and prediction abilities develop. Through the game, you can train concentration and endurance, and increase challenge spirit and achievement motivation. It's a fun and educational shooting game that helps improve elementary school students' cognitive abilities and reaction speed."
+      },
+      "ui": {
+        "levelupDesc": "Choose an ability",
+        "skills": {
+          "atk": { "name": "Power Up", "desc": "Damage +20%" },
+          "speed": { "name": "Engine Boost", "desc": "Move Speed +20%" },
+          "multi": { "name": "Multi Shot", "desc": "Projectile Count +1" },
+          "magnet": { "name": "Magnet Upgrade", "desc": "Increase item pickup range" },
+          "heal": { "name": "Emergency Repair", "desc": "Restore 50% HP" },
+          "drone": { "name": "Support Drone", "desc": "Summon attack drone" }
+        }
+      }
     },
     "mystic-fortune": {
       "title": "Mystic Fortune",
@@ -409,6 +621,31 @@
     "code-rabbit": {
       "title": "Code Rabbit",
       "description": "Coding logic puzzle game",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, a rabbit, carrot, and command blocks are displayed.",
+          "Place command blocks (forward, right, left, etc.) in order to program the rabbit to reach the carrot.",
+          "Click command blocks to add them in execution order.",
+          "Click the \"Run\" button and the rabbit will move according to the programmed commands.",
+          "When the rabbit reaches the carrot, you clear the stage and proceed to the next level.",
+          "As levels increase, more complex command combinations are needed.",
+          "Advanced concepts such as loops and conditionals can be learned progressively."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Break down problems step by step to solve them. It's important to first identify the movements needed for the rabbit to reach the carrot, then place the necessary commands in order. For example, thinking in steps like \"3 spaces forward, right, 2 spaces forward\" makes it easy to solve.",
+          "Utilize repeating patterns. When the same action needs to be repeated multiple times, using loop blocks can make code concise. For example, if \"forward 5 times\" is needed, using a loop block is efficient. Develop the habit of first checking if there's a pattern when solving problems.",
+          "Simulate in your mind before execution. After placing command blocks, if you mentally follow how the rabbit will move, you can solve problems without mistakes. Especially, accurately calculating direction changes and movement distances is important.",
+          "Gradually challenge complex problems. It's good to learn advanced concepts like loops and conditionals after perfectly understanding basic commands (forward, rotate). It's important to fully understand and become familiar with each concept before moving to the next step."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Code Rabbit is an educational game that allows you to learn coding logic easily and enjoyably through games. Through block-based programming, even elementary school students can learn basic coding concepts without burden. Through the game, you can improve sequential thinking, logical reasoning, and problem-solving abilities, and naturally develop algorithmic thinking. You can visually and intuitively understand basic programming principles such as command order, repetition, and conditions, making it very effective for laying the foundation for future actual programming language learning. It's a highly educational game that allows you to enjoyably develop Computational Thinking, an essential 21st-century skill."
+      },
       "ui": {
         "emptyQueue": "Add commands",
         "allLevelsComplete": "Awesome! Code Rabbit Master! 🐰🥕🎓"
@@ -443,7 +680,17 @@
     },
     "jelly-legend": {
       "title": "Jelly Legend",
-      "description": "Merge Puzzle Roguelike"
+      "description": "Merge Puzzle Roguelike",
+      "ui": {
+        "skills": {
+          "pop_small": { "title": "Clean", "desc": "Pops all smallest jellies (2)" },
+          "gravity": { "title": "Zero Gravity", "desc": "Gravity weakens for 10 seconds, jellies float" },
+          "bomb": { "title": "Bomb", "desc": "Next jelly becomes a bomb that explodes on contact" },
+          "shake": { "title": "Earthquake", "desc": "Shakes screen strongly to mix jellies" },
+          "shrink": { "title": "Diet", "desc": "All jellies shrink by 10%" },
+          "next_big": { "title": "Big Gift", "desc": "Next jelly appears one tier larger" }
+        }
+      }
     },
     "neon-beat": {
       "title": "Neon Beat",
@@ -459,11 +706,156 @@
     },
     "emoji-survivor": {
       "title": "Emoji Survivor",
-      "description": "Survive the emoji horde! Action Roguelike."
+      "description": "Survive the emoji horde! Action Roguelike.",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, the player appears as a wizard emoji (🧙‍♂️) in the center of the screen.",
+          "You can move the player using WASD keys or the virtual joystick at the bottom left of the screen.",
+          "Enemies continue to spawn from the edges of the screen and swarm towards the player. Contact with enemies causes continuous damage.",
+          "Defeating enemies drops experience gems (💎), which are automatically collected when you get close. Gems are magnetically attracted to the player within a certain distance.",
+          "Collecting experience levels you up, and upon leveling up, you can choose one of three weapon/ability cards.",
+          "Weapon types: Magic Missile (✨) - Fires at nearest enemy, Rotating Axe (🪓) - Area attack, Garlic Aura (🧄) - Continuous damage to nearby enemies, Lightning (⚡) - Instant damage to random enemy, Shoes (👟) - Increases movement speed.",
+          "Selecting the same weapon multiple times increases its level, enhancing damage and effects.",
+          "You can check HP, level, experience, survival time, and kill count at the top of the screen.",
+          "When HP reaches 0, it's game over. The goal is to survive as long as possible."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Early on, it's important to select Magic Missile to secure basic attack power. Magic Missile automatically targets the nearest enemy, providing stable damage. As the level increases, cooldown decreases and damage increases, so quickly leveling up early is key.",
+          "Garlic Aura is an aura-type weapon that continuously damages nearby enemies. It's very effective when many enemies swarm, and as the level increases, range and damage increase. It's especially effective when enemies gather around the player, so it's recommended to select it early.",
+          "Rotating Axe is a weapon capable of area attacks, allowing you to attack multiple enemies simultaneously. As the level increases, the number of axes fired simultaneously increases, allowing you to defeat more enemies. It's particularly useful after the mid-game when many enemies swarm.",
+          "Lightning is a weapon that instantly deals powerful damage to random enemies. It's effective for quickly defeating bosses or strong enemies, and as the level increases, the number of lightning strikes increases simultaneously. However, stability is somewhat lower due to random targeting.",
+          "Shoes are a passive ability that increases movement speed. Faster movement makes it easier to avoid enemies and collect gems faster. Movement becomes increasingly important as more enemies appear, so it's good to select it after the mid-game.",
+          "Learn enemy types. Zombies (🧟) are basic enemies, Bats (🦇) are fast but weak enemies, Skeletons (💀) are strong but slow enemies, Ghosts (👻) are medium difficulty, and Bosses (👹) are very strong enemies. As time passes, enemy HP increases and spawn speed also increases, so you must continuously upgrade weapons.",
+          "Minimizing contact with enemies is key to survival. It's important to defeat enemies before they approach, or maintain distance while moving when there are many enemies. Utilizing area attack weapons like Garlic Aura allows you to defeat enemies without contact.",
+          "When leveling up, choose weapons that match the current situation. If there are many enemies, choose area attack weapons (Garlic Aura, Rotating Axe), and if a boss appears, choose powerful single-target weapons (Lightning). Also, leveling up existing weapons is as important as selecting new ones."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Emoji Survivor is a Vampire Survivors-style survivor action roguelike game. It features unique visuals composed of various enemies and weapons expressed as emojis, and you can enjoy intense action with simple controls. Through the game, you can improve reaction speed and situational judgment, and develop strategic thinking through weapon combinations and selection. The infinite survival system where difficulty increases over time maintains continuous challenge, and you can try different weapon combinations each game, giving it high replay value. The game helps with stress relief and concentration improvement, and you can develop quick decision-making and multitasking abilities. You can feel a sense of achievement in the process of defeating enemies and leveling up, and the goal of surviving as long as possible improves patience and concentration. It's an educational game that helps improve elementary school students' reaction speed training and strategic thinking."
+      },
+      "ui": {
+        "weapons": {
+          "magic": { "name": "Magic Missile", "desc": "Fires magic at nearest enemy" },
+          "axe": { "name": "Rotating Axe", "desc": "Throws axe in air for area attack" },
+          "garlic": { "name": "Garlic Aura", "desc": "Continuous damage to nearby enemies" },
+          "lightning": { "name": "Lightning", "desc": "Lightning strikes random enemy" },
+          "shoes": { "name": "Shoes", "desc": "Increases movement speed" }
+        }
+      }
     },
     "idle-factory": {
       "title": "Idle Factory",
-      "description": "Automation management game! Build production lines and upgrade your growing factory. Challenge 30 stages!"
+      "description": "Automation management game! Build production lines and upgrade your growing factory. Challenge 30 stages!",
+      "ui": {
+        "productionLine": "Production Line",
+        "click": "Click",
+        "gold": "Gold",
+        "clickFactory": "Click the factory!",
+        "stageInfo": "Stage Info",
+        "currentStage": "Current Stage",
+        "goalAmount": "Goal Amount",
+        "nextStage": "Next Stage",
+        "upgrade": "Upgrade",
+        "investment": "Investment",
+        "buy": "Buy",
+        "level": "Level",
+        "units": "units",
+        "production": "Production",
+        "upgradeText": "Upgrade",
+        "current": "Current",
+        "investmentAmount": "Investment Amount",
+        "successRate": "Success Rate",
+        "onSuccess": "On Success",
+        "invest": "Invest",
+        "investing": "Investing...",
+        "secondsLeft": "seconds left",
+        "checkingResult": "Checking result...",
+        "investStart": "Investment started!",
+        "invested": "invested. Result will be available in",
+        "secondsLater": "seconds.",
+        "notEnoughGold": "Not enough gold to invest! (Minimum 1G required)",
+        "investResult": "Investment Result:",
+        "success": "Success!",
+        "investAmount": "Investment Amount:",
+        "criticalOccurred": "Critical occurred! Bonus!",
+        "profit": "Profit:",
+        "totalEarned": "Total Earned:",
+        "failure": "Failure...",
+        "loss": "Loss:",
+        "modal": {
+          "start": {
+            "desc": "Automation management game!<br>Build production lines and upgrade<br>Clear 30 stages!",
+            "button": "GAME START"
+          },
+          "complete": {
+            "title": "STAGE CLEAR!",
+            "desc": "Stage cleared!",
+            "button": "Continue"
+          },
+          "gameover": {
+            "title": "🎉 ALL STAGES CLEAR!",
+            "desc": "All stages completed!",
+            "button": "Restart"
+          }
+        },
+        "productionLines": {
+          "worker": { "name": "Worker", "desc": "+2 gold/sec" },
+          "machine": { "name": "Machine", "desc": "+10 gold/sec" },
+          "robot": { "name": "Robot", "desc": "+50 gold/sec" },
+          "factory": { "name": "Factory", "desc": "+250 gold/sec" },
+          "plant": { "name": "Plant", "desc": "+1,250 gold/sec" },
+          "complex": { "name": "Complex", "desc": "+6,250 gold/sec" },
+          "megacorp": { "name": "Mega Corp", "desc": "+31,250 gold/sec" },
+          "tower": { "name": "Tower", "desc": "+156,250 gold/sec" },
+          "city": { "name": "City", "desc": "+781,250 gold/sec" },
+          "planet": { "name": "Planet", "desc": "+3,906,250 gold/sec" },
+          "galaxy": { "name": "Galaxy", "desc": "+19,531,250 gold/sec" },
+          "universe": { "name": "Universe", "desc": "+97,656,250 gold/sec" }
+        },
+        "investmentOptions": {
+          "safe": { "name": "Safe Investment", "desc": "Stable but low return" },
+          "normal": { "name": "Normal Investment", "desc": "Balanced investment" },
+          "risky": { "name": "Risky Investment", "desc": "High return but high risk" }
+        },
+        "stages": {
+          "1": "Start",
+          "2": "Beginner",
+          "3": "Entry",
+          "4": "Growth",
+          "5": "Development",
+          "6": "Expansion",
+          "7": "Leap",
+          "8": "Success",
+          "9": "Prosperity",
+          "10": "Revival",
+          "11": "Empire",
+          "12": "Hegemony",
+          "13": "Overlord",
+          "14": "Transcendence",
+          "15": "Legend",
+          "16": "Myth",
+          "17": "Absolute",
+          "18": "Impossible",
+          "19": "Extreme",
+          "20": "Absolute",
+          "21": "Infinite",
+          "22": "Eternal",
+          "23": "God",
+          "24": "Creation",
+          "25": "Destruction",
+          "26": "Regeneration",
+          "27": "Integration",
+          "28": "Division",
+          "29": "Chaos",
+          "30": "Perfection"
+        },
+        "stageComplete": "stage completed!"
+      }
     },
     "memory": {
       "title": "Memory Game",

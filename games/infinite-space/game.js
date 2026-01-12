@@ -1,6 +1,30 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
+            const fullKey = `gameDetails.infinite-space.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
+    // Helper function to get skill info
+    function getSkillInfo(skillId) {
+        const nameKey = `skills.${skillId}.name`;
+        const descKey = `skills.${skillId}.desc`;
+        const defaultSkill = SKILLS.find(s => s.id === skillId) || {};
+        return {
+            name: getUIText(nameKey, defaultSkill.name || ''),
+            desc: getUIText(descKey, defaultSkill.desc || '')
+        };
+    }
+
     const ASSET_PATH = '../games/infinite-space/';
 
     // ================= ASSET LOADER =================
@@ -71,6 +95,18 @@
                 this.showScreen('ui-start');
                 if (this.loopId) cancelAnimationFrame(this.loopId);
                 this.loop(); 
+            });
+            
+            // 언어 변경 이벤트 리스너 추가
+            document.addEventListener('i18n:loaded', () => {
+                if (this.state.screen === 'levelup') {
+                    this.renderLevelup();
+                }
+                // levelup-desc도 업데이트
+                const levelupDescEl = document.querySelector('.levelup-desc');
+                if (levelupDescEl) {
+                    levelupDescEl.textContent = getUIText('levelupDesc', '능력을 선택하세요');
+                }
             });
         },
 
@@ -475,6 +511,7 @@
             const container = document.getElementById('ui-cards');
             container.innerHTML = '';
             choices.forEach(skill => {
+                const skillInfo = getSkillInfo(skill.id);
                 const card = document.createElement('div');
                 card.className = 'skill-card';
                 let bgStyle = 'background: #555';
@@ -482,7 +519,7 @@
                     const src = Assets.images[skill.icon].src;
                     bgStyle = `background-image: url('${src}'); mix-blend-mode: screen;`;
                 }
-                card.innerHTML = `<div class="skill-icon" style="${bgStyle}"></div><div class="skill-info"><div class="skill-name">${skill.name}</div><div class="skill-desc">${skill.desc}</div></div>`;
+                card.innerHTML = `<div class="skill-icon" style="${bgStyle}"></div><div class="skill-info"><div class="skill-name">${skillInfo.name}</div><div class="skill-desc">${skillInfo.desc}</div></div>`;
                 card.onclick = () => this.applySkill(skill);
                 container.appendChild(card);
             });

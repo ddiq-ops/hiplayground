@@ -1,6 +1,30 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
+            const fullKey = `gameDetails.emoji-survivor.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
+    // Helper function to get weapon info
+    function getWeaponInfo(weaponId) {
+        const nameKey = `weapons.${weaponId}.name`;
+        const descKey = `weapons.${weaponId}.desc`;
+        const defaultWeapon = WEAPONS[weaponId] || {};
+        return {
+            name: getUIText(nameKey, defaultWeapon.name || ''),
+            desc: getUIText(descKey, defaultWeapon.desc || '')
+        };
+    }
+
     // ================= DATA =================
     const WEAPONS = {
         magic: { name: '매직 미사일', icon: '✨', desc: '가장 가까운 적에게 마법 발사', type: 'projectile', dmg: 10, cd: 60, speed: 8, count: 1 },
@@ -48,6 +72,13 @@
             
             // Input Setup
             this.setupInputs();
+            
+            // 언어 변경 이벤트 리스너 추가
+            document.addEventListener('i18n:loaded', () => {
+                if (this.state.screen === 'levelup') {
+                    this.renderLevelup();
+                }
+            });
             
             if (this.loopId) cancelAnimationFrame(this.loopId);
             this.loop();

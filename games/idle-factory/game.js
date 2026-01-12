@@ -1,6 +1,44 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
+            const fullKey = `gameDetails.idle-factory.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
+    // Helper function to get production line info
+    function getProductionLineInfo(lineId) {
+        const nameKey = `productionLines.${lineId}.name`;
+        const descKey = `productionLines.${lineId}.desc`;
+        return {
+            name: getUIText(nameKey, PRODUCTION_LINES.find(l => l.id === lineId)?.name || ''),
+            desc: getUIText(descKey, PRODUCTION_LINES.find(l => l.id === lineId)?.desc || '')
+        };
+    }
+
+    // Helper function to get investment option info
+    function getInvestmentOptionInfo(optionId) {
+        const nameKey = `investmentOptions.${optionId}.name`;
+        const descKey = `investmentOptions.${optionId}.desc`;
+        return {
+            name: getUIText(nameKey, INVESTMENT_OPTIONS.find(o => o.id === optionId)?.name || ''),
+            desc: getUIText(descKey, INVESTMENT_OPTIONS.find(o => o.id === optionId)?.desc || '')
+        };
+    }
+
+    // Helper function to get stage name
+    function getStageName(stageNum) {
+        return getUIText(`stages.${stageNum}`, STAGES[stageNum - 1]?.name || '');
+    }
+
     // ================= CONFIG =================
     const PRODUCTION_LINES = [
         { id: 'worker', name: '일꾼', icon: '👷', baseCost: 50, baseProduction: 2, desc: '초당 +2 골드' },
@@ -172,11 +210,11 @@
                         <div class="if-body">
                             <div class="if-factory">
                                 <div id="fx-layer" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:100;"></div>
-                                <div class="factory-title">⚙️ 생산 라인</div>
+                                <div class="factory-title">⚙️ ${getUIText('productionLine', '생산 라인')}</div>
                                 <div class="click-area" id="click-area">
                                     <div class="click-info">
-                                        <div class="click-power">클릭: <span id="ui-click-power">+1</span> 골드</div>
-                                        <div class="click-hint">공장을 클릭하세요!</div>
+                                        <div class="click-power">${getUIText('click', '클릭')}: <span id="ui-click-power">+1</span> ${getUIText('gold', '골드')}</div>
+                                        <div class="click-hint">${getUIText('clickFactory', '공장을 클릭하세요!')}</div>
                                     </div>
                                 </div>
                                 <div id="production-lines"></div>
@@ -184,27 +222,27 @@
 
                             <div class="if-sidebar">
                                 <div class="if-panel">
-                                    <div class="panel-title">📊 스테이지 정보</div>
+                                    <div class="panel-title">📊 ${getUIText('stageInfo', '스테이지 정보')}</div>
                                     <div class="stage-info">
-                                        <div>현재 스테이지: <strong id="ui-stage-name">시작</strong></div>
+                                        <div>${getUIText('currentStage', '현재 스테이지')}: <strong id="ui-stage-name">시작</strong></div>
                                         <div class="stage-goal">
-                                            <div class="goal-label">목표 금액</div>
+                                            <div class="goal-label">${getUIText('goalAmount', '목표 금액')}</div>
                                             <div class="goal-value" id="ui-goal">1,000 G</div>
                                             <div class="progress-bar">
                                                 <div class="progress-fill" id="ui-progress" style="width: 0%">0%</div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="if-btn success" id="btn-next-stage" onclick="Game.nextStage()">다음 스테이지</button>
+                                    <button class="if-btn success" id="btn-next-stage" onclick="Game.nextStage()">${getUIText('nextStage', '다음 스테이지')}</button>
                                 </div>
 
                                 <div class="if-panel">
-                                    <div class="panel-title">⬆️ 업그레이드</div>
+                                    <div class="panel-title">⬆️ ${getUIText('upgrade', '업그레이드')}</div>
                                     <div class="upgrade-list" id="upgrade-list"></div>
                                 </div>
 
                                 <div class="if-panel">
-                                    <div class="panel-title">💼 투자</div>
+                                    <div class="panel-title">💼 ${getUIText('investment', '투자')}</div>
                                     <div class="investment-info">
                                         <div class="investment-cooldown" id="investment-cooldown"></div>
                                         <div class="investment-options" id="investment-options">
@@ -219,28 +257,24 @@
                         <div class="if-modal" id="modal-start">
                             <div class="modal-content">
                                 <div class="modal-title">🏭 IDLE FACTORY</div>
-                                <div class="modal-desc">
-                                    자동화 경영 게임!<br>
-                                    생산라인을 구축하고 업그레이드해<br>
-                                    30스테이지를 클리어하세요!
-                                </div>
-                                <button class="if-btn primary" onclick="Game.startGame()">GAME START</button>
+                                <div class="modal-desc">${getUIText('modal.start.desc', '자동화 경영 게임!<br>생산라인을 구축하고 업그레이드해<br>30스테이지를 클리어하세요!')}</div>
+                                <button class="if-btn primary" onclick="Game.startGame()">${getUIText('modal.start.button', 'GAME START')}</button>
                             </div>
                         </div>
 
                         <div class="if-modal" id="modal-complete">
                             <div class="modal-content">
                                 <div class="modal-title" id="modal-title">STAGE CLEAR!</div>
-                                <div class="modal-desc" id="modal-desc">스테이지를 클리어했습니다!</div>
-                                <button class="if-btn primary" onclick="Game.closeModal()">계속하기</button>
+                                <div class="modal-desc" id="modal-desc">${getUIText('modal.complete.desc', '스테이지를 클리어했습니다!')}</div>
+                                <button class="if-btn primary" onclick="Game.closeModal()">${getUIText('modal.complete.button', '계속하기')}</button>
                             </div>
                         </div>
 
                         <div class="if-modal" id="modal-gameover">
                             <div class="modal-content">
                                 <div class="modal-title">🎉 ALL STAGES CLEAR!</div>
-                                <div class="modal-desc" id="final-desc">모든 스테이지를 완료했습니다!</div>
-                                <button class="if-btn primary" onclick="Game.restart()">다시 시작</button>
+                                <div class="modal-desc" id="final-desc">${getUIText('modal.gameover.desc', '모든 스테이지를 완료했습니다!')}</div>
+                                <button class="if-btn primary" onclick="Game.restart()">${getUIText('modal.gameover.button', '다시 시작')}</button>
                             </div>
                         </div>
                     </div>
@@ -252,6 +286,15 @@
             
             // 클릭 이벤트 설정
             this.setupEvents();
+            
+            // 언어 변경 이벤트 리스너 추가
+            document.addEventListener('i18n:loaded', () => {
+                this.renderLayout();
+                this.updateUI();
+                this.renderProductionLines();
+                this.updateUpgrades();
+                this.renderInvestmentOptions();
+            });
         },
         
         setupEvents: function() {
@@ -478,7 +521,7 @@
             
             // 스테이지 클리어 모달
             document.getElementById('modal-title').innerText = `STAGE ${this.state.stage - 1} CLEAR!`;
-            document.getElementById('modal-desc').innerText = `${currentStage.name} 스테이지를 완료했습니다!`;
+            document.getElementById('modal-desc').innerText = `${getStageName(this.state.stage - 1)} ${getUIText('stageComplete', '스테이지를 완료했습니다!')}`;
             document.getElementById('modal-complete').classList.add('active');
             
             // 골드 초기화 (선택적: 일부만 유지)
@@ -515,16 +558,17 @@
                 const div = document.createElement('div');
                 div.className = 'production-line';
                 div.setAttribute('data-line-id', line.id);
+                const lineInfo = getProductionLineInfo(line.id);
                 div.innerHTML = `
                     <div class="line-icon">${line.icon}</div>
                     <div class="line-info">
-                        <div class="line-name">${line.name}</div>
+                        <div class="line-name">${lineInfo.name}</div>
                         <div class="line-production">${this.formatNumber(production)}/sec</div>
-                        <div class="line-level">레벨 ${lineData.level} × ${lineData.count}개</div>
+                        <div class="line-level">${getUIText('level', '레벨')} ${lineData.level} × ${lineData.count}${getUIText('units', '개')}</div>
                     </div>
                     <div class="line-count">${lineData.count}</div>
                     <button class="if-btn primary" id="btn-line-${line.id}" onclick="Game.buyLine('${line.id}')" ${this.state.gold >= cost ? '' : 'disabled'}>
-                        구매 (${this.formatNumber(cost)}G)
+                        ${getUIText('buy', '구매')} (${this.formatNumber(cost)}G)
                     </button>
                 `;
                 container.appendChild(div);
@@ -546,14 +590,14 @@
                 
                 // 레벨 업데이트
                 const levelEl = btn.parentElement.querySelector('.line-level');
-                if(levelEl) levelEl.innerText = `레벨 ${lineData.level} × ${lineData.count}개`;
+                if(levelEl) levelEl.innerText = `${getUIText('level', '레벨')} ${lineData.level} × ${lineData.count}${getUIText('units', '개')}`;
                 
                 // 개수 업데이트
                 const countEl = btn.parentElement.querySelector('.line-count');
                 if(countEl) countEl.innerText = lineData.count;
                 
                 // 버튼 상태 업데이트
-                btn.textContent = `구매 (${this.formatNumber(cost)}G)`;
+                btn.textContent = `${getUIText('buy', '구매')} (${this.formatNumber(cost)}G)`;
                 if(this.state.gold >= cost) {
                     btn.disabled = false;
                 } else {
@@ -577,15 +621,16 @@
                 
                 const div = document.createElement('div');
                 div.className = `upgrade-item ${canUpgrade ? '' : 'disabled'}`;
+                const lineInfo = getProductionLineInfo(line.id);
                 div.innerHTML = `
                     <div class="upgrade-header">
                         <div class="upgrade-name">
-                            ${line.icon} ${line.name} 업그레이드
+                            ${line.icon} ${lineInfo.name} ${getUIText('upgradeText', '업그레이드')}
                         </div>
                         <div class="upgrade-cost">${this.formatNumber(upgradeCost)}G</div>
                     </div>
-                    <div class="upgrade-desc">레벨 ${lineData.level} → ${lineData.level + 1}</div>
-                    <div class="upgrade-level">현재: 레벨 ${lineData.level} (생산력 ${line.baseProduction * lineData.count * lineData.level}/sec)</div>
+                    <div class="upgrade-desc">${getUIText('level', '레벨')} ${lineData.level} → ${lineData.level + 1}</div>
+                    <div class="upgrade-level">${getUIText('current', '현재')}: ${getUIText('level', '레벨')} ${lineData.level} (${getUIText('production', '생산력')} ${line.baseProduction * lineData.count * lineData.level}/sec)</div>
                 `;
                 div.onclick = canUpgrade ? () => this.upgradeLine(line.id) : null;
                 container.appendChild(div);
@@ -601,7 +646,7 @@
             if(stageEl) stageEl.innerText = `${this.state.stage}/${this.state.maxStage}`;
             
             const stageNameEl = document.getElementById('ui-stage-name');
-            if(stageNameEl) stageNameEl.innerText = currentStage.name;
+            if(stageNameEl) stageNameEl.innerText = getStageName(this.state.stage);
             
             const goalEl = document.getElementById('ui-goal');
             if(goalEl) goalEl.innerText = this.formatNumber(currentStage.goal) + ' G';
@@ -665,21 +710,21 @@
                     <div class="investment-option-header">
                         <div class="investment-option-icon" style="color: ${option.color}">${option.icon}</div>
                         <div class="investment-option-info">
-                            <div class="investment-option-name">${option.name}</div>
-                            <div class="investment-option-desc">${option.desc}</div>
+                            <div class="investment-option-name">${getInvestmentOptionInfo(option.id).name}</div>
+                            <div class="investment-option-desc">${getInvestmentOptionInfo(option.id).desc}</div>
                         </div>
                     </div>
                     <div class="investment-option-stats">
                         <div class="investment-stat">
-                            <span class="stat-label">투자 금액</span>
+                            <span class="stat-label">${getUIText('investmentAmount', '투자 금액')}</span>
                             <span class="stat-value">${this.formatNumber(investmentAmount)}G (${percentagePercent}%)</span>
                         </div>
                         <div class="investment-stat">
-                            <span class="stat-label">성공률</span>
+                            <span class="stat-label">${getUIText('successRate', '성공률')}</span>
                             <span class="stat-value" style="color: ${option.color}">${successRatePercent}%</span>
                         </div>
                         <div class="investment-stat">
-                            <span class="stat-label">성공 시</span>
+                            <span class="stat-label">${getUIText('onSuccess', '성공 시')}</span>
                             <span class="stat-value" style="color: #00ff88">+${this.formatNumber(successReward)}G</span>
                         </div>
                     </div>
@@ -688,7 +733,7 @@
                             onclick="Game.startInvestment('${option.id}')" 
                             style="background: linear-gradient(135deg, ${option.color}, ${option.color}dd);"
                             disabled>
-                        투자하기
+                        ${getUIText('invest', '투자하기')}
                     </button>
                 `;
                 container.appendChild(div);
@@ -710,7 +755,7 @@
             
             if(timeSinceLastInvestment < cooldownSeconds) {
                 const remaining = Math.ceil(cooldownSeconds - timeSinceLastInvestment);
-                this.showInvestmentMessage(`투자 진행 중입니다. ${remaining}초 남음.`, 'error');
+                this.showInvestmentMessage(`${getUIText('investing', '투자 진행 중입니다.')} ${remaining}${getUIText('secondsLeft', '초 남음')}.`, 'error');
                 return;
             }
             
@@ -719,7 +764,7 @@
             
             // 최소 금액 체크 (최소 1G 이상)
             if(amount < 1) {
-                this.showInvestmentMessage(`투자 결과: 투자할 골드가 부족합니다! (최소 1G 필요)`, 'error');
+                this.showInvestmentMessage(`${getUIText('investResult', '투자 결과:')} ${getUIText('notEnoughGold', '투자할 골드가 부족합니다! (최소 1G 필요)')}`, 'error');
                 return;
             }
             
@@ -733,7 +778,7 @@
             // 투자 정보 저장 (결과는 나중에 표시)
             this.state.pendingInvestment = {
                 optionId: optionId,
-                optionName: option.name,
+                optionName: getInvestmentOptionInfo(optionId).name,
                 amount: amount,
                 startTime: now,
                 endTime: endTime,
@@ -742,7 +787,7 @@
             };
             
             // 투자 시작 메시지
-            this.showInvestmentMessage(`투자 시작! ${this.formatNumber(amount)}G 투자했습니다. 결과는 ${cooldownSeconds}초 후에 확인됩니다.`, 'success');
+            this.showInvestmentMessage(`${getUIText('investStart', '투자 시작!')} ${this.formatNumber(amount)}G ${getUIText('invested', '투자했습니다. 결과는')} ${cooldownSeconds}${getUIText('secondsLater', '초 후에 확인됩니다.')}`, 'success');
             
             this.updateUI();
             this.updateInvestmentUI();
@@ -820,7 +865,7 @@
                 const remaining = Math.ceil((pending.endTime - now) / 1000);
                 
                 if(remaining > 0) {
-                    cooldownEl.innerText = `투자 진행 중... ${remaining}초 남음`;
+                    cooldownEl.innerText = `${getUIText('investing', '투자 진행 중...')} ${remaining}${getUIText('secondsLeft', '초 남음')}`;
                     cooldownEl.style.display = 'block';
                     
                     // 모든 투자 버튼 비활성화
@@ -830,7 +875,7 @@
                     });
                 } else {
                     // 쿨다운이 끝났지만 아직 결과를 확인하지 않은 경우
-                    cooldownEl.innerText = '투자 결과 확인 중...';
+                    cooldownEl.innerText = getUIText('checkingResult', '투자 결과 확인 중...');
                     cooldownEl.style.display = 'block';
                 }
             } else {

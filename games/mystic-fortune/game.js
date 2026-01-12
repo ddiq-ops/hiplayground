@@ -55,23 +55,47 @@
             btnRetry: "Check Another",
             titleSuffix: "'s Day",
             alertInput: "Please enter both name and birth date."
+                },
+        "zh-HK": {
+            title: "今日運勢",
+            subtitle: "聆聽星星為您訴說的命運。",
+            labelName: "姓名",
+            labelDate: "出生日期",
+            labelYear: "年份",
+            labelMonth: "月份",
+            labelDay: "日期",
+            placeholderName: "請輸入您的姓名",
+            placeholderYear: "年份",
+            placeholderMonth: "月份",
+            placeholderDay: "日期",
+            btnCheck: "查看運勢",
+            luckScore: "今日運勢指數",
+            points: "分",
+            generalLuck: "總運",
+            loveLuck: "愛情運",
+            moneyLuck: "財運",
+            luckyColor: "幸運顏色",
+            luckyNumber: "幸運數字",
+            btnRetry: "查看其他人",
+            titleSuffix: "的一天",
+            alertInput: "請輸入姓名和出生日期。"
         }
     };
 
     const ZODIAC_SIGNS = [
-        { name: "염소자리", nameEn: "Capricorn", icon: "♑", start: "01-01", end: "01-19" },
-        { name: "물병자리", nameEn: "Aquarius", icon: "♒", start: "01-20", end: "02-18" },
-        { name: "물고기자리", nameEn: "Pisces", icon: "♓", start: "02-19", end: "03-20" },
-        { name: "양자리", nameEn: "Aries", icon: "♈", start: "03-21", end: "04-19" },
-        { name: "황소자리", nameEn: "Taurus", icon: "♉", start: "04-20", end: "05-20" },
-        { name: "쌍둥이자리", nameEn: "Gemini", icon: "♊", start: "05-21", end: "06-21" },
-        { name: "게자리", nameEn: "Cancer", icon: "♋", start: "06-22", end: "07-22" },
-        { name: "사자자리", nameEn: "Leo", icon: "♌", start: "07-23", end: "08-22" },
-        { name: "처녀자리", nameEn: "Virgo", icon: "♍", start: "08-23", end: "09-23" },
-        { name: "천칭자리", nameEn: "Libra", icon: "♎", start: "09-24", end: "10-22" },
-        { name: "전갈자리", nameEn: "Scorpio", icon: "♏", start: "10-23", end: "11-22" },
-        { name: "사수자리", nameEn: "Sagittarius", icon: "♐", start: "11-23", end: "12-24" },
-        { name: "염소자리", nameEn: "Capricorn", icon: "♑", start: "12-25", end: "12-31" }
+        { name: "염소자리", nameEn: "Capricorn", nameZhHK: "摩羯座", icon: "♑", start: "01-01", end: "01-19" },
+        { name: "물병자리", nameEn: "Aquarius", nameZhHK: "水瓶座", icon: "♒", start: "01-20", end: "02-18" },
+        { name: "물고기자리", nameEn: "Pisces", nameZhHK: "雙魚座", icon: "♓", start: "02-19", end: "03-20" },
+        { name: "양자리", nameEn: "Aries", nameZhHK: "白羊座", icon: "♈", start: "03-21", end: "04-19" },
+        { name: "황소자리", nameEn: "Taurus", nameZhHK: "金牛座", icon: "♉", start: "04-20", end: "05-20" },
+        { name: "쌍둥이자리", nameEn: "Gemini", nameZhHK: "雙子座", icon: "♊", start: "05-21", end: "06-21" },
+        { name: "게자리", nameEn: "Cancer", nameZhHK: "巨蟹座", icon: "♋", start: "06-22", end: "07-22" },
+        { name: "사자자리", nameEn: "Leo", nameZhHK: "獅子座", icon: "♌", start: "07-23", end: "08-22" },
+        { name: "처녀자리", nameEn: "Virgo", nameZhHK: "處女座", icon: "♍", start: "08-23", end: "09-23" },
+        { name: "천칭자리", nameEn: "Libra", nameZhHK: "天秤座", icon: "♎", start: "09-24", end: "10-22" },
+        { name: "전갈자리", nameEn: "Scorpio", nameZhHK: "天蠍座", icon: "♏", start: "10-23", end: "11-22" },
+        { name: "사수자리", nameEn: "Sagittarius", nameZhHK: "射手座", icon: "♐", start: "11-23", end: "12-24" },
+        { name: "염소자리", nameEn: "Capricorn", nameZhHK: "摩羯座", icon: "♑", start: "12-25", end: "12-31" }
     ];
 
     const FORTUNE_TEXTS = {
@@ -95,6 +119,16 @@
                 "Like thick fog clearing and a clear landscape revealed, it is a day when your confused mind is calmly organized. Taking time alone today away from complicated relationships is strongly recommended.",
                 "You may encounter an unexpected shower, but soon a more brilliant rainbow will rise. In the morning, you may feel somewhat frustrated, but the situation will turn in your favor in the afternoon. Do not be discouraged by small mistakes.",
                 "It is a rewarding day when your sincerity and consistency finally shine. The seeds of effort you silently sowed are starting to sprout, so be proud of what you are doing now. Competing head-on will bring the best results."
+            ],
+            "zh-HK": [
+                "如同在沙漠中央發現綠洲一般，甜蜜的好運今天在您意想不到的地方等待著您。您可能會在偶然拾起的書中一段文字或無意間經過的街景中，獲得能改變人生的小提示。今天您的直覺比任何時候都更加敏銳，所以請相信您內心指南針所指的方向，大膽地邁出腳步。",
+                "這是風浪過後，平靜的水面上灑滿和煦陽光的景象。一直困擾著您的複雜問題將像線團般逐一找到解決的線索。即使現在眼前看不到大的成果，也完全沒有必要急躁。今天稍作休息、充電的時間，反而會成為明天跳得更遠的動力。",
+                "這是您潛藏的能力如火山爆發般展現，給周圍的人留下強烈印象的一天。如果有您準備已久的計劃或一直深藏在心中的想法，今天正是將其展現給世界的最佳時機。與其在意別人的眼光，不如帶著對自己的信心向前推進，這樣會收穫比預期更燦爛的成果。",
+                "沒有哪一天比今天更需要「三思而後行」這個古老的智慧。看似華麗誘人的提議可能會出現，但其背後可能隱藏著意想不到的陷阱。在做出重要決定之前，務必與值得信賴的導師或同事商議。",
+                "這是愉快的能量如春日暖風般包裹全身的一天。開始之前一直拖延的運動或挑戰新的興趣愛好，沒有比這更好的時機了。您的積極能量也會傳播給周圍的人，所到之處笑聲如花，您將成為引領氛圍的主人公。",
+                "如同濃霧散去、清晰的風景顯現一般，這是混亂的心境平靜整理的日子。今天強烈建議您暫時遠離複雜的人際關係和噪音，享受獨自一人的時間。在安靜的咖啡館中沉思，或寫日記傾聽內心的聲音，您會發現前進路上的明確里程碑。",
+                "您可能會遇到意想不到的陣雨，但緊接著會升起更加燦爛的彩虹。上午可能會因事情不如計劃而略感沮喪，但隨著下午的到來，情況會向對您有利的方向轉變。不要因為小失誤而氣餒，以寬容的態度跨越，您一定能抓住轉禍為福的機會。",
+                "這是您的真誠和堅持終於發光，獲得周圍認可的充實一天。默默播下的努力種子開始發芽，所以對現在正在做的事情感到自豪也沒問題。與其期待好運，不如以正攻法競爭，這會帶來最佳結果。"
             ]
         },
         love: {
@@ -111,6 +145,13 @@
                 "Special caution is needed as a trivial slip of the tongue can become a spark for a quarrel. The effort to understand with a broad mind will be the key to protecting the relationship.",
                 "If you are single, you might receive a sudden contact from a past relationship. However, it is better to judge the situation coolly. New love may be hiding in a place closer than you think.",
                 "Today is a day when your charm shines like a subtle wildflower. An honest and plain appearance can give a greater favor to the other person than excessive decoration."
+            ],
+            "zh-HK": [
+                "如同成為浪漫電影的主角一般，令人心動的命運邂逅正在等待著您。走平時不走的路回家，或到新的咖啡館稍作停留，這樣的小小改變可能會給您帶來意想不到的緣分。今天是您的魅力以200%散發的一天。",
+                "如果是長久的情侶，會發生讓你們再次深刻認識彼此珍貴的溫暖事件。比起華麗的活動，一張充滿真心的手寫信或一句溫暖的安慰話語，能完全融化對方的心。",
+                "需要特別注意，因為微不足道的失言可能成為意想不到爭吵的火種。與其抓住對方的話柄，不如以「也有道理」的寬容心態努力理解，這將是維護關係的關鍵。",
+                "如果是單身，可能會收到過去難忘緣分的突然聯絡。但與其輕易被情感牽動，不如冷靜地判斷現狀。新的愛情可能藏在比您想像中更近的地方。",
+                "今天是您的魅力如野花般淡雅發光的日子。與其過度裝飾，保持原樣的真誠樸素模樣，會給對方帶來更大的好感。"
             ]
         },
         money: {
@@ -127,21 +168,28 @@
                 "It is a day followed by small financial luck, such as discovering emergency funds you had forgotten. If you share some of today's profits, it will come back as a greater blessing.",
                 "There is no better day than this to study investment for the future. Focus on cultivating an eye for reading economic flows rather than chasing immediate profits.",
                 "It is a day when you may be flustered by unexpected expenses. Check spare funds in advance as sudden events may occur."
+            ],
+            "zh-HK": [
+                "財運的流動如同順風的帆船般順暢。您可能會在意想不到的地方獲得零用錢，或者在過去投資的地方聽到令人欣喜的收益消息。但最好通過有計劃的支出來確保實惠。",
+                "這是打開錢包前需要再思考三次的日子。看似很吸引人的投資信息會誘惑您，但其中很可能含有泡沫。今天重要的是安全保護現有資產。",
+                "這是伴隨小額財運的日子，比如發現您遺忘已久的應急資金，或收回借出的錢。如果將今天獲得的收益的一部分分給周圍的人或捐贈，會以更大的祝福回報。",
+                "沒有比今天更適合為未來學習投資的日子了。與其追逐眼前的收益，不如培養閱讀經濟流向的眼光，或閱讀理財相關書籍積累內功，這些時間將來會帶來巨大財富。",
+                "這是可能因意外支出而慌張的一天。可能會突然出現家電故障或慶弔事件等需要花錢的地方，所以最好提前確認備用資金。"
             ]
         },
         colors: [
-            { name: "미드나잇 블루", nameEn: "Midnight Blue", code: "#1e3a8a" },
-            { name: "라벤더 퍼플", nameEn: "Lavender Purple", code: "#a78bfa" },
-            { name: "포레스트 그린", nameEn: "Forest Green", code: "#15803d" },
-            { name: "코랄 핑크", nameEn: "Coral Pink", code: "#fb7185" },
-            { name: "골드 옐로우", nameEn: "Gold Yellow", code: "#eab308" },
-            { name: "퓨어 화이트", nameEn: "Pure White", code: "#f8fafc" },
-            { name: "차콜 그레이", nameEn: "Charcoal Gray", code: "#334155" },
-            { name: "스카이 블루", nameEn: "Sky Blue", code: "#7dd3fc" },
-            { name: "루비 레드", nameEn: "Ruby Red", code: "#e11d48" },
-            { name: "에메랄드 민트", nameEn: "Emerald Mint", code: "#34d399" },
-            { name: "로얄 바이올렛", nameEn: "Royal Violet", code: "#7c3aed" },
-            { name: "선셋 오렌지", nameEn: "Sunset Orange", code: "#f97316" }
+            { name: "미드나잇 블루", nameEn: "Midnight Blue", nameZhHK: "午夜藍", code: "#1e3a8a" },
+            { name: "라벤더 퍼플", nameEn: "Lavender Purple", nameZhHK: "薰衣草紫", code: "#a78bfa" },
+            { name: "포레스트 그린", nameEn: "Forest Green", nameZhHK: "森林綠", code: "#15803d" },
+            { name: "코랄 핑크", nameEn: "Coral Pink", nameZhHK: "珊瑚粉", code: "#fb7185" },
+            { name: "골드 옐로우", nameEn: "Gold Yellow", nameZhHK: "金黃色", code: "#eab308" },
+            { name: "퓨어 화이트", nameEn: "Pure White", nameZhHK: "純白色", code: "#f8fafc" },
+            { name: "차콜 그레이", nameEn: "Charcoal Gray", nameZhHK: "炭灰色", code: "#334155" },
+            { name: "스카이 블루", nameEn: "Sky Blue", nameZhHK: "天藍色", code: "#7dd3fc" },
+            { name: "루비 레드", nameEn: "Ruby Red", nameZhHK: "寶石紅", code: "#e11d48" },
+            { name: "에메랄드 민트", nameEn: "Emerald Mint", nameZhHK: "翡翠薄荷綠", code: "#34d399" },
+            { name: "로얄 바이올렛", nameEn: "Royal Violet", nameZhHK: "皇家紫", code: "#7c3aed" },
+            { name: "선셋 오렌지", nameEn: "Sunset Orange", nameZhHK: "日落橙", code: "#f97316" }
         ]
     };
 
@@ -168,11 +216,11 @@
                     <label class="input-label">${texts.labelDate}</label>
                     <div class="date-input-group">
                         <input type="number" id="birthYear" class="input-field date-field" placeholder="${texts.placeholderYear}" min="1900" max="2100">
-                        <span class="date-separator">${currentLang === 'ko' ? '년' : ''}</span>
+                        <span class="date-separator">${currentLang === 'ko' ? '년' : currentLang === 'zh-HK' ? '年' : ''}</span>
                         <input type="number" id="birthMonth" class="input-field date-field" placeholder="${texts.placeholderMonth}" min="1" max="12">
-                        <span class="date-separator">${currentLang === 'ko' ? '월' : ''}</span>
+                        <span class="date-separator">${currentLang === 'ko' ? '월' : currentLang === 'zh-HK' ? '月' : ''}</span>
                         <input type="number" id="birthDay" class="input-field date-field" placeholder="${texts.placeholderDay}" min="1" max="31">
-                        <span class="date-separator">${currentLang === 'ko' ? '일' : ''}</span>
+                        <span class="date-separator">${currentLang === 'ko' ? '일' : currentLang === 'zh-HK' ? '日' : ''}</span>
                     </div>
                 </div>
                 <button id="btnCheck" class="btn-fortune">
@@ -275,22 +323,22 @@
 
         // 유효성 검사
         if (year < 1900 || year > 2100) {
-            alert(currentLang === 'ko' ? '연도를 올바르게 입력해주세요 (1900-2100)' : 'Please enter a valid year (1900-2100)');
+            alert(currentLang === 'ko' ? '연도를 올바르게 입력해주세요 (1900-2100)' : currentLang === 'zh-HK' ? '請輸入正確年份 (1900-2100)' : 'Please enter a valid year (1900-2100)');
             return;
         }
         if (month < 1 || month > 12) {
-            alert(currentLang === 'ko' ? '월을 올바르게 입력해주세요 (1-12)' : 'Please enter a valid month (1-12)');
+            alert(currentLang === 'ko' ? '월을 올바르게 입력해주세요 (1-12)' : currentLang === 'zh-HK' ? '請輸入正確月份 (1-12)' : 'Please enter a valid month (1-12)');
             return;
         }
         if (day < 1 || day > 31) {
-            alert(currentLang === 'ko' ? '일을 올바르게 입력해주세요 (1-31)' : 'Please enter a valid day (1-31)');
+            alert(currentLang === 'ko' ? '일을 올바르게 입력해주세요 (1-31)' : currentLang === 'zh-HK' ? '請輸入正確日期 (1-31)' : 'Please enter a valid day (1-31)');
             return;
         }
 
         // 날짜 유효성 검사 (예: 2월 30일 같은 경우)
         const dateObj = new Date(year, month - 1, day);
         if (dateObj.getFullYear() !== year || dateObj.getMonth() !== month - 1 || dateObj.getDate() !== day) {
-            alert(currentLang === 'ko' ? '올바른 날짜를 입력해주세요' : 'Please enter a valid date');
+            alert(currentLang === 'ko' ? '올바른 날짜를 입력해주세요' : currentLang === 'zh-HK' ? '請輸入正確日期' : 'Please enter a valid date');
             return;
         }
 
@@ -317,8 +365,10 @@
         const luckyNum = Math.floor(seededRandom(seedBase + 5) * 99) + 1;
 
         const scoreColor = score >= 90 ? '#facc15' : score >= 70 ? '#4ade80' : '#94a3b8';
-        const zName = currentLang === 'en' ? zodiac.nameEn : zodiac.name;
-        const cName = currentLang === 'en' ? f.colors[colorIdx].nameEn : f.colors[colorIdx].name;
+        const zName = currentLang === 'en' ? zodiac.nameEn : currentLang === 'zh-HK' ? zodiac.nameZhHK : zodiac.name;
+        
+        // 수정됨: currentLang이 zh-HK일 때 nameZhHK를 사용하도록 변경
+        const cName = currentLang === 'en' ? f.colors[colorIdx].nameEn : currentLang === 'zh-HK' ? f.colors[colorIdx].nameZhHK : f.colors[colorIdx].name;
 
         renderResultScreen({
             name: name,
@@ -390,6 +440,7 @@
                 langSwitch.innerHTML = `
                     <div class="lang-btn active" data-lang="ko">KR</div>
                     <div class="lang-btn" data-lang="en">EN</div>
+                    <div class="lang-btn" data-lang="zh-HK">繁</div>
                 `;
                 wrapper.appendChild(langSwitch);
 

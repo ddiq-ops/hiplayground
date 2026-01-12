@@ -1,17 +1,72 @@
-Create a web-based mini game playground for elementary school students.
+# Hi Playground
 
-Requirements:
+A web-based mini game playground for elementary school students.
+
+## Overview
+
+**Hi Playground** is a kid-friendly mini game platform featuring 19+ games with full multilingual support (Korean, English, Traditional Chinese - Hong Kong).
+
+## Features
+
+- **19+ Mini Games**: Action, puzzle, education, board games, and more
+- **Multilingual Support**: Korean (한국어), English, Traditional Chinese - Hong Kong (繁體中文(香港))
+- **Language Selector**: Globe icon in top-right corner for easy language switching
+- **Responsive Design**: Optimized for tablets and mobile devices
+- **No Backend Required**: Pure HTML, CSS, JavaScript (no build tools)
+- **Local Storage**: Saves game progress, favorites, and language preference
+- **Game Categories**: Action, Puzzle, Education, Board, Shooting, Lifestyle
+
+## Tech Stack
+
+- **Frontend**: Pure HTML, CSS, JavaScript (ES6+)
+- **No Build Tools**: Works by opening `index.html` directly
+- **No Dependencies**: Vanilla JavaScript only
+- **Browser Support**: Modern browsers (Chrome, Firefox, Safari, Edge)
+
+## Quick Start
+
+1. Clone or download the repository
+2. Open `index.html` in a web browser
+3. No installation or build step required!
+
+## Project Structure
+
+See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for detailed documentation.
+
+## Multilingual Support
+
+The site supports three languages:
+- **Korean (한국어)**: Default language
+- **English**: Full translation
+- **Traditional Chinese - Hong Kong (繁體中文(香港))**: Complete translation
+
+Language preference is saved in browser local storage and persists across sessions.
+
+## Games
+
+All games support multilingual UI and descriptions. Current games include:
+- Clicker games
+- Memory games
+- Math quizzes
+- Board games (Chess, Omok)
+- Action games
+- Puzzle games
+- And more!
+
+See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for the complete list.
+
+## Requirements
 - Target: elementary school kids
 - Domain concept: "hiplayground.com" (friendly online playground)
 - Tech: HTML, CSS, JavaScript only
 - No backend yet
 - Responsive design
-- Main page with game categories
-- Game list page
+- Main page with all games
+- Game list page with filters
 - Individual game play page
 - Simple, colorful, kid-friendly UI
 - No external paid assets
-- Placeholder mini games (simple click, memory, puzzle games)
+- 19+ mini games (click, memory, puzzle, action, etc.)
 
 Focus on clean structure and scalability.
 

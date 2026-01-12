@@ -32,6 +32,7 @@ hiplayground/
 │   │   ├── router.js         # 라우팅 처리
 │   │   ├── storage.js        # 로컬 스토리지 관리
 │   │   ├── i18n.js           # 다국어 지원
+│   │   ├── language-selector.js  # 언어 선택기 UI
 │   │   └── analytics.js      # 분석 추적
 │   └── games/                # 게임별 에셋 (이미지 등)
 │       ├── omok/
@@ -41,7 +42,8 @@ hiplayground/
 │   ├── categories.json       # 카테고리 정의
 │   └── i18n/                 # 번역 파일
 │       ├── ko.json           # 한국어
-│       └── en.json           # 영어
+│       ├── en.json           # 영어
+│       └── zh-HK.json        # 홍콩 번체
 ├── games/                     # 게임 코드
 │   ├── {game-id}/            # 각 게임 디렉토리
 │   │   ├── game.js           # 게임 로직 (필수)
@@ -208,12 +210,86 @@ hiplayground/
 - `Storage.addFavorite(gameId)` - 즐겨찾기 추가
 - `Storage.removeFavorite(gameId)` - 즐겨찾기 제거
 
-### 5. 다국어 시스템
+### 5. 다국어 시스템 (i18n)
 
 **assets/js/i18n.js**와 **data/i18n/** 파일들이 다국어를 지원합니다.
-- 기본 언어: 한국어 (ko)
-- 지원 언어: 영어 (en)
-- `I18n.t(key)` - 번역 텍스트 가져오기
+
+#### 지원 언어
+- **한국어 (ko)**: 기본 언어
+- **영어 (en)**: English
+- **홍콩 번체 (zh-HK)**: 繁體中文(香港) - Traditional Chinese (Hong Kong)
+
+#### 주요 기능
+- `I18n.t(key, defaultValue)` - 번역 텍스트 가져오기
+- `I18n.setLanguage(lang)` - 언어 변경 (자동 저장 및 페이지 업데이트)
+- `I18n.getGameTitle(gameId, manifest, gameData)` - 게임 제목 번역
+- `I18n.getGameDescription(gameId, manifest, gameData)` - 게임 설명 번역
+- `I18n.getGameDescriptionData(gameId)` - 게임 상세 정보 (howToPlay, strategy, about) 번역
+
+#### 언어 선택기
+- **위치**: 모든 페이지의 우측 상단
+- **구현**: `assets/js/language-selector.js`
+- **UI**: 지구본 아이콘 클릭 시 드롭다운 메뉴 표시
+- **저장**: 선택한 언어는 로컬 스토리지에 저장되어 다음 방문 시 자동 적용
+
+#### 번역 파일 구조
+```
+data/i18n/
+├── ko.json          # 한국어 번역
+├── en.json          # 영어 번역
+└── zh-HK.json       # 홍콩 번체 번역
+```
+
+각 번역 파일은 다음 구조를 가집니다:
+```json
+{
+  "site": { ... },
+  "nav": { ... },
+  "home": { ... },
+  "games": { ... },
+  "play": { ... },
+  "common": { ... },
+  "privacyPolicy": { ... },
+  "termsOfService": { ... },
+  "footer": { ... },
+  "gameDetails": {
+    "game-id": {
+      "ui": {
+        "buttonText": "...",
+        "labelText": "..."
+      },
+      "howToPlay": "...",
+      "strategy": "...",
+      "about": "..."
+    }
+  }
+}
+```
+
+#### 게임 내 번역
+각 게임은 `getUIText(key, defaultValue)` 헬퍼 함수를 사용하여 UI 텍스트를 번역합니다:
+```javascript
+function getUIText(key, defaultValue) {
+  if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
+    const fullKey = `gameDetails.${gameId}.ui.${key}`;
+    const value = I18n.t(fullKey, defaultValue);
+    if (value === fullKey || value === defaultValue) {
+      return defaultValue;
+    }
+    return value;
+  }
+  return defaultValue;
+}
+```
+
+게임은 `i18n:loaded` 이벤트를 리스닝하여 언어 변경 시 UI를 업데이트합니다:
+```javascript
+document.addEventListener('i18n:loaded', () => {
+  // UI 재렌더링
+  this.renderLayout();
+  this.updateUI();
+});
+```
 
 ### 6. App API
 
@@ -364,18 +440,27 @@ if (callbacks.onLevelChange) {
 
 ## 현재 게임 목록
 
-1. **clicker** - 클리커 게임 (액션, 쉬움)
-2. **memory** - 기억력 게임 (퍼즐, 보통)
-3. **math-quiz** - 초등 수학 마스터 (교육, 보통)
-4. **math-quiz-hard** - 암산 천재 (고학년) (교육, 어려움)
-5. **chess** - 체스 (보드, 어려움)
-6. **omok** - 오목 마스터 (보드, 어려움)
-7. **weapon-levelup** - 내 무기만 레벨업 (퍼즐, 보통)
-8. **speed-number** - 순발력 숫자 터치 (액션, 쉬움)
-9. **physics-box** - 와르르 상자 (액션, 보통)
-10. **gravity-run** - 그래비티 런: 제로 (액션, 어려움)
-11. **infinite-space** - 인피니티 스페이스: 로그 (슈팅, 어려움)
-12. **mystic-fortune** - 오늘의 운세 (라이프스타일, 쉬움)
+1. **clicker** - 클리커 게임 (액션, 쉬움) ✅ 다국어 지원
+2. **memory** - 기억력 게임 (퍼즐, 보통) ✅ 다국어 지원
+3. **math-quiz** - 초등 수학 마스터 (교육, 보통) ✅ 다국어 지원
+4. **math-quiz-hard** - 암산 천재 (고학년) (교육, 어려움) ✅ 다국어 지원
+5. **chess** - 체스 (보드, 어려움) ✅ 다국어 지원
+6. **omok** - 오목 마스터 (보드, 어려움) ✅ 다국어 지원
+7. **weapon-levelup** - 내 무기만 레벨업 (퍼즐, 보통) ✅ 다국어 지원
+8. **speed-number** - 순발력 숫자 터치 (액션, 쉬움) ✅ 다국어 지원
+9. **physics-box** - 와르르 상자 (액션, 보통) ✅ 다국어 지원
+10. **gravity-run** - 그래비티 런: 제로 (액션, 어려움) ✅ 다국어 지원
+11. **infinite-space** - 인피니티 스페이스: 로그 (슈팅, 어려움) ✅ 다국어 지원
+12. **mystic-fortune** - 오늘의 운세 (라이프스타일, 쉬움) ✅ 다국어 지원 (내부 언어 관리)
+13. **word-pop** - 단어 터치 게임 (교육, 쉬움) ✅ 다국어 지원
+14. **code-rabbit** - 코드 토끼 (교육, 보통) ✅ 다국어 지원
+15. **guardian-defense** - 가디언 디펜스 (전략, 보통) ✅ 다국어 지원
+16. **idle-factory** - 아이들 팩토리 (시뮬레이션, 쉬움) ✅ 다국어 지원
+17. **emoji-survivor** - 이모지 서바이버 (액션, 보통) ✅ 다국어 지원
+18. **jelly-legend** - 젤리 레전드 (액션, 보통) ✅ 다국어 지원
+19. **neon-beat** - 네온 비트 (리듬, 보통) ✅ 다국어 지원
+
+**참고**: ✅ 표시는 한국어, 영어, 홍콩 번체를 모두 지원하는 게임입니다.
 
 ## 카테고리 목록
 
@@ -520,6 +605,26 @@ if (typeof window !== 'undefined') {
 - `gameContainer`는 GameShell이 제공하는 DOM 요소임
 
 ## 최근 주요 변경 사항
+
+### 다국어 지원 시스템 구축 (2024)
+- **3개 언어 지원**: 한국어, 영어, 홍콩 번체 (繁體中文(香港))
+- **언어 선택기 UI**: 모든 페이지 우측 상단에 지구본 아이콘 추가
+- **자동 언어 저장**: 선택한 언어는 로컬 스토리지에 저장되어 다음 방문 시 자동 적용
+- **실시간 언어 변경**: 페이지 새로고침 없이 즉시 텍스트 변경
+- **게임 내 번역**: 모든 게임의 UI 텍스트가 선택한 언어로 표시
+- **게임 설명 번역**: 게임 방법, 공략 팁, 게임 소개 섹션도 모두 번역됨
+
+#### 게임 번역 상태
+- 모든 게임이 한국어, 영어, 홍콩 번체를 지원합니다
+- 각 게임은 `getUIText()` 헬퍼 함수를 사용하여 UI 텍스트를 번역합니다
+- 게임은 `i18n:loaded` 이벤트를 리스닝하여 언어 변경 시 자동으로 UI를 업데이트합니다
+- `mystic-fortune` 게임은 자체 언어 관리 시스템을 사용합니다
+
+#### 번역 파일 구조
+- `data/i18n/ko.json`: 한국어 번역 (기본)
+- `data/i18n/en.json`: 영어 번역
+- `data/i18n/zh-HK.json`: 홍콩 번체 번역
+- 각 파일에는 사이트 전체 UI, 게임별 UI, 게임 설명 등이 포함됩니다
 
 ### 메인 페이지 구조 변경
 - **카테고리 섹션 제거**: 메인 페이지에서 카테고리 그리드 제거
