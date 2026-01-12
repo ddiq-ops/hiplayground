@@ -301,6 +301,20 @@
   "popularity": 88,
   "releaseDate": "2026-01-12",
   "orientation": "any"
+},
+{
+  "id": "lucky-toast",
+  "title": "럭키 토스트",
+  "titleEn": "Lucky Toast",
+  "category": "simulation",
+  "difficulty": "easy",
+  "description": "운빨로 만드는 최고의 토스트! 임대료를 내고 살아남으세요.",
+  "descriptionEn": "Cook by luck! Pay the rent and survive.",
+  "icon": "🍞",
+  "tags": ["타이쿤", "로그라이크", "운빨"],
+  "popularity": 88,
+  "releaseDate": "2026-01-13",
+  "orientation": "portrait"
 }
   
 ]

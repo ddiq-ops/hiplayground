@@ -1,0 +1,148 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+.lt-wrapper {
+  width: 100%; height: 100%;
+  background: #fff3e0; color: #5d4037;
+  font-family: 'Pretendard', sans-serif;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden; user-select: none;
+}
+
+/* 상단 정보 */
+.lt-header {
+  padding: 8px 15px; background: #ffe0b2;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 3px solid #ffcc80; z-index: 20; position: relative;
+}
+.lt-header-left { display: flex; flex-direction: column; }
+.lt-day { font-size: 1.1rem; font-weight: bold; color: #e65100; }
+.lt-hiscore { font-size: 0.8rem; color: #8d6e63; font-weight: bold; } /* 최고기록 */
+
+.lt-hearts { font-size: 1.2rem; color: #d32f2f; letter-spacing: 2px; }
+.lt-money { font-size: 1.4rem; font-weight: 900; color: #2e7d32; }
+
+/* 손님 대기열 */
+.lt-customer-area {
+  background: #8d6e63; padding: 10px; display: flex;
+  gap: 15px; justify-content: center; align-items: flex-end;
+  height: 90px; border-bottom: 4px solid #5d4037;
+  position: relative; z-index: 5;
+}
+.lt-customer-wrapper {
+  position: relative; width: 50px; height: 60px;
+  display: flex; justify-content: center; align-items: flex-end;
+}
+.lt-customer {
+  font-size: 3rem; 
+  animation: bounceIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.lt-patience-bar {
+  position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+  background: #3e2723; border-radius: 3px; overflow: hidden;
+  border: 1px solid #fff;
+}
+.lt-patience-fill {
+  height: 100%; background: #4caf50; width: 100%;
+  transition: width 0.2s linear, background 0.2s;
+}
+.lt-patience-fill.low { background: #f44336; }
+
+.lt-customer-bubble {
+  position: absolute; top: -15px; right: -15px;
+  background: #fff; padding: 2px 6px; border-radius: 10px;
+  font-size: 0.8rem; border: 1px solid #000; z-index: 5;
+  animation: pop 0.3s;
+}
+.lt-no-customer { font-size: 0.9rem; color: #d7ccc8; align-self: center; }
+.lt-customer.angry { animation: shake 0.5s; filter: grayscale(1) hue-rotate(280deg); }
+
+/* 메인 키친 */
+.lt-kitchen {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 15px; padding: 20px 0; overflow-y: auto;
+  background-image: radial-gradient(#ffe0b2 15%, transparent 15%);
+  background-size: 20px 20px;
+}
+
+/* 화구 슬롯 */
+.lt-slot {
+  width: 90%; max-width: 350px; height: 100px;
+  background: #fff; border-radius: 15px;
+  border: 3px solid #d7ccc8;
+  display: flex; align-items: center; padding: 0 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: relative; transition: all 0.2s; z-index: 1;
+}
+.lt-slot.locked { background: #e0e0e0; border-color: #9e9e9e; filter: grayscale(1); }
+.lt-slot.auto { border-color: #2196f3; background: #e3f2fd; }
+.lt-slot.ready { border-color: #4caf50; background: #e8f5e9; }
+
+.lt-pan {
+  width: 60px; height: 60px; background: #3e2723; border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 2rem; margin-right: 15px; border: 2px solid #5d4037;
+}
+.lt-slot-info { flex: 1; }
+.lt-status { font-size: 0.9rem; font-weight: bold; color: #888; }
+.lt-slot-btn {
+  padding: 10px 15px; border-radius: 10px; border: none;
+  font-weight: bold; cursor: pointer; color: white;
+  transition: transform 0.1s; min-width: 80px;
+}
+.lt-slot-btn:active { transform: scale(0.95); }
+
+.btn-cook { background: #ff5722; box-shadow: 0 4px #d84315; }
+.btn-cook:disabled { background: #bdbdbd; box-shadow: none; cursor: not-allowed; }
+.btn-serve { background: #4caf50; box-shadow: 0 4px #388e3c; animation: pulse 1s infinite; }
+.btn-unlock { background: #607d8b; box-shadow: 0 4px #455a64; font-size: 0.8rem; }
+.btn-auto { background: #2196f3; box-shadow: none; cursor: default; }
+
+.lt-alba-badge {
+  position: absolute; top: -10px; left: -10px;
+  background: #2196f3; color: white; padding: 4px 8px;
+  border-radius: 12px; font-size: 0.75rem; font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); transform: rotate(-10deg);
+}
+
+/* 이벤트 배너 */
+.lt-event-banner {
+  position: absolute; 
+  top: 150px;
+  left: 50%; transform: translateX(-50%);
+  background: #ffeb3b; border: 3px solid #000; color: #000;
+  padding: 8px 15px; border-radius: 15px; z-index: 50; width: 80%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center;
+  display: none; animation: dropDown 0.3s ease-out;
+}
+.lt-evt-title { font-size: 1rem; font-weight: 900; display: block; margin-bottom: 2px;}
+.lt-evt-desc { font-size: 0.8rem; font-weight: bold; color: #333; display: block;}
+
+/* 모달 */
+.lt-modal {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9); z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.lt-modal.active { opacity: 1; pointer-events: auto; }
+.lt-cards { display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; }
+.lt-card {
+  background: #fff; padding: 15px; border-radius: 10px;
+  display: flex; align-items: center; gap: 15px; cursor: pointer;
+  border: 3px solid #fff; position: relative;
+}
+.lt-card:hover { border-color: #ff9800; transform: scale(1.02); }
+.lt-card.risk { border-color: #ffcdd2; background: #ffebee; }
+
+.float-text {
+  position: absolute; font-weight: bold; font-size: 1.3rem;
+  animation: floatUp 1s forwards; pointer-events: none; z-index: 60;
+  text-shadow: 2px 2px 0 #fff; text-align: center; width: 100%;
+}
+
+@keyframes dropDown { from { top: 120px; opacity:0; } to { top: 150px; opacity:1; } }
+@keyframes bounceIn { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes floatUp { to { transform: translateY(-30px); opacity: 0; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }

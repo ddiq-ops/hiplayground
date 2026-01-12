@@ -1,0 +1,12 @@
+{
+  "id": "lucky-toast",
+  "title": "럭키 토스트",
+  "titleEn": "Lucky Toast",
+  "description": "화구를 늘리고 알바를 고용하세요! 돌발 이벤트가 가득한 경영 게임.",
+  "descriptionEn": "Expand slots, hire staff, and handle random events!",
+  "icon": "🍞",
+  "category": "simulation",
+  "difficulty": "normal",
+  "version": "2.0.0",
+  "orientation": "portrait"
+}

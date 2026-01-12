@@ -1247,6 +1247,109 @@
         "stageComplete": "stage completed!"
       }
     },
+    "lucky-toast": {
+      "title": "Lucky Toast",
+      "description": "Expand slots, hire staff, and handle random events!",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, you have 1 slot and $100 initial money.",
+          "Click the \"Cook\" button on a slot to start cooking toast. When it's ready, a \"Serve\" button appears.",
+          "When customers are in the queue, click the \"Serve\" button to serve toast and receive money.",
+          "There are 4 types of toast: Burnt Toast ($0), Normal Toast ($5), Special Toast ($25), and Rainbow Toast ($150).",
+          "Click the lock icon next to a slot and pay the cost to add more slots.",
+          "Hiring staff automates a slot to automatically cook and serve toast. Hiring staff increases rent permanently.",
+          "Random events occur during the day: Golden Time (income x2), Blackout (cannot cook/serve), Critic Visit (next toast price x5), Health Inspection (fine $50), Impatient Customer (patience decreases) etc.",
+          "When the timer at the top reaches 0, the day ends. At the end of each day, you must pay rent.",
+          "When a customer's patience reaches 0, they leave and you lose 1 life. When lives reach 0, it's game over.",
+          "The goal is to survive as many days as possible and set a high score."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Early strategy: Quickly cook and serve toast with the first slot to accumulate funds. Early on, Normal Toast appears most frequently, providing stable income.",
+          "Slot expansion: It's important to secure the second slot ($200) as soon as possible. More slots allow you to make more toast simultaneously, greatly increasing income.",
+          "Staff hiring: Hiring staff automates slots to cook toast without manual work, but increases rent permanently. Hiring staff when operating multiple slots greatly increases efficiency.",
+          "Upgrade selection: Spicy Sauce increases prices by 50% but increases burnt toast probability. Safety First completely prevents burnt toast but slows cooking speed. Gambler's Fan increases jackpot probability but prevents normal toast.",
+          "Event response: During Golden Time, utilize all slots to maximize income (x2). During blackouts, customers wait, so serve quickly after the blackout ends. When a critic visits, it's a good strategy to wait a bit to make the next toast as expensive as possible.",
+          "Fund management: Always maintain enough funds to pay rent. If you can't pay rent, it's game over. It's important to keep reserve funds for health inspection events ($50).",
+          "Customer management: Serve toast before customer patience runs out. When many customers gather, operating multiple slots simultaneously to serve quickly is important. Service Candy upgrade increases customer patience and helps.",
+          "Risk management: Upgrades like Gambler's Fan or Spicy Sauce provide high returns but carry risk. If you prefer stable play, choosing Safety First is good."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Lucky Toast is a management simulation game where you operate a toast shop. The goal is to expand the shop by adding more slots, hire staff, handle random events, and satisfy customers to operate as long as possible. Toast cooking results are determined by probability, and if you're lucky enough to make a Rainbow Toast, you can earn large profits. Through the game, you can develop resource management and quick judgment skills, and improve strategic thinking by considering the balance between risk and profit. The random event system helps develop response abilities in unpredictable situations, and improves time management and multitasking skills. Through the game, you can feel the fun and challenge of management, and gain a sense of achievement from achieving high scores. It's an educational game that everyone from elementary students to adults can easily enjoy while providing deep strategic elements."
+      },
+      "ui": {
+        "labels": {
+          "day": "DAY",
+          "best": "BEST: DAY",
+          "rent": "Rent:"
+        },
+        "slot": {
+          "expandable": "Expandable",
+          "cook": "Cook",
+          "waiting": "Waiting",
+          "cooking": "Cooking",
+          "serve": "Serve",
+          "serving": "Serving",
+          "albaWorking": "Staff Working",
+          "albaBadge": "Staff 🤖"
+        },
+        "queue": {
+          "waiting": "Waiting for customers..."
+        },
+        "messages": {
+          "customerLeft": "Customer Left! 😡",
+          "reputationRuined": "Reputation ruined...",
+          "blackout": "Blackout! ⚡",
+          "noCustomer": "No customers!",
+          "criticPraise": "Critic's Praise!",
+          "refund": "Refund...",
+          "notEnoughMoney": "Not enough money!",
+          "taxPaid": "-$50 Tax!"
+        },
+        "modal": {
+          "dayEnd": {
+            "title": "End of Day",
+            "rentPaid": "Rent paid. Balance: $",
+            "selectStrategy": "🎁 Choose Strategy"
+          },
+          "gameOver": {
+            "title": "Bankrupt 💸",
+            "bestRecord": "Best Record: DAY",
+            "currentRecord": "This Run: DAY",
+            "retry": "Retry",
+            "cannotPayRent": "Cannot pay rent..."
+          },
+          "noSlotForAlba": "No available slot for staff!"
+        },
+        "toastTypes": {
+          "burnt": { "name": "Burnt Toast" },
+          "normal": { "name": "Normal Toast" },
+          "special": { "name": "Special Toast" },
+          "rainbow": { "name": "Rainbow Toast" }
+        },
+        "events": {
+          "rush": { "name": "Golden Time! 💰", "desc": "Income x2 for 5 seconds" },
+          "blackout": { "name": "Blackout! ⚡", "desc": "Cannot cook/serve for 3 seconds" },
+          "critic": { "name": "Critic Visit 🧐", "desc": "Next toast price x5" },
+          "tax": { "name": "Health Inspection 📋", "desc": "Pay fine $50" },
+          "impatient": { "name": "Impatient Customer 😡", "desc": "Customer patience decreases 2x" }
+        },
+        "upgrades": {
+          "hire_alba": { "name": "Hire Staff", "desc": "Automate 1 slot\nRent +$20/day" },
+          "spicy_sauce": { "name": "Spicy Sauce", "desc": "Price +50%\nBurnt toast chance +10%" },
+          "safety_first": { "name": "Safety First", "desc": "Never burns\nCooking speed -30%" },
+          "gambler": { "name": "Gambler's Fan", "desc": "Jackpot chance +10%\nNormal toast 0%" },
+          "marketing": { "name": "Flyer Promotion", "desc": "Toast price +10%" },
+          "loan": { "name": "Loan", "desc": "Instant +$300\nRent +$30/day permanently" },
+          "candy": { "name": "Service Candy", "desc": "Customer patience +15%" }
+        }
+      }
+    },
     "memory": {
       "title": "Memory Game",
       "description": "Flip cards to find matching pairs!",
