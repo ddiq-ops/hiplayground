@@ -55,6 +55,15 @@ All games support multilingual UI and descriptions. Current games include:
 
 See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for the complete list.
 
+### Adding New Games
+
+When adding a new game, you **must** add the following content in all 3 supported languages (Korean, English, Traditional Chinese - Hong Kong):
+- **How to Play**: Step-by-step instructions on how to play the game
+- **Strategy & Tips**: Tips and strategies to improve gameplay
+- **About**: Description of the game's features, goals, and educational value
+
+These should be added to `data/i18n/ko.json`, `data/i18n/en.json`, and `data/i18n/zh-HK.json` in the `gameDetails.{game-id}` section. See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for detailed structure.
+
 ## Requirements
 - Target: elementary school kids
 - Domain concept: "hiplayground.com" (friendly online playground)

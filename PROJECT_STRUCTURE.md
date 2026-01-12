@@ -254,17 +254,38 @@ data/i18n/
   "footer": { ... },
   "gameDetails": {
     "game-id": {
+      "title": "게임 제목",
+      "description": "게임 간단 설명",
+      "howToPlay": {
+        "title": "게임 방법",
+        "steps": [
+          "1단계 설명",
+          "2단계 설명",
+          ...
+        ]
+      },
+      "strategy": {
+        "title": "공략 팁 & 전략",
+        "tips": [
+          "팁 1",
+          "팁 2",
+          ...
+        ]
+      },
+      "about": {
+        "title": "게임 소개",
+        "description": "게임의 특징, 목표, 교육적 가치 등에 대한 상세 설명 (긴 문단)"
+      },
       "ui": {
         "buttonText": "...",
         "labelText": "..."
-      },
-      "howToPlay": "...",
-      "strategy": "...",
-      "about": "..."
+      }
     }
   }
 }
 ```
+
+**중요**: 새로운 게임을 추가할 때는 반드시 `gameDetails.{game-id}` 섹션에 `howToPlay`, `strategy`, `about` 필드를 3개 언어 모두에 추가해야 합니다. 이는 게임 상세 페이지에서 표시되는 필수 콘텐츠입니다.
 
 #### 게임 내 번역
 각 게임은 `getUIText(key, defaultValue)` 헬퍼 함수를 사용하여 UI 텍스트를 번역합니다:
@@ -376,7 +397,55 @@ const debouncedSearch = UI.debounce((query) => {
    - `window.Game = Game` 형태로 노출
    - **중요**: 자동 실행 코드 금지 (DOMContentLoaded 이벤트 리스너나 즉시 실행 init 호출 금지)
 
-2. **init 메서드 구현** (필수)
+2. **게임 설명 다국어 지원** (필수)
+   - **새로운 게임을 추가할 때 반드시 다음 내용을 3개 언어(한국어, 영어, 홍콩 번체)로 추가해야 합니다**:
+     - **게임 방법 (How to Play)**: 게임의 기본 플레이 방법을 단계별로 설명
+     - **공략 팁 & 전략 (Strategy & Tips)**: 게임을 더 잘 플레이하기 위한 팁과 전략
+     - **게임 소개 (About)**: 게임의 특징, 목표, 교육적 가치 등에 대한 설명
+   
+   - **추가 위치**: `data/i18n/ko.json`, `data/i18n/en.json`, `data/i18n/zh-HK.json`의 `gameDetails.{game-id}` 섹션에 추가
+   
+   - **JSON 구조**:
+     ```json
+     "gameDetails": {
+       "game-id": {
+         "title": "게임 제목",
+         "description": "게임 간단 설명",
+         "howToPlay": {
+           "title": "게임 방법",
+           "steps": [
+             "1단계 설명",
+             "2단계 설명",
+             ...
+           ]
+         },
+         "strategy": {
+           "title": "공략 팁 & 전략",
+           "tips": [
+             "팁 1",
+             "팁 2",
+             ...
+           ]
+         },
+         "about": {
+           "title": "게임 소개",
+           "description": "게임의 특징, 목표, 교육적 가치 등에 대한 상세 설명 (긴 문단)"
+         },
+         "ui": {
+           // 게임 내 UI 텍스트 번역
+         }
+       }
+     }
+     ```
+   
+   - **중요 규칙**:
+     - 모든 새 게임은 반드시 3개 언어 모두에 게임 설명을 추가해야 합니다
+     - 한국어 버전을 먼저 작성한 후 영어와 홍콩 번체로 번역합니다
+     - 게임 방법은 단계별로 명확하게 작성합니다
+     - 공략 팁은 실제 게임 플레이에 도움이 되는 구체적인 내용을 포함합니다
+     - 게임 소개는 게임의 교육적 가치와 특징을 충분히 설명합니다
+
+3. **init 메서드 구현** (필수)
    ```javascript
    init: function(gameContainer, options = {}) {
      // gameContainer: DOM 요소 (GameShell이 제공)
@@ -613,6 +682,7 @@ if (typeof window !== 'undefined') {
 - **실시간 언어 변경**: 페이지 새로고침 없이 즉시 텍스트 변경
 - **게임 내 번역**: 모든 게임의 UI 텍스트가 선택한 언어로 표시
 - **게임 설명 번역**: 게임 방법, 공략 팁, 게임 소개 섹션도 모두 번역됨
+- **게임 설명 필수화**: 새로운 게임을 추가할 때마다 반드시 3개 언어 모두에 게임 방법(howToPlay), 공략 팁(strategy), 게임 소개(about) 내용을 추가해야 함
 
 #### 게임 번역 상태
 - 모든 게임이 한국어, 영어, 홍콩 번체를 지원합니다
