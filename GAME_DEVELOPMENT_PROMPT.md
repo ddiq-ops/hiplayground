@@ -1158,5 +1158,185 @@ const debouncedSearch = UI.debounce((query) => {
 
 ---
 
+## 🌐 다국어 지원 시스템 (i18n)
+
+### 현재 구현 상태 (2024년 기준)
+
+사이트는 한국어(ko), 영어(en), 번체 중국어(zh-HK, 홍콩) 3가지 언어를 지원합니다.
+
+### 1. 번역 파일 구조
+
+번역 파일은 `data/i18n/` 디렉토리에 언어별 JSON 파일로 관리됩니다:
+- `data/i18n/ko.json` - 한국어
+- `data/i18n/en.json` - 영어  
+- `data/i18n/zh-HK.json` - 번체 중국어(홍콩)
+
+### 2. 번역 파일 구조 예시
+
+```json
+{
+  "site": {
+    "name": "하이 플레이그라운드",
+    "tagline": "재미있는 미니 게임 놀이터"
+  },
+  "nav": {
+    "home": "홈",
+    "games": "게임",
+    "about": "소개"
+  },
+  "games": {
+    "title": "게임 목록",
+    "play": "플레이"
+  },
+  "play": {
+    "back": "뒤로",
+    "reset": "리셋",
+    "fullscreen": "전체화면",
+    "mute": "음소거"
+  },
+  "games": {
+    "[game-id]": {
+      "title": "게임 제목",
+      "description": "게임 설명",
+      "howToPlay": {
+        "title": "게임 방법",
+        "steps": ["1단계", "2단계", ...]
+      },
+      "strategy": {
+        "title": "공략 팁",
+        "tips": ["팁1", "팁2", ...]
+      },
+      "about": {
+        "title": "게임 소개",
+        "description": "상세 설명"
+      }
+    }
+  }
+}
+```
+
+### 3. HTML에서 번역 사용
+
+HTML 요소에 `data-i18n` 속성을 추가하여 자동 번역:
+
+```html
+<h1 data-i18n="site.name">하이 플레이그라운드</h1>
+<a data-i18n="nav.home">홈</a>
+<button data-i18n-title="play.back" title="뒤로">←</button>
+<input data-i18n="home.search" placeholder="게임 검색...">
+```
+
+- `data-i18n`: 요소의 텍스트 내용을 번역
+- `data-i18n-title`: 요소의 title 속성을 번역 (버튼 툴팁 등)
+
+### 4. JavaScript에서 번역 사용
+
+```javascript
+// 기본 번역 함수
+const text = I18n.t('nav.home'); // "홈" 또는 "Home" 등
+
+// 중첩된 키 지원
+const text = I18n.t('games.clicker.title');
+
+// 기본값 제공
+const text = I18n.t('games.unknown.title', '기본 제목');
+```
+
+### 5. 언어 변경 시스템
+
+사용자가 언어를 선택하면:
+1. `I18n.setLanguage(lang)` 호출
+2. 번역 파일 로드
+3. `translatePage()` 함수가 `data-i18n` 속성을 가진 모든 요소를 자동으로 번역
+4. 언어 설정이 localStorage에 저장되어 다음 방문 시에도 유지
+
+### 6. 게임 설명 번역
+
+게임 설명은 `data/i18n/*.json` 파일의 `games.[game-id]` 섹션에 저장됩니다.
+
+현재 구조:
+- 각 게임별로 `howToPlay`, `strategy`, `about` 섹션 지원
+- `howToPlay.steps`는 배열로 단계별 설명
+- `strategy.tips`는 배열로 팁 목록
+- `about.description`은 문자열로 상세 설명
+
+### 7. Manifest.json 번역
+
+게임의 `manifest.json` 파일에는 기본 한국어 title/description이 있고, 영어 버전은 `titleEn`/`descriptionEn`으로 제공됩니다.
+
+번역 시스템에서는 `data/i18n/*.json`의 `games.[game-id].title`과 `games.[game-id].description`을 우선 사용하며, 없으면 manifest의 값을 사용합니다.
+
+### 8. 게임 번역 시스템 통합 (2024년 구현 완료)
+
+게임 제목, 설명, 상세 설명(howToPlay, strategy, about)이 번역 시스템과 통합되었습니다.
+
+#### 8.1 I18n 헬퍼 함수
+
+`assets/js/i18n.js`에 다음 함수들이 추가되었습니다:
+
+- `I18n.getGameTitle(gameId, manifest, gameData)`: 게임 제목을 현재 언어로 가져옴
+- `I18n.getGameDescription(gameId, manifest, gameData)`: 게임 설명을 현재 언어로 가져옴
+- `I18n.getGameDescriptionData(gameId)`: 게임 상세 설명(howToPlay, strategy, about)을 현재 언어로 가져옴
+
+이 함수들은 다음 순서로 fallback을 사용합니다:
+1. `data/i18n/*.json`의 `games.[gameId]` 섹션 (우선순위)
+2. manifest.json의 `titleEn`/`descriptionEn` (영어만)
+3. manifest.json의 `title`/`description` (한국어 기본값)
+4. GameDescriptions 객체 (게임 설명만)
+
+#### 8.2 번역 데이터 구조
+
+게임 번역 데이터는 `data/i18n/*.json` 파일의 `games` 섹션에 추가합니다:
+
+```json
+{
+  "games": {
+    "clicker": {
+      "title": "클리커 게임",
+      "description": "빠르게 클릭해서 점수를 모아보세요!",
+      "howToPlay": {
+        "title": "게임 방법",
+        "steps": [
+          "시작 버튼을 클릭하여 게임을 시작합니다.",
+          "화면 중앙의 큰 버튼을 클릭하여 에너지를 모읍니다."
+        ]
+      },
+      "strategy": {
+        "title": "공략 팁",
+        "tips": [
+          "초반에는 수동 클릭으로 에너지를 모은 후...",
+          "업그레이드 비용은 구매할 때마다 1.25배씩 증가..."
+        ]
+      },
+      "about": {
+        "title": "게임 소개",
+        "description": "클리커 게임은 단순하면서도 중독성 있는..."
+      }
+    }
+  }
+}
+```
+
+#### 8.3 자동 번역 시스템
+
+- `game-shell.js`의 `setupUI()`에서 `I18n.getGameTitle()`을 사용하여 게임 제목을 자동으로 번역
+- `pages/play.html`의 `loadGameDescription()`에서 `I18n.getGameDescriptionData()`를 사용하여 게임 설명을 자동으로 번역
+- 언어 변경 시 (`i18n:loaded` 이벤트) 게임 제목과 설명이 자동으로 업데이트됨
+
+#### 8.4 작업 예정 사항
+
+- [ ] 모든 게임 설명을 3개 언어(ko, en, zh-HK)로 번역하여 `data/i18n/*.json`에 추가
+- [ ] 각 게임의 manifest.json에서 title/description 번역 데이터 추가 (선택사항)
+- [ ] 게임 내 텍스트들도 번역 시스템에 통합 (게임별로 필요시)
+
+### 9. 언어 선택 UI
+
+우측 상단에 지구본 아이콘(🌐)이 있으며, 클릭하면 언어 선택 드롭다운이 나타납니다:
+- 한국어
+- English  
+- 繁體中文(香港)
+
+---
+
 이 프롬프트를 참고하여 새로운 게임을 개발할 때, 위의 패턴과 구조를 따라가면 일관성 있고 유지보수하기 쉬운 코드를 작성할 수 있습니다.
 

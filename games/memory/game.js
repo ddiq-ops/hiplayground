@@ -55,6 +55,19 @@
       { rows: 6, cols: 6, time: 120 } // Lv 6: 36장 (18쌍)
   ];
 
+  // Helper function to get translated text
+  function getUIText(key, defaultValue) {
+      if (typeof I18n !== 'undefined' && I18n.t) {
+          const fullKey = `gameDetails.memory.ui.${key}`;
+          const value = I18n.t(fullKey, defaultValue);
+          if (value === fullKey || value === defaultValue) {
+              return defaultValue;
+          }
+          return value;
+      }
+      return defaultValue;
+  }
+
   const Game = {
       container: null,
       state: {
@@ -76,6 +89,16 @@
           
           this.renderLayout();
           this.showModal('start');
+          
+          // Listen for language changes
+          if (typeof window !== 'undefined') {
+              document.addEventListener('i18n:loaded', () => {
+                  if (this.ui && this.ui.modal) {
+                      const currentType = this.currentModalType || 'start';
+                      this.showModal(currentType);
+                  }
+              });
+          }
       },
 
       renderLayout: function() {
@@ -101,7 +124,7 @@
                       <div class="mem-modal" id="modal">
                           <div class="modal-content">
                               <div class="modal-title" id="m-title">READY</div>
-                              <div class="modal-desc" id="m-desc">같은 그림의 카드를 찾아주세요!</div>
+                              <div class="modal-desc" id="m-desc">${getUIText('modal.ready.desc', '같은 그림의 카드를 찾아주세요!')}</div>
                               <button class="btn-action" id="m-btn">START</button>
                           </div>
                       </div>
@@ -251,9 +274,11 @@
           this.state.score += bonus;
           
           if (this.state.level < LEVELS.length - 1) {
-              this.showModal('clear', `보너스 점수: ${bonus}`);
+              const bonusText = getUIText('bonusScore', '보너스 점수');
+              this.showModal('clear', `${bonusText}: ${bonus}`);
           } else {
-              this.showModal('allclear', `최종 점수: ${this.state.score}`);
+              const finalScoreText = getUIText('finalScore', '최종 점수');
+              this.showModal('allclear', `${finalScoreText}: ${this.state.score}`);
           }
       },
 
@@ -264,34 +289,35 @@
 
       // --- 모달 관리 ---
       showModal: function(type, msg = '') {
+          if (!this.ui || !this.ui.modal) return; // UI가 준비되지 않았으면 리턴
           this.ui.modal.classList.add('active');
           this.currentModalType = type;
 
           switch(type) {
               case 'start':
-                  this.ui.mTitle.innerText = "기억력 마스터";
-                  this.ui.mDesc.innerText = "제한 시간 안에 모든 카드의 짝을 맞춰주세요!";
-                  this.ui.mBtn.innerText = "게임 시작";
+                  this.ui.mTitle.innerText = getUIText('modal.start.title', '기억력 마스터');
+                  this.ui.mDesc.innerText = getUIText('modal.start.desc', '제한 시간 안에 모든 카드의 짝을 맞춰주세요!');
+                  this.ui.mBtn.innerText = getUIText('modal.start.button', '게임 시작');
                   break;
               case 'clear':
-                  this.ui.mTitle.innerText = "STAGE CLEAR!";
-                  this.ui.mDesc.innerText = msg || "다음 단계로 넘어갑니다.";
-                  this.ui.mBtn.innerText = "다음 레벨";
+                  this.ui.mTitle.innerText = getUIText('modal.clear.title', 'STAGE CLEAR!');
+                  this.ui.mDesc.innerText = msg || getUIText('modal.clear.desc', '다음 단계로 넘어갑니다.');
+                  this.ui.mBtn.innerText = getUIText('modal.clear.button', '다음 레벨');
                   break;
               case 'fail':
-                  this.ui.mTitle.innerText = "TIME OVER";
-                  this.ui.mDesc.innerText = "시간이 초과되었습니다.";
-                  this.ui.mBtn.innerText = "다시 도전";
+                  this.ui.mTitle.innerText = getUIText('modal.fail.title', 'TIME OVER');
+                  this.ui.mDesc.innerText = getUIText('modal.fail.desc', '시간이 초과되었습니다.');
+                  this.ui.mBtn.innerText = getUIText('modal.fail.button', '다시 도전');
                   break;
               case 'allclear':
-                  this.ui.mTitle.innerText = "LEGENDARY!";
+                  this.ui.mTitle.innerText = getUIText('modal.allclear.title', 'LEGENDARY!');
                   this.ui.mDesc.innerText = msg;
-                  this.ui.mBtn.innerText = "처음부터 다시";
+                  this.ui.mBtn.innerText = getUIText('modal.allclear.button', '처음부터 다시');
                   break;
               case 'help':
-                  this.ui.mTitle.innerText = "게임 방법";
-                  this.ui.mDesc.innerHTML = "1. 카드를 뒤집어 짝을 찾으세요.<br>2. 틀리면 다시 뒤집힙니다.<br>3. 시간 안에 모두 찾으면 승리!";
-                  this.ui.mBtn.innerText = "닫기";
+                  this.ui.mTitle.innerText = getUIText('modal.help.title', '게임 방법');
+                  this.ui.mDesc.innerHTML = getUIText('modal.help.desc', '1. 카드를 뒤집어 짝을 찾으세요.<br>2. 틀리면 다시 뒤집힙니다.<br>3. 시간 안에 모두 찾으면 승리!');
+                  this.ui.mBtn.innerText = getUIText('modal.help.button', '닫기');
                   break;
           }
           this.ui.mBtn.focus();

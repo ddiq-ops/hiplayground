@@ -1,0 +1,539 @@
+{
+  "site": {
+    "name": "高遊戲場",
+    "tagline": "有趣的迷你遊戲遊樂場"
+  },
+  "nav": {
+    "home": "首頁",
+    "games": "遊戲",
+    "categories": "分類",
+    "about": "關於"
+  },
+  "home": {
+    "title": "享受有趣的遊戲！",
+    "featured": "精選遊戲",
+    "continue": "繼續遊戲",
+    "search": "搜尋遊戲...",
+    "allGames": "查看所有遊戲"
+  },
+  "games": {
+    "title": "遊戲列表",
+    "filter": "篩選",
+    "sort": "排序",
+    "difficulty": "難度",
+    "category": "分類",
+    "all": "全部",
+    "easy": "簡單",
+    "medium": "中等",
+    "hard": "困難",
+    "popular": "熱門",
+    "new": "最新",
+    "play": "遊玩",
+    "noGames": "找不到遊戲"
+  },
+  "play": {
+    "back": "返回",
+    "reset": "重置",
+    "fullscreen": "全螢幕",
+    "mute": "靜音",
+    "score": "分數",
+    "time": "時間",
+    "level": "等級"
+  },
+  "common": {
+    "loading": "載入中...",
+    "error": "發生錯誤",
+    "retry": "重試",
+    "close": "關閉",
+    "copyright": "版權所有",
+    "loadingGame": "載入遊戲中..."
+  },
+  "footer": {
+    "privacy": "私隱政策",
+    "terms": "服務條款"
+  },
+  "privacy": {
+    "title": "私隱政策",
+    "lastUpdated": "最後更新：2024年1月1日",
+    "section1": {
+      "title": "1. 個人資料處理目的",
+      "content": "高遊戲場是一個適合兒童的遊戲平台，不會收集個人資料。遊戲進度只會儲存在用戶的瀏覽器中，不會傳送到任何伺服器。"
+    },
+    "section2": {
+      "title": "2. 收集的個人資料項目",
+      "content": "目前，高遊戲場不會收集任何個人資料。遊戲分數、進度等資料只會儲存在用戶的裝置上。"
+    },
+    "section3": {
+      "title": "3. 個人資料的保留及使用期限",
+      "content": "由於我們不會收集個人資料，因此不適用保留及使用期限。瀏覽器中儲存的遊戲資料，用戶可隨時自行刪除。"
+    },
+    "section4": {
+      "title": "4. 兒童個人資料保護",
+      "content": "高遊戲場不會故意收集13歲以下兒童的個人資料。我們的所有服務均設計為無需收集個人資料即可使用。"
+    },
+    "section5": {
+      "title": "5. Cookie及本地儲存",
+      "content": "我們可能會使用瀏覽器的本地儲存來儲存遊戲進度。此資料只會儲存在用戶的裝置上，不會傳送到外部伺服器。用戶可隨時透過瀏覽器設定刪除此資料。"
+    },
+    "section6": {
+      "title": "6. 私隱政策變更",
+      "content": "本私隱政策可能會根據法律、政策或安全技術的變更而更新，以新增、刪除或修改內容。我們會在變更生效前透過網站通知用戶。"
+    },
+    "section7": {
+      "title": "7. 聯絡方式",
+      "content": "如對本私隱政策有任何疑問，請透過以下方式聯絡我們：",
+      "email": "電子郵件：ddiaddiq@gmail.com"
+    }
+  },
+  "terms": {
+    "title": "服務條款",
+    "lastUpdated": "最後更新：2024年1月1日",
+    "section1": {
+      "title": "1. 服務介紹",
+      "content": "高遊戲場是一個為兒童提供的免費線上遊戲平台。本條款適用於高遊戲場所有服務的使用。"
+    },
+    "section2": {
+      "title": "2. 使用條件",
+      "item1": "高遊戲場提供免費服務。",
+      "item2": "無需註冊或登入。",
+      "item3": "使用服務需要穩定的網路連線。"
+    },
+    "section3": {
+      "title": "3. 用戶行為規則",
+      "content": "使用服務時，禁止以下行為：",
+      "item1": "傷害其他用戶的行為",
+      "item2": "破壞服務穩定性的行為",
+      "item3": "發布或分享不當內容",
+      "item4": "侵犯版權的行為"
+    },
+    "section4": {
+      "title": "4. 服務提供及變更",
+      "content": "高遊戲場可以在不事先通知的情況下變更、暫停或終止服務的內容、功能、遊戲等。但是，我們會盡力在暫停或終止服務時提前通知。"
+    },
+    "section5": {
+      "title": "5. 版權",
+      "content": "高遊戲場的所有內容、設計、標誌等均為高遊戲場所有。用戶僅可為個人目的使用內容，不得用於商業目的。"
+    },
+    "section6": {
+      "title": "6. 免責條款",
+      "content": "高遊戲場不對因使用服務而產生的任何損害負責。服務「按現狀」提供，不保證完整性或準確性。"
+    },
+    "section7": {
+      "title": "7. 條款變更",
+      "content": "本條款可能會根據法律、政策或服務的變更而修改。如果條款變更，我們會透過網站通知用戶。"
+    },
+    "section8": {
+      "title": "8. 聯絡方式",
+      "content": "如對本服務條款有任何疑問，請透過以下方式聯絡我們：",
+      "email": "電子郵件：ddiaddiq@gmail.com"
+    }
+  },
+  "gameDetails": {
+    "clicker": {
+      "title": "點擊遊戲",
+      "description": "快速點擊來收集分數！",
+      "howToPlay": {
+        "title": "遊戲方法",
+        "steps": [
+          "點擊開始按鈕開始遊戲。",
+          "點擊畫面中央的大按鈕來收集能量。每次點擊都會增加能量。",
+          "您可以在商店購買自動能量生產升級。例如，「AA電池」每秒會自動產生能量。",
+          "您可以在分數顯示中查看當前擁有的能量和每秒自動生產量。",
+          "遊戲模式：可選擇無限模式、時間挑戰（1億目標）或時間限制（3分鐘）模式。",
+          "升級成本會隨著每次購買而增加，因此按有效順序購買很重要。"
+        ]
+      },
+      "strategy": {
+        "title": "攻略提示與策略",
+        "tips": [
+          "在初期階段，關鍵是先透過手動點擊收集能量，然後快速購買自動生產升級。先購買像AA電池或家用伺服器這樣的便宜自動升級，會增加每秒生產量，讓能量即使不手動點擊也能持續增加。",
+          "由於升級成本每次購買都會增加1.25倍，長期來看，平衡多個升級比只專注於一種升級更有利。例如，將力量手套升級到約5級，然後轉換為自動生產升級是很好的選擇。",
+          "在時間挑戰模式中，確保快速的初期生產量很重要。優先購買初期自動生產升級，當您有餘裕時，也可以一起提升手動點擊獎勵升級。",
+          "在時間限制模式中，您需要在3分鐘內收集盡可能多的能量，因此需要平衡的升級策略。由於時間有限，購買多個合理價格的升級比昂貴的升級更有效。"
+        ]
+      },
+      "about": {
+        "title": "遊戲介紹",
+        "description": "點擊遊戲是一款簡單但令人上癮的反應速度訓練遊戲。透過快速點擊和策略性升級購買來有效收集能量，您可以提高大腦的敏捷性和決策能力。特別是，您可以透過使用自動生產系統的資源管理策略來培養邏輯思維，並透過目標設定和達成來獲得成就感。操作簡單且有趣，是一款從小學生到成人都能輕鬆接觸的具有教育價值的遊戲。"
+      },
+      "ui": {
+        "title": "霓虹核心：超載",
+        "upgrade": "升級",
+        "gameOver": "遊戲結束",
+        "timeOver": "時間到",
+        "missionClear": "任務完成",
+        "mainMenu": "主選單",
+        "timeLeft": "剩餘時間",
+        "timeElapsed": "經過時間",
+        "finalScore": "最終分數",
+        "record": "記錄",
+        "perSec": "/ 秒",
+        "modes": {
+          "infinite": {
+            "name": "無限模式",
+            "desc": "自動儲存。<br>輕鬆成長。",
+            "goal": "無限制"
+          },
+          "timeAttack": {
+            "name": "時間挑戰",
+            "desc": "達到1億分。<br>挑戰最快記錄！",
+            "goal": "目標：100M"
+          },
+          "timeLimit": {
+            "name": "時間限制",
+            "desc": "3分鐘計分。<br>爆發性成長！",
+            "goal": "限制：3分鐘"
+          }
+        },
+        "upgrades": {
+          "glove": {
+            "name": "力量手套",
+            "desc": "每次點擊 +1"
+          },
+          "battery": {
+            "name": "AA電池",
+            "desc": "每秒 +2"
+          },
+          "server": {
+            "name": "家用伺服器",
+            "desc": "每秒 +10"
+          },
+          "ai": {
+            "name": "AI機器人",
+            "desc": "每秒 +50"
+          },
+          "farm": {
+            "name": "挖礦工廠",
+            "desc": "每秒 +250"
+          },
+          "nuclear": {
+            "name": "核融合反應爐",
+            "desc": "每秒 +1,000"
+          },
+          "alien": {
+            "name": "外星科技",
+            "desc": "每秒 +10,000"
+          },
+          "dyson": {
+            "name": "戴森球",
+            "desc": "每秒 +500,000"
+          }
+        }
+      }
+    },
+    "memory": {
+      "title": "記憶遊戲",
+      "description": "翻轉卡片找出配對的圖案！"
+    },
+    "math-quiz": {
+      "title": "小學數學大師",
+      "description": "低年級必備！透過遊戲有趣地訓練加減乘除運算。",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "數學大師",
+            "desc": "60秒時間限制！掌握四則運算。",
+            "button": "開始"
+          },
+          "end": {
+            "title": "遊戲結束",
+            "finalScore": "最終分數",
+            "reachedLevel": "到達等級",
+            "button": "重試"
+          }
+        },
+        "combo": "連擊"
+      }
+    },
+    "weapon-levelup": {
+      "title": "武器升級",
+      "description": "在鐵匠鋪強化武器，然後在商店出售！",
+      "ui": {
+        "messages": {
+          "notEnoughGold": "金幣不足！",
+          "maxLevel": "已達最高等級！",
+          "upgradeSuccess": "強化成功！等級提升！",
+          "upgradeFailedProtected": "強化失敗！但武器受到保護。",
+          "storedWeaponEquipped": "強化失敗.. 裝備儲存的等級 {level} 武器。",
+          "upgradeFailedDestroyed": "強化失敗！武器被摧毀.. (Lv.1)",
+          "cannotSellLevel1": "無法出售等級 1。",
+          "cannotStoreLevel1": "無法儲存等級 1。",
+          "alreadyStored": "已有儲存的武器。"
+        }
+      }
+    },
+    "omok": {
+      "title": "五子棋大師",
+      "description": "連續放置5顆棋子獲勝！具備幽靈石指引和最後一步標記功能。",
+      "ui": {
+        "modal": {
+          "miracle": {
+            "title": "奇蹟！",
+            "desc": "突破第 {round} 輪！",
+            "button": "下一層地獄"
+          },
+          "godlike": {
+            "title": "神級！",
+            "desc": "人類的勝利。你是傳奇。",
+            "button": "從頭開始"
+          },
+          "youDied": {
+            "title": "你死了",
+            "desc": "AI的牆太高了...",
+            "button": "重試"
+          }
+        },
+        "ai": "AI",
+        "aiThinking": "AI (思考中...)",
+        "resetConfirm": "從頭開始？"
+      }
+    },
+    "chess": {
+      "title": "西洋棋",
+      "description": "需要策略思考的西洋棋遊戲！支援單人和雙人模式。",
+      "ui": {
+        "modal": {
+          "victory": {
+            "title": "勝利！",
+            "desc": "第 {round} 輪完成！",
+            "button": "下一輪"
+          },
+          "grandmaster": {
+            "title": "大師！",
+            "desc": "你征服了地獄。",
+            "button": "從頭開始"
+          },
+          "checkmate": {
+            "title": "將死",
+            "desc": "被AI的計算擊敗。",
+            "button": "重試"
+          },
+          "draw": {
+            "title": "和局",
+            "desc": "僵局。",
+            "button": "重新開始"
+          }
+        },
+        "ai": "AI",
+        "aiThinking": "AI (思考中...)",
+        "resetConfirm": "重新開始？"
+      }
+    },
+    "speed-number": {
+      "title": "快速數字觸摸",
+      "description": "比眼睛還快的手！按順序找到並觸摸1到50的數字。挑戰10個不同難度的關卡！",
+      "ui": {
+        "title": "速度數字",
+        "subtitle": "超頻版本",
+        "difficulty": {
+          "easy": "簡單 (提示/寬鬆)",
+          "normal": "普通 (標準)",
+          "hard": "困難 (極限挑戰)"
+        },
+        "stage": "關卡 {stage}",
+        "goal": "目標: 1 ~ {count}",
+        "timeLimit": "時間限制: {time}秒",
+        "start": "開始",
+        "stageClear": "關卡完成",
+        "timeBonus": "時間獎勵: +{bonus}",
+        "nextStage": "下一關",
+        "timeOver": "時間到",
+        "failed": "失敗",
+        "gameOver": {
+          "title": "遊戲結束",
+          "finalScore": "最終分數: {score}"
+        },
+        "lives": "生命: {lives}",
+        "retry": "重試",
+        "mainMenu": "主選單",
+        "allClear": {
+          "title": "全部完成！",
+          "legendaryScore": "傳奇分數: {score}"
+        }
+      }
+    },
+    "physics-box": {
+      "title": "物理盒子",
+      "description": "拖動、發射、撞擊！擊倒盒子塔。"
+    },
+    "math-quiz-hard": {
+      "title": "心算天才（高年級）",
+      "description": "高年級挑戰！掌握大數運算和四則混合運算。",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "心算天才",
+            "desc": "高年級挑戰！注意乘法和除法的順序。",
+            "button": "開始挑戰"
+          },
+          "gameOver": {
+            "title": "遊戲結束",
+            "finalScore": "最終分數",
+            "reachedLevel": "到達等級",
+            "button": "重試"
+          }
+        }
+      }
+    },
+    "gravity-run": {
+      "title": "重力奔跑：零",
+      "description": "對抗重力！點擊翻轉上下。體驗極限速度。",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "重力跑",
+            "desc": "Lv.40+ 精英障礙出現！<br>紫色障礙會移動。",
+            "button": "奔跑"
+          },
+          "gameOver": {
+            "title": "撞毀！",
+            "score": "分數",
+            "button": "重試"
+          },
+          "complete": {
+            "title": "任務完成！",
+            "legendaryScore": "傳奇分數",
+            "maxLevel": "達到最高等級 100！"
+          }
+        }
+      }
+    },
+    "infinite-space": {
+      "title": "無限空間：流氓",
+      "description": "無盡的太空戰爭！收集經驗值並用類Rogue技能進化您的戰艦。"
+    },
+    "mystic-fortune": {
+      "title": "今日運勢",
+      "description": "查看星星為您訴說的今日運勢。"
+    },
+    "code-rabbit": {
+      "title": "代碼兔子",
+      "description": "編程邏輯益智遊戲",
+      "ui": {
+        "emptyQueue": "請輸入指令",
+        "allLevelsComplete": "太棒了！代碼兔子大師！ 🐰🥕🎓"
+      }
+    },
+    "word-pop": {
+      "title": "單字泡泡",
+      "description": "泡泡射擊動作單字遊戲",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "單字泡泡",
+            "subtitle": "極限",
+            "desc": "錯過答案會失去生命！<br>狂熱模式是安全的。<br>阻擋湧出的單詞。",
+            "button": "開始遊戲"
+          },
+          "gameOver": {
+            "title": "遊戲結束",
+            "button": "再試一次"
+          }
+        },
+        "bestScore": "最佳分數",
+        "score": "分數",
+        "best": "最佳",
+        "goal": "目標",
+        "stageClear": "關卡完成！",
+        "nextLevel": "下一關 (+1 ❤️)",
+        "feverTime": "狂熱時間！！",
+        "miss": "錯過！",
+        "wordClear": "單詞清除！"
+      }
+    },
+    "jelly-legend": {
+      "title": "果凍傳奇",
+      "description": "合併益智類Rogue遊戲"
+    },
+    "neon-beat": {
+      "title": "霓虹節拍",
+      "description": "賽博龐克節奏動作遊戲，包含20首曲目和3種模式。"
+    },
+    "guardian-defense": {
+      "title": "守護者防禦",
+      "description": "塔防與類Rogue的結合！選擇卡片建立您的防禦。",
+      "ui": {
+        "combat": "戰鬥中...",
+        "nextWave": "下一波"
+      }
+    },
+    "emoji-survivor": {
+      "title": "表情符號生存者",
+      "description": "對抗湧來的表情符號大軍！動作類Rogue遊戲。"
+    },
+    "idle-factory": {
+      "title": "閒置工廠",
+      "description": "自動化經營遊戲！建立生產線並升級您日益成長的工廠。挑戰30個關卡！"
+    },
+    "memory": {
+      "title": "記憶遊戲",
+      "description": "翻轉卡片找出配對的圖案！",
+      "ui": {
+        "modal": {
+          "ready": {
+            "desc": "找出配對的卡片！"
+          },
+          "start": {
+            "title": "記憶大師",
+            "desc": "在時間限制內找出所有卡片配對！",
+            "button": "開始遊戲"
+          },
+          "clear": {
+            "title": "關卡完成！",
+            "desc": "進入下一關。",
+            "button": "下一關"
+          },
+          "fail": {
+            "title": "時間到",
+            "desc": "時間已用盡。",
+            "button": "再試一次"
+          },
+          "allclear": {
+            "title": "傳奇！",
+            "button": "重新開始"
+          },
+          "help": {
+            "title": "遊戲方法",
+            "desc": "1. 翻轉卡片找出配對。<br>2. 錯誤的配對會翻回。<br>3. 在時間限制內找出所有配對即可獲勝！",
+            "button": "關閉"
+          }
+        },
+        "bonusScore": "獎勵分數",
+        "finalScore": "最終分數"
+      }
+    },
+    "physics-box": {
+      "title": "物理盒子",
+      "description": "拖動、發射、撞擊！擊倒盒子塔。",
+      "ui": {
+        "help": {
+          "title": "遊戲指南",
+          "control": {
+            "title": "操作",
+            "desc": "將球向後拖動來發射。<br>在空白處拖動以偵察地圖。"
+          },
+          "victory": {
+            "title": "勝利",
+            "desc": "摧毀所有盒子的<strong>70%</strong>或以上即可解鎖下一關。"
+          },
+          "close": "關閉"
+        },
+        "soundToggle": "切換音效",
+        "helpButton": "遊戲方法",
+        "next": "下一步",
+        "retry": "重試",
+        "nextLevel": "下一關",
+        "restartAll": "重新開始",
+        "gameOver": {
+          "title": "遊戲結束",
+          "retry": "從頭開始！"
+        },
+        "stageClear": "關卡 {stage} 完成！",
+        "bonus": "獎勵",
+        "legendary": "傳奇！",
+        "finalScore": "最終分數"
+      }
+    }
+  }
+}
+

@@ -1,6 +1,19 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.word-pop.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
     // ================= WORD DATA =================
     const WORDS = [
         { en: 'Apple', ko: '사과', icon: '🍎' }, { en: 'Banana', ko: '바나나', icon: '🍌' },
@@ -140,6 +153,36 @@
 
             if (this.loopId) cancelAnimationFrame(this.loopId);
             this.loop();
+            
+            // Listen for language changes
+            document.addEventListener('i18n:loaded', () => {
+                if (this.container) {
+                    const startModal = document.getElementById('ui-start');
+                    const gameOverModal = document.getElementById('ui-gameover');
+                    if (startModal && startModal.classList.contains('active')) {
+                        const titleEl = startModal.querySelector('h1');
+                        const subtitleEl = startModal.querySelector('h1 span');
+                        const descEl = startModal.querySelector('p');
+                        const bestScoreEl = startModal.querySelector('p:last-of-type');
+                        const buttonEl = document.getElementById('btn-start');
+                        if (titleEl) titleEl.innerHTML = `${getUIText('modal.start.title', 'WORD POP')}<br><span style="font-size:1rem; color:#e91e63">${getUIText('modal.start.subtitle', 'EXTREME')}</span>`;
+                        if (descEl) descEl.innerHTML = getUIText('modal.start.desc', '정답을 놓치면 목숨이 깎입니다!<br>피버 모드일 때는 괜찮아요.<br>쏟아지는 단어를 막아내세요.');
+                        if (bestScoreEl) bestScoreEl.innerHTML = `${getUIText('bestScore', 'BEST SCORE')}: <span id="modal-best">${this.state.highScore || 0}</span>`;
+                        if (buttonEl) buttonEl.innerText = getUIText('modal.start.button', 'GAME START');
+                    }
+                    if (gameOverModal && gameOverModal.classList.contains('active')) {
+                        const titleEl = gameOverModal.querySelector('h1');
+                        const scoreEl = document.getElementById('ui-final-score');
+                        const bestEl = gameOverModal.querySelector('p:last-of-type');
+                        const buttonEl = document.getElementById('btn-restart');
+                        if (titleEl) titleEl.innerText = getUIText('modal.gameOver.title', 'GAME OVER');
+                        if (scoreEl) scoreEl.innerText = `${getUIText('score', 'SCORE')}: ${this.state.score}`;
+                        if (bestEl) bestEl.innerHTML = `${getUIText('best', 'BEST')}: <span id="end-best">${this.state.highScore || 0}</span>`;
+                        if (buttonEl) buttonEl.innerText = getUIText('modal.gameOver.button', 'TRY AGAIN');
+                    }
+                    this.updateUI();
+                }
+            });
         },
 
         renderLayout: function() {
@@ -158,7 +201,7 @@
                     
                     <div style="position:absolute; top:70px; left:15px; right:15px; height:10px; background:rgba(0,0,0,0.2); border-radius:5px; z-index:5; border:1px solid rgba(255,255,255,0.5);">
                         <div id="ui-stage-bar" style="width:0%; height:100%; background:linear-gradient(90deg, #4CAF50, #8BC34A); border-radius:5px; transition:width 0.2s linear;"></div>
-                        <div id="ui-stage-text" style="position:absolute; top:-20px; right:0; font-size:0.8rem; color:#fff; font-weight:bold; text-shadow:0 1px 2px rgba(0,0,0,0.5);">GOAL: 0</div>
+                        <div id="ui-stage-text" style="position:absolute; top:-20px; right:0; font-size:0.8rem; color:#fff; font-weight:bold; text-shadow:0 1px 2px rgba(0,0,0,0.5);">${getUIText('goal', 'GOAL')}: 0</div>
                     </div>
 
                     <div class="wp-target-box">
@@ -177,23 +220,21 @@
 
                     <div class="wp-modal active" id="ui-start">
                         <div class="wp-modal-content">
-                            <h1>WORD POP<br><span style="font-size:1rem; color:#e91e63">EXTREME</span></h1>
+                            <h1>${getUIText('modal.start.title', 'WORD POP')}<br><span style="font-size:1rem; color:#e91e63">${getUIText('modal.start.subtitle', 'EXTREME')}</span></h1>
                             <p style="margin:20px 0; color:#555;">
-                                정답을 놓치면 목숨이 깎입니다!<br>
-                                피버 모드일 때는 괜찮아요.<br>
-                                쏟아지는 단어를 막아내세요.
+                                ${getUIText('modal.start.desc', '정답을 놓치면 목숨이 깎입니다!<br>피버 모드일 때는 괜찮아요.<br>쏟아지는 단어를 막아내세요.')}
                             </p>
-                            <p style="font-size:0.9rem; color:#777;">BEST SCORE: <span id="modal-best">0</span></p>
-                            <button class="wp-btn" id="btn-start">GAME START</button>
+                            <p style="font-size:0.9rem; color:#777;">${getUIText('bestScore', 'BEST SCORE')}: <span id="modal-best">0</span></p>
+                            <button class="wp-btn" id="btn-start">${getUIText('modal.start.button', 'GAME START')}</button>
                         </div>
                     </div>
 
                     <div class="wp-modal" id="ui-gameover">
                         <div class="wp-modal-content">
-                            <h1 style="color:#e91e63">GAME OVER</h1>
-                            <p id="ui-final-score" style="font-size:1.5rem; font-weight:bold; margin:20px;">SCORE: 0</p>
-                            <p style="color:#777;">BEST: <span id="end-best">0</span></p>
-                            <button class="wp-btn" id="btn-restart">TRY AGAIN</button>
+                            <h1 style="color:#e91e63">${getUIText('modal.gameOver.title', 'GAME OVER')}</h1>
+                            <p id="ui-final-score" style="font-size:1.5rem; font-weight:bold; margin:20px;">${getUIText('score', 'SCORE')}: 0</p>
+                            <p style="color:#777;">${getUIText('best', 'BEST')}: <span id="end-best">0</span></p>
+                            <button class="wp-btn" id="btn-restart">${getUIText('modal.gameOver.button', 'TRY AGAIN')}</button>
                         </div>
                     </div>
                 </div>
@@ -283,7 +324,7 @@
                 this.state.bubbles = []; 
                 
                 Sound.play('wordclear');
-                this.addFloatingText(this.width/2, this.height/2, "WORD CLEAR!", "#81d4fa", 30);
+                this.addFloatingText(this.width/2, this.height/2, getUIText('wordClear', 'WORD CLEAR!'), "#81d4fa", 30);
                 
                 this.setNewTarget();
             }
@@ -419,7 +460,7 @@
 
                         Sound.play('wrong');
                         st.lives--;
-                        this.addFloatingText(b.x, b.y, 'MISS', '#9e9e9e');
+                        this.addFloatingText(b.x, b.y, getUIText('miss', 'MISS'), '#9e9e9e');
                         this.triggerInvincible(); // 오답 눌러도 무적 발동 (실수 연발 방지)
                         if (st.lives <= 0) this.gameOver();
                     }
@@ -446,7 +487,7 @@
             st.feverTimer = 300; 
             document.getElementById('wp-wrapper').classList.add('fever-mode');
             Sound.play('fever');
-            this.addFloatingText(this.width/2, this.height/2, "FEVER TIME!!", "#fff", 50);
+            this.addFloatingText(this.width/2, this.height/2, getUIText('feverTime', 'FEVER TIME!!'), "#fff", 50);
             
             st.bubbles.forEach(b => {
                 if(b.type === 'bomb') { b.type = 'bonus'; b.text = 'LUCKY'; b.color = '#ffeb3b'; }
@@ -467,8 +508,8 @@
             this.state.stageScore = 0; 
             
             Sound.play('levelup');
-            this.addFloatingText(this.width/2, this.height/2 - 50, "STAGE CLEAR!", "#fff", 40);
-            this.addFloatingText(this.width/2, this.height/2 + 50, "NEXT LEVEL (+1 ❤️)", "#e91e63", 30);
+            this.addFloatingText(this.width/2, this.height/2 - 50, getUIText('stageClear', 'STAGE CLEAR!'), "#fff", 40);
+            this.addFloatingText(this.width/2, this.height/2 + 50, getUIText('nextLevel', 'NEXT LEVEL (+1 ❤️)'), "#e91e63", 30);
             
             this.state.bubbles = [];
             this.setNewTarget();
@@ -512,7 +553,7 @@
             if(bar) bar.style.width = `${pct}%`;
             
             const goalText = document.getElementById('ui-stage-text');
-            if(goalText) goalText.innerText = `GOAL: ${st.stageScore}/${goal}`;
+            if(goalText) goalText.innerText = `${getUIText('goal', 'GOAL')}: ${st.stageScore}/${goal}`;
         },
 
         gameOver: function() {
@@ -524,7 +565,8 @@
             }
             this.updateHighScoreDisplay();
 
-            document.getElementById('ui-final-score').innerText = `SCORE: ${this.state.score}`;
+            const scoreText = getUIText('score', 'SCORE');
+            document.getElementById('ui-final-score').innerText = `${scoreText}: ${this.state.score}`;
             document.getElementById('ui-gameover').classList.add('active');
             this.endFever();
         },
@@ -577,7 +619,7 @@
                         if (st.invincibleTimer <= 0) {
                             Sound.play('wrong');
                             st.lives--;
-                            this.addFloatingText(b.x, 80, "MISS!", "#f44336", 30);
+                            this.addFloatingText(b.x, 80, getUIText('miss', 'MISS!'), "#f44336", 30);
                             this.screenShake();
                             this.triggerInvincible(); // 놓쳐도 무적 발동
                             this.updateUI();

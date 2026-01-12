@@ -68,6 +68,19 @@
         }
     };
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.physics-box.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
     // ================= 레벨 생성기 =================
     const generateLevel = (levelIndex) => {
         const distance = 1000 + (levelIndex * 20); 
@@ -115,6 +128,16 @@
             
             SoundEngine.init();
 
+            const helpTitle = getUIText('help.title', '게임 가이드');
+            const controlTitle = getUIText('help.control.title', '조작');
+            const controlDesc = getUIText('help.control.desc', '공을 뒤로 당겨서 발사하세요.<br>빈 화면을 드래그하면 맵을 정찰합니다.');
+            const victoryTitle = getUIText('help.victory.title', '승리');
+            const victoryDesc = getUIText('help.victory.desc', '전체 상자의 <strong>70%</strong> 이상을 파괴하면 다음 스테이지가 열립니다.');
+            const closeButton = getUIText('help.close', '닫기');
+            const soundTitle = getUIText('soundToggle', '소리 켜기/끄기');
+            const helpButtonTitle = getUIText('helpButton', '게임 방법');
+            const nextButton = getUIText('next', 'NEXT');
+
             this.container.innerHTML = `
                 <div class="pb-wrapper">
                     <div class="game-frame">
@@ -128,28 +151,28 @@
                                 </div>
                                 <div class="pb-controls-group">
                                     <div class="pb-shots-badge">BALLS: <span id="pb-shots-val">3</span></div>
-                                    <button class="btn-help" id="btn-sound" title="소리 켜기/끄기">🔊</button>
-                                    <button class="btn-help" id="btn-help" title="게임 방법">?</button>
+                                    <button class="btn-help" id="btn-sound" title="${soundTitle}">🔊</button>
+                                    <button class="btn-help" id="btn-help" title="${helpButtonTitle}">?</button>
                                 </div>
                             </div>
                         </div>
 
                         <div class="pb-modal" id="modal-help">
                             <div class="pb-modal-content">
-                                <h2>게임 가이드</h2>
+                                <h2>${helpTitle}</h2>
                                 <div class="manual-grid">
                                     <div class="manual-item">
                                         <span class="manual-icon">🖱️</span>
-                                        <span class="manual-title">조작</span>
-                                        <span class="manual-desc">공을 뒤로 당겨서 발사하세요.<br>빈 화면을 드래그하면 맵을 정찰합니다.</span>
+                                        <span class="manual-title">${controlTitle}</span>
+                                        <span class="manual-desc">${controlDesc}</span>
                                     </div>
                                     <div class="manual-item">
                                         <span class="manual-icon">🏆</span>
-                                        <span class="manual-title">승리</span>
-                                        <span class="manual-desc">전체 상자의 <strong>70%</strong> 이상을 파괴하면 다음 스테이지가 열립니다.</span>
+                                        <span class="manual-title">${victoryTitle}</span>
+                                        <span class="manual-desc">${victoryDesc}</span>
                                     </div>
                                 </div>
-                                <button class="pb-btn-action btn-close" id="btn-close-help">닫기</button>
+                                <button class="pb-btn-action btn-close" id="btn-close-help">${closeButton}</button>
                             </div>
                         </div>
 
@@ -157,7 +180,7 @@
                             <div class="pb-modal-content">
                                 <div class="pb-msg-title" id="msg-title"></div>
                                 <div class="pb-msg-sub" id="msg-sub"></div>
-                                <button class="pb-btn-action" id="msg-btn" tabindex="-1">NEXT</button>
+                                <button class="pb-btn-action" id="msg-btn" tabindex="-1">${nextButton}</button>
                             </div>
                         </div>
                     </div>
@@ -196,6 +219,39 @@
             };
 
             this.loadPhaserScript();
+            
+            // Listen for language changes
+            if (typeof window !== 'undefined') {
+                document.addEventListener('i18n:loaded', () => {
+                    if (this.el && this.el.modalHelp) {
+                        const helpTitle = getUIText('help.title', '게임 가이드');
+                        const helpTitleEl = this.el.modalHelp.querySelector('h2');
+                        if (helpTitleEl) helpTitleEl.innerText = helpTitle;
+                        
+                        const controlTitle = getUIText('help.control.title', '조작');
+                        const controlTitleEl = this.el.modalHelp.querySelector('.manual-item:first-child .manual-title');
+                        if (controlTitleEl) controlTitleEl.innerText = controlTitle;
+                        
+                        const controlDesc = getUIText('help.control.desc', '공을 뒤로 당겨서 발사하세요.<br>빈 화면을 드래그하면 맵을 정찰합니다.');
+                        const controlDescEl = this.el.modalHelp.querySelector('.manual-item:first-child .manual-desc');
+                        if (controlDescEl) controlDescEl.innerHTML = controlDesc;
+                        
+                        const victoryTitle = getUIText('help.victory.title', '승리');
+                        const victoryTitleEl = this.el.modalHelp.querySelector('.manual-item:last-child .manual-title');
+                        if (victoryTitleEl) victoryTitleEl.innerText = victoryTitle;
+                        
+                        const victoryDesc = getUIText('help.victory.desc', '전체 상자의 <strong>70%</strong> 이상을 파괴하면 다음 스테이지가 열립니다.');
+                        const victoryDescEl = this.el.modalHelp.querySelector('.manual-item:last-child .manual-desc');
+                        if (victoryDescEl) victoryDescEl.innerHTML = victoryDesc;
+                        
+                        const closeButton = getUIText('help.close', '닫기');
+                        if (this.el.btnCloseHelp) this.el.btnCloseHelp.innerText = closeButton;
+                        
+                        const nextButton = getUIText('next', 'NEXT');
+                        if (this.el.msgBtn) this.el.msgBtn.innerText = nextButton;
+                    }
+                });
+            }
         },
 
         loadPhaserScript: function() {
@@ -444,7 +500,9 @@
                         const threshold = Math.ceil(this.initialBoxCount * 0.3);
                         if (activeBoxes > threshold) {
                             SoundEngine.playLose();
-                            GameWrapper.showResult("GAME OVER", "처음부터 다시 시작!", "RETRY", "retry");
+                            const gameOverText = getUIText('gameOver.title', 'GAME OVER');
+                            const retryText = getUIText('gameOver.retry', '처음부터 다시 시작!');
+                            GameWrapper.showResult(gameOverText, retryText, "RETRY", "retry");
                         }
                     }
                 }
@@ -457,9 +515,13 @@
                     this.totalScore += bonus;
                     GameWrapper.updateUI(this.totalScore, this.levelIdx, this.shotsLeft);
                     if (this.levelIdx < 99) {
-                        GameWrapper.showResult(`STAGE ${this.levelIdx + 1} CLEAR!`, `Bonus: +${bonus}`, "NEXT LEVEL", "next");
+                        const stageClearText = getUIText('stageClear', 'STAGE {stage} CLEAR!').replace('{stage}', this.levelIdx + 1);
+                        const bonusText = getUIText('bonus', 'Bonus');
+                        GameWrapper.showResult(stageClearText, `${bonusText}: +${bonus}`, "NEXT LEVEL", "next");
                     } else {
-                        GameWrapper.showResult("LEGENDARY!", `Final Score: ${this.totalScore}`, "RESTART ALL", "restart");
+                        const legendaryText = getUIText('legendary', 'LEGENDARY!');
+                        const finalScoreText = getUIText('finalScore', 'Final Score');
+                        GameWrapper.showResult(legendaryText, `${finalScoreText}: ${this.totalScore}`, "RESTART ALL", "restart");
                     }
                 }
                 
@@ -514,8 +576,20 @@
         },
         showResult: function(title, sub, btnText, actionType) {
             if(!this.el.modalMsg) return;
-            this.el.msgTitle.innerText = title; this.el.msgSub.innerText = sub; this.el.msgBtn.innerText = btnText;
-            this.el.modalMsg.classList.add('active'); this.currentAction = actionType;
+            this.el.msgTitle.innerText = title;
+            this.el.msgSub.innerText = sub;
+            // Translate button text
+            let translatedBtnText = btnText;
+            if (btnText === "RETRY") {
+                translatedBtnText = getUIText('retry', 'RETRY');
+            } else if (btnText === "NEXT LEVEL") {
+                translatedBtnText = getUIText('nextLevel', 'NEXT LEVEL');
+            } else if (btnText === "RESTART ALL") {
+                translatedBtnText = getUIText('restartAll', 'RESTART ALL');
+            }
+            this.el.msgBtn.innerText = translatedBtnText;
+            this.el.modalMsg.classList.add('active');
+            this.currentAction = actionType;
             this.el.msgBtn.focus();
         },
         hideResult: function() { if(this.el.modalMsg) this.el.modalMsg.classList.remove('active'); },

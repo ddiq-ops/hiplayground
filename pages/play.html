@@ -139,26 +139,26 @@
     <!-- Game Header -->
     <header id="game-header">
       <div class="game-header-left">
-        <button id="btn-back" class="game-header-btn" title="뒤로">←</button>
+        <button id="btn-back" class="game-header-btn" data-i18n-title="play.back" title="뒤로">←</button>
       </div>
       <div class="game-header-center">
-        <h1 id="game-title">게임 로딩 중...</h1>
+        <h1 id="game-title" data-i18n="common.loading">게임 로딩 중...</h1>
       </div>
       <div class="game-header-right">
-        <button id="btn-reset" class="game-header-btn" title="리셋">🔄</button>
-        <button id="btn-fullscreen" class="game-header-btn" title="전체화면">⛶</button>
-        <button id="btn-mute" class="game-header-btn" title="음소거">🔊</button>
+        <button id="btn-reset" class="game-header-btn" data-i18n-title="play.reset" title="리셋">🔄</button>
+        <button id="btn-fullscreen" class="game-header-btn" data-i18n-title="play.fullscreen" title="전체화면">⛶</button>
+        <button id="btn-mute" class="game-header-btn" data-i18n-title="play.mute" title="음소거">🔊</button>
       </div>
     </header>
 
     <!-- Game Stats (optional, can be hidden if game doesn't use it) -->
     <div id="game-stats" style="display: none;">
       <div class="game-stat">
-        <div class="game-stat-label">점수</div>
+        <div class="game-stat-label" data-i18n="play.score">점수</div>
         <div class="game-stat-value" id="game-score">0</div>
       </div>
       <div class="game-stat">
-        <div class="game-stat-label">레벨</div>
+        <div class="game-stat-label" data-i18n="play.level">레벨</div>
         <div class="game-stat-value" id="game-level">1</div>
       </div>
     </div>
@@ -167,7 +167,7 @@
     <div id="game-container">
       <div class="loading-container">
         <div class="spinner"></div>
-        <p style="margin-top: var(--spacing-md);">게임을 불러오는 중...</p>
+        <p style="margin-top: var(--spacing-md);" data-i18n="common.loadingGame">게임을 불러오는 중...</p>
       </div>
     </div>
   </div>
@@ -182,6 +182,7 @@
   <!-- JavaScript -->
   <script src="../assets/js/storage.js"></script>
   <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/language-selector.js"></script>
   <script src="../assets/js/analytics.js"></script>
   <script src="../assets/js/router.js"></script>
   <script src="../assets/js/app.js"></script>
@@ -194,15 +195,16 @@
      */
     function loadGameDescription(gameId) {
       try {
-        // Check if GameDescriptions is loaded
-        if (typeof GameDescriptions === 'undefined') {
-          console.warn('GameDescriptions not loaded yet');
-          // Try again after a short delay
+        // Wait for I18n to be ready
+        if (typeof I18n === 'undefined') {
+          console.warn('I18n not loaded yet');
           setTimeout(() => loadGameDescription(gameId), 500);
           return;
         }
         
-        const descriptionData = GameDescriptions[gameId];
+        // Get description data from I18n system (falls back to GameDescriptions)
+        const descriptionData = I18n.getGameDescriptionData(gameId);
+        
         if (!descriptionData) {
           // If no specific description, use default from game data
           const game = App.getGameById(gameId);
@@ -220,34 +222,40 @@
         let html = '';
         
         // How to Play section
-        if (descriptionData.howToPlay) {
+        if (descriptionData.howToPlay && descriptionData.howToPlay.title) {
           html += '<div class="description-block">';
           html += `<h2>${descriptionData.howToPlay.title}</h2>`;
-          html += '<ol>';
-          descriptionData.howToPlay.steps.forEach(step => {
-            html += `<li>${step}</li>`;
-          });
-          html += '</ol>';
+          if (descriptionData.howToPlay.steps && descriptionData.howToPlay.steps.length > 0) {
+            html += '<ol>';
+            descriptionData.howToPlay.steps.forEach(step => {
+              html += `<li>${step}</li>`;
+            });
+            html += '</ol>';
+          }
           html += '</div>';
         }
         
         // Strategy section
-        if (descriptionData.strategy) {
+        if (descriptionData.strategy && descriptionData.strategy.title) {
           html += '<div class="description-block">';
           html += `<h2>${descriptionData.strategy.title}</h2>`;
-          html += '<ul>';
-          descriptionData.strategy.tips.forEach(tip => {
-            html += `<li>${tip}</li>`;
-          });
-          html += '</ul>';
+          if (descriptionData.strategy.tips && descriptionData.strategy.tips.length > 0) {
+            html += '<ul>';
+            descriptionData.strategy.tips.forEach(tip => {
+              html += `<li>${tip}</li>`;
+            });
+            html += '</ul>';
+          }
           html += '</div>';
         }
         
         // About section
-        if (descriptionData.about) {
+        if (descriptionData.about && descriptionData.about.title) {
           html += '<div class="description-block">';
           html += `<h2>${descriptionData.about.title}</h2>`;
-          html += `<p>${descriptionData.about.description}</p>`;
+          if (descriptionData.about.description) {
+            html += `<p>${descriptionData.about.description}</p>`;
+          }
           html += '</div>';
         }
         
@@ -310,6 +318,23 @@
       
       // Load and display game description (after game is loaded)
       loadGameDescription(gameId);
+      
+      // Reload description when language changes
+      document.addEventListener('i18n:loaded', () => {
+        loadGameDescription(gameId);
+        // Also update game title in header
+        if (typeof GameShell !== 'undefined' && GameShell.gameId) {
+          const title = document.getElementById('game-title');
+          if (title && typeof I18n !== 'undefined') {
+            // Get manifest to update title
+            GameShell.loadManifest(gameId).then(manifest => {
+              if (manifest) {
+                title.textContent = I18n.getGameTitle(gameId, manifest);
+              }
+            });
+          }
+        }
+      });
       
       // Track page view
       Analytics.trackPageView(`play:${gameId}`);

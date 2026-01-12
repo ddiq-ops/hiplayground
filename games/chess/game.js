@@ -72,6 +72,19 @@
       ]
   };
 
+  // Helper function to get translated text
+  function getUIText(key, defaultValue) {
+      if (typeof I18n !== 'undefined' && I18n.t) {
+          const fullKey = `gameDetails.chess.ui.${key}`;
+          const value = I18n.t(fullKey, defaultValue);
+          if (value === fullKey || value === defaultValue) {
+              return defaultValue;
+          }
+          return value;
+      }
+      return defaultValue;
+  }
+
   // ================= SOUND ENGINE =================
   const Sound = {
       ctx: null, isMuted: false,
@@ -251,7 +264,12 @@
               this.executeMove(move);
           } else {
               if(this.isCheck('b', this.state.board)) this.endGame('w');
-              else this.showModal("DRAW", "스테일메이트입니다.", "재시작", 'reset');
+              else {
+                  const drawText = getUIText('modal.draw.title', 'DRAW');
+                  const stalemateText = getUIText('modal.draw.desc', '스테일메이트입니다.');
+                  const restartText = getUIText('modal.draw.button', '재시작');
+                  this.showModal(drawText, stalemateText, restartText, 'reset');
+              }
           }
       },
 
@@ -579,17 +597,76 @@
           this.state.gameOver = true;
           if(w==='w') {
               Sound.playWin();
-              if(this.state.round<this.state.maxRound) this.showModal("VICTORY!", `라운드 ${this.state.round} 클리어!`, "다음 라운드", 'next');
-              else this.showModal("GRANDMASTER!", "지옥을 정복했습니다.", "처음부터 다시", 'reset');
+              if(this.state.round<this.state.maxRound) {
+                  const victoryText = getUIText('modal.victory.title', 'VICTORY!');
+                  const roundClearText = getUIText('modal.victory.desc', '라운드 {round} 클리어!').replace('{round}', this.state.round);
+                  const nextRoundText = getUIText('modal.victory.button', '다음 라운드');
+                  this.showModal(victoryText, roundClearText, nextRoundText, 'next');
+              } else {
+                  const grandmasterText = getUIText('modal.grandmaster.title', 'GRANDMASTER!');
+                  const grandmasterDesc = getUIText('modal.grandmaster.desc', '지옥을 정복했습니다.');
+                  const resetText = getUIText('modal.grandmaster.button', '처음부터 다시');
+                  this.showModal(grandmasterText, grandmasterDesc, resetText, 'reset');
+              }
           } else {
               Sound.playLose();
-              this.showModal("CHECKMATE", "AI의 수읽기에 당했습니다.", "재도전", 'retry');
+              const checkmateText = getUIText('modal.checkmate.title', 'CHECKMATE');
+              const checkmateDesc = getUIText('modal.checkmate.desc', 'AI의 수읽기에 당했습니다.');
+              const retryText = getUIText('modal.checkmate.button', '재도전');
+              this.showModal(checkmateText, checkmateDesc, retryText, 'retry');
           }
       },
       setupEvents: function() {
-          document.getElementById('btn-reset').onclick = () => { if(confirm("다시 시작합니까?")) { this.resetRound(1); this.renderBoard(); this.updateUI(); } };
+          const resetConfirmText = getUIText('resetConfirm', '다시 시작합니까?');
+          document.getElementById('btn-reset').onclick = () => { if(confirm(resetConfirmText)) { this.resetRound(1); this.renderBoard(); this.updateUI(); } };
           const btnSound = document.getElementById('btn-sound');
           btnSound.onclick = () => { Sound.isMuted = !Sound.isMuted; btnSound.innerText = Sound.isMuted ? "🔇" : "🔊"; };
+          
+          // Listen for language changes
+          document.addEventListener('i18n:loaded', () => {
+              if (this.state && this.state.gameOver) {
+                  const modal = document.getElementById('msg-modal');
+                  if (modal && modal.classList.contains('active')) {
+                      const titleEl = document.getElementById('m-title');
+                      const descEl = document.getElementById('m-desc');
+                      const btnEl = document.getElementById('m-btn');
+                      if (titleEl && descEl && btnEl) {
+                          if (this.state.winner === 'w') {
+                              if(this.state.round<this.state.maxRound) {
+                                  const victoryText = getUIText('modal.victory.title', 'VICTORY!');
+                                  const roundClearText = getUIText('modal.victory.desc', '라운드 {round} 클리어!').replace('{round}', this.state.round);
+                                  const nextRoundText = getUIText('modal.victory.button', '다음 라운드');
+                                  titleEl.innerText = victoryText;
+                                  descEl.innerText = roundClearText;
+                                  btnEl.innerText = nextRoundText;
+                              } else {
+                                  const grandmasterText = getUIText('modal.grandmaster.title', 'GRANDMASTER!');
+                                  const grandmasterDesc = getUIText('modal.grandmaster.desc', '지옥을 정복했습니다.');
+                                  const resetText = getUIText('modal.grandmaster.button', '처음부터 다시');
+                                  titleEl.innerText = grandmasterText;
+                                  descEl.innerText = grandmasterDesc;
+                                  btnEl.innerText = resetText;
+                              }
+                          } else if (this.state.winner === 'draw') {
+                              const drawText = getUIText('modal.draw.title', 'DRAW');
+                              const stalemateText = getUIText('modal.draw.desc', '스테일메이트입니다.');
+                              const restartText = getUIText('modal.draw.button', '재시작');
+                              titleEl.innerText = drawText;
+                              descEl.innerText = stalemateText;
+                              btnEl.innerText = restartText;
+                          } else {
+                              const checkmateText = getUIText('modal.checkmate.title', 'CHECKMATE');
+                              const checkmateDesc = getUIText('modal.checkmate.desc', 'AI의 수읽기에 당했습니다.');
+                              const retryText = getUIText('modal.checkmate.button', '재도전');
+                              titleEl.innerText = checkmateText;
+                              descEl.innerText = checkmateDesc;
+                              btnEl.innerText = retryText;
+                          }
+                      }
+                  }
+              }
+              this.updateUI();
+          });
       }
   };
 

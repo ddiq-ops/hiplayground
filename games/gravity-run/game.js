@@ -1,6 +1,19 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.gravity-run.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
     // ================= SOUND ENGINE =================
     const Sound = {
         ctx: null, isMuted: false,
@@ -130,9 +143,9 @@
         },
 
         showTitleScreen: function() {
-            this.el.mTitle.innerText = "GRAVITY RUN";
-            this.el.mDesc.innerHTML = "Lv.40+ 엘리트 장애물 등장!<br>보라색 장애물은 움직입니다.";
-            this.el.mBtn.innerText = "RUN";
+            this.el.mTitle.innerText = getUIText('modal.start.title', 'GRAVITY RUN');
+            this.el.mDesc.innerHTML = getUIText('modal.start.desc', 'Lv.40+ 엘리트 장애물 등장!<br>보라색 장애물은 움직입니다.');
+            this.el.mBtn.innerText = getUIText('modal.start.button', 'RUN');
             this.el.overlay.classList.add('active');
             this.state.isDead = false;
         },
@@ -308,10 +321,12 @@
             this.spawnParticles(150, this.state.playerY + 25, '#ff4757');
             this.el.player.style.display = 'none';
             setTimeout(() => {
-                this.el.mTitle.innerText = "CRASHED!";
+                const crashedText = getUIText('modal.gameOver.title', 'CRASHED!');
+                const scoreText = getUIText('modal.gameOver.score', 'SCORE');
+                this.el.mTitle.innerText = crashedText;
                 this.el.mTitle.style.color = "#ff4757";
-                this.el.mDesc.innerHTML = `SCORE: <strong style="color:#00d2d3">${this.state.score}</strong> (Lv.${this.state.level})`;
-                this.el.mBtn.innerText = "RETRY";
+                this.el.mDesc.innerHTML = `${scoreText}: <strong style="color:#00d2d3">${this.state.score}</strong> (Lv.${this.state.level})`;
+                this.el.mBtn.innerText = getUIText('modal.gameOver.button', 'RETRY');
                 this.el.overlay.classList.add('active');
                 this.el.player.style.display = 'block';
             }, 1000);
@@ -327,9 +342,12 @@
             }, 200);
             setTimeout(() => {
                 clearInterval(firework);
-                this.el.mTitle.innerText = "MISSION COMPLETE!";
+                const completeText = getUIText('modal.complete.title', 'MISSION COMPLETE!');
+                const legendaryScoreText = getUIText('modal.complete.legendaryScore', 'LEGENDARY SCORE');
+                const maxLevelText = getUIText('modal.complete.maxLevel', 'MAX LEVEL 100 REACHED!');
+                this.el.mTitle.innerText = completeText;
                 this.el.mTitle.style.color = "#f1c40f";
-                this.el.mDesc.innerHTML = `LEGENDARY SCORE: ${this.state.score}<br>MAX LEVEL 100 REACHED!`;
+                this.el.mDesc.innerHTML = `${legendaryScoreText}: ${this.state.score}<br>${maxLevelText}`;
                 this.el.mBtn.innerText = "PLAY AGAIN";
                 this.el.overlay.classList.add('active');
             }, 2000);

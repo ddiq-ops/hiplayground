@@ -1,6 +1,19 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.speed-number.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
     // ================= SOUND ENGINE =================
     const Sound = {
         ctx: null, isMuted: false,
@@ -63,6 +76,20 @@
             Sound.init();
             this.createUI();
             this.showDifficultySelect();
+            
+            // Listen for language changes
+            document.addEventListener('i18n:loaded', () => {
+                if (this.el && this.el.overlay && this.el.overlay.classList.contains('active')) {
+                    // If difficulty select is showing, refresh it
+                    if (this.el.title && this.el.title.innerText.includes('SPEED NUMBER')) {
+                        this.showDifficultySelect();
+                    }
+                    // If stage intro is showing, refresh it
+                    else if (this.el.title && this.el.title.innerText.includes('STAGE')) {
+                        this.prepareLevel();
+                    }
+                }
+            });
         },
 
         createUI: function() {
@@ -99,13 +126,16 @@
         },
 
         showDifficultySelect: function() {
-            this.el.title.innerText = "SPEED NUMBER";
-            this.el.sub.innerText = "OVERCLOCK EDITION";
+            this.el.title.innerText = getUIText('title', 'SPEED NUMBER');
+            this.el.sub.innerText = getUIText('subtitle', 'OVERCLOCK EDITION');
             this.el.overlay.className = 'sn-overlay active';
+            const easyText = getUIText('difficulty.easy', 'EASY (힌트/여유)');
+            const normalText = getUIText('difficulty.normal', 'NORMAL (표준)');
+            const hardText = getUIText('difficulty.hard', 'HARD (극한 도전)');
             this.el.btnContainer.innerHTML = `
-                <button class="sn-btn btn-easy" data-diff="easy">EASY (힌트/여유)</button>
-                <button class="sn-btn btn-normal" data-diff="normal">NORMAL (표준)</button>
-                <button class="sn-btn btn-hard" data-diff="hard">HARD (극한 도전)</button>
+                <button class="sn-btn btn-easy" data-diff="easy">${easyText}</button>
+                <button class="sn-btn btn-normal" data-diff="normal">${normalText}</button>
+                <button class="sn-btn btn-hard" data-diff="hard">${hardText}</button>
             `;
             this.el.btnContainer.querySelectorAll('button').forEach(btn => {
                 btn.onclick = () => this.startGameFull(btn.dataset.diff);
@@ -139,10 +169,14 @@
             this.updateComboBar(0);
             this.updateHeaderUI();
 
-            this.el.title.innerText = `STAGE ${config.stage}`;
-            this.el.sub.innerHTML = `목표: 1 ~ ${config.count}<br>제한시간: <span style="color:#f1c40f">${totalTime}초</span>`;
+            const stageText = getUIText('stage', 'STAGE {stage}').replace('{stage}', config.stage);
+            const goalText = getUIText('goal', '목표: 1 ~ {count}').replace('{count}', config.count);
+            const timeLimitText = getUIText('timeLimit', '제한시간: {time}초').replace('{time}', totalTime);
+            this.el.title.innerText = stageText;
+            this.el.sub.innerHTML = `${goalText}<br><span style="color:#f1c40f">${timeLimitText}</span>`;
             this.el.overlay.className = 'sn-overlay active';
-            this.el.btnContainer.innerHTML = `<button class="sn-btn btn-action">START</button>`;
+            const startText = getUIText('start', 'START');
+            this.el.btnContainer.innerHTML = `<button class="sn-btn btn-action">${startText}</button>`;
             this.el.btnContainer.querySelector('button').onclick = () => this.startGameplay();
         },
 
@@ -247,7 +281,8 @@
                 if (this.state.timeLeft <= 0) {
                     this.state.timeLeft = 0;
                     this.el.timer.innerText = "0.00";
-                    this.levelFail("TIME OVER");
+                    const timeOverText = getUIText('timeOver', 'TIME OVER');
+                    this.levelFail(timeOverText);
                 } else {
                     this.el.timer.innerText = this.state.timeLeft.toFixed(2);
                     this.state.timerId = requestAnimationFrame(loop);
@@ -269,7 +304,10 @@
                 this.gameClear();
             } else {
                 this.state.currentStageIdx++;
-                this.showResultOverlay("STAGE CLEAR", `Time Bonus: +${timeBonus}`, "NEXT STAGE", () => this.prepareLevel());
+                const stageClearText = getUIText('stageClear', 'STAGE CLEAR');
+                const timeBonusText = getUIText('timeBonus', 'Time Bonus: +{bonus}').replace('{bonus}', timeBonus);
+                const nextStageText = getUIText('nextStage', 'NEXT STAGE');
+                this.showResultOverlay(stageClearText, timeBonusText, nextStageText, () => this.prepareLevel());
             }
         },
 
@@ -281,14 +319,23 @@
             this.updateHeaderUI();
 
             if (this.state.lives > 0) {
-                this.showResultOverlay("FAILED", reason, "RETRY", () => this.prepareLevel());
+                const failedText = getUIText('failed', 'FAILED');
+                const livesText = getUIText('lives', 'Lives: {lives}').replace('{lives}', this.state.lives);
+                const retryText = getUIText('retry', 'RETRY');
+                this.showResultOverlay(failedText, livesText, retryText, () => this.prepareLevel());
             } else {
-                this.showResultOverlay("GAME OVER", `Final Score: ${this.state.score}`, "MAIN MENU", () => this.showDifficultySelect());
+                const gameOverText = getUIText('gameOver.title', 'GAME OVER');
+                const finalScoreText = getUIText('gameOver.finalScore', 'Final Score: {score}').replace('{score}', this.state.score);
+                const mainMenuText = getUIText('mainMenu', 'MAIN MENU');
+                this.showResultOverlay(gameOverText, finalScoreText, mainMenuText, () => this.showDifficultySelect());
             }
         },
 
         gameClear: function() {
-            this.showResultOverlay("ALL CLEAR!", `LEGENDARY SCORE: ${this.state.score}`, "MAIN MENU", () => this.showDifficultySelect());
+            const allClearText = getUIText('allClear.title', 'ALL CLEAR!');
+            const legendaryScoreText = getUIText('allClear.legendaryScore', 'LEGENDARY SCORE: {score}').replace('{score}', this.state.score);
+            const mainMenuText = getUIText('mainMenu', 'MAIN MENU');
+            this.showResultOverlay(allClearText, legendaryScoreText, mainMenuText, () => this.showDifficultySelect());
         },
 
         showResultOverlay: function(title, sub, btnText, action) {

@@ -1,0 +1,13 @@
+{
+  "id": "idle-factory",
+  "title": "아이들 팩토리",
+  "titleEn": "Idle Factory",
+      "description": "자동화 경영 게임! 생산라인을 구축하고 업그레이드해 점점 커지는 공장 운영. 30스테이지에 도전하세요!",
+      "descriptionEn": "Automation management game! Build production lines and upgrade your growing factory. Challenge 30 stages!",
+  "icon": "🏭",
+  "category": "simulation",
+  "difficulty": "medium",
+  "version": "1.0.0",
+  "orientation": "any"
+}
+

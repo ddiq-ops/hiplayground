@@ -1,6 +1,19 @@
 (function() {
   'use strict';
 
+  // Helper function to get translated text
+  function getUIText(key, defaultValue) {
+      if (typeof I18n !== 'undefined' && I18n.t) {
+          const fullKey = `gameDetails.weapon-levelup.ui.${key}`;
+          const value = I18n.t(fullKey, defaultValue);
+          if (value === fullKey || value === defaultValue) {
+              return defaultValue;
+          }
+          return value;
+      }
+      return defaultValue;
+  }
+
   // ================= STORAGE HELPER =================
   const LocalStorage = {
       save: (key, data) => localStorage.setItem(key, JSON.stringify(data)),
@@ -49,6 +62,11 @@
           this.renderLayout();
           this.updateUI();
           this.setupEvents();
+          
+          // Listen for language changes
+          document.addEventListener('i18n:loaded', () => {
+              this.updateUI();
+          });
       },
 
       loadProgress: function() {
@@ -83,8 +101,8 @@
       // --- ACTIONS ---
       upgrade: function() {
           const cost = this.getUpgradeCost();
-          if(this.state.gold < cost) return this.showMsg("골드가 부족합니다!", "error");
-          if(this.state.weaponLevel >= 100) return this.showMsg("최대 레벨입니다!", "warning");
+          if(this.state.gold < cost) return this.showMsg(getUIText('messages.notEnoughGold', '골드가 부족합니다!'), "error");
+          if(this.state.weaponLevel >= 100) return this.showMsg(getUIText('messages.maxLevel', '최대 레벨입니다!'), "warning");
 
           this.state.gold -= cost;
           this.state.stats.total++;
@@ -100,7 +118,7 @@
           if(isSuccess) {
               this.state.weaponLevel++;
               this.state.stats.success++;
-              this.showMsg("강화 성공! 레벨 업!", "success");
+              this.showMsg(getUIText('messages.upgradeSuccess', '강화 성공! 레벨 업!'), "success");
               weaponEl.classList.add('anim-success');
           } else {
               let isProtected = false;
@@ -108,14 +126,15 @@
               if(this.state.activePotion === 3 && Math.random() < 0.8) isProtected = true;
 
               if(isProtected) {
-                  this.showMsg("강화 실패! 하지만 무기는 보호되었습니다.", "info");
+                  this.showMsg(getUIText('messages.upgradeFailedProtected', '강화 실패! 하지만 무기는 보호되었습니다.'), "info");
               } else if(this.state.storedWeapon > 0) {
                   this.state.weaponLevel = this.state.storedWeapon;
                   this.state.storedWeapon = 0;
-                  this.showMsg(`강화 실패.. 보관된 레벨 ${this.state.weaponLevel} 무기를 장착합니다.`, "error");
+                  const storedWeaponText = getUIText('messages.storedWeaponEquipped', '강화 실패.. 보관된 레벨 {level} 무기를 장착합니다.').replace('{level}', this.state.weaponLevel);
+                  this.showMsg(storedWeaponText, "error");
               } else {
                   this.state.weaponLevel = 1;
-                  this.showMsg("강화 실패! 무기가 파괴되었습니다.. (Lv.1)", "error");
+                  this.showMsg(getUIText('messages.upgradeFailedDestroyed', '강화 실패! 무기가 파괴되었습니다.. (Lv.1)'), "error");
               }
               weaponEl.classList.add('anim-fail');
           }
@@ -126,7 +145,7 @@
       },
 
       sell: function() {
-          if(this.state.weaponLevel <= 1) return this.showMsg("레벨 1은 판매할 수 없습니다.", "error");
+          if(this.state.weaponLevel <= 1) return this.showMsg(getUIText('messages.cannotSellLevel1', '레벨 1은 판매할 수 없습니다.'), "error");
           
           const price = this.getSellPrice();
           if(confirm(`현재 무기(Lv.${this.state.weaponLevel})를 ${price.toLocaleString()} 골드에 판매하시겠습니까?`)) {

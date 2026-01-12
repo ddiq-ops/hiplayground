@@ -44,7 +44,474 @@
     "loading": "로딩 중...",
     "error": "오류가 발생했습니다",
     "retry": "다시 시도",
-    "close": "닫기"
+    "close": "닫기",
+    "copyright": "모든 권리 보유",
+    "loadingGame": "게임을 불러오는 중..."
+  },
+  "footer": {
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관"
+  },
+  "privacy": {
+    "title": "개인정보처리방침",
+    "lastUpdated": "최종 수정일: 2024년 1월 1일",
+    "section1": {
+      "title": "1. 개인정보의 처리 목적",
+      "content": "하이 플레이그라운드는 어린이 친화적인 게임 플랫폼으로, 개인정보를 수집하지 않습니다. 게임 진행 상황은 사용자의 브라우저에만 저장되며, 서버로 전송되지 않습니다."
+    },
+    "section2": {
+      "title": "2. 수집하는 개인정보 항목",
+      "content": "현재 하이 플레이그라운드는 어떠한 개인정보도 수집하지 않습니다. 게임 점수, 진행 상황 등의 데이터는 사용자의 기기에서만 저장됩니다."
+    },
+    "section3": {
+      "title": "3. 개인정보의 보유 및 이용 기간",
+      "content": "개인정보를 수집하지 않으므로 보유 및 이용 기간이 적용되지 않습니다. 브라우저에 저장된 게임 데이터는 사용자가 직접 삭제할 수 있습니다."
+    },
+    "section4": {
+      "title": "4. 어린이 개인정보 보호",
+      "content": "하이 플레이그라운드는 13세 미만 어린이의 개인정보를 고의로 수집하지 않습니다. 우리의 모든 서비스는 개인정보 수집 없이 이용 가능하도록 설계되었습니다."
+    },
+    "section5": {
+      "title": "5. 쿠키 및 로컬 스토리지",
+      "content": "게임 진행 상황을 저장하기 위해 브라우저의 로컬 스토리지를 사용할 수 있습니다. 이는 사용자의 기기에서만 저장되며, 외부 서버로 전송되지 않습니다. 사용자는 언제든지 브라우저 설정을 통해 이 데이터를 삭제할 수 있습니다."
+    },
+    "section6": {
+      "title": "6. 개인정보처리방침 변경",
+      "content": "이 개인정보처리방침은 법령, 정책 또는 보안기술의 변경에 따라 내용의 추가, 삭제 및 수정이 있을 경우 변경 사항을 시행하기 전에 사이트를 통해 공지하겠습니다."
+    },
+    "section7": {
+      "title": "7. 문의처",
+      "content": "개인정보처리방침에 대한 문의사항이 있으시면 아래로 연락해 주세요.",
+      "email": "이메일: ddiaddiq@gmail.com"
+    }
+  },
+  "terms": {
+    "title": "이용약관",
+    "lastUpdated": "최종 수정일: 2024년 1월 1일",
+    "section1": {
+      "title": "1. 서비스 소개",
+      "content": "하이 플레이그라운드는 어린이를 위한 무료 온라인 게임 플랫폼입니다. 본 약관은 하이 플레이그라운드의 모든 서비스 이용에 적용됩니다."
+    },
+    "section2": {
+      "title": "2. 이용 조건",
+      "item1": "하이 플레이그라운드는 무료로 제공되는 서비스입니다.",
+      "item2": "별도의 회원가입이나 로그인이 필요하지 않습니다.",
+      "item3": "서비스 이용에는 안정적인 인터넷 연결이 필요합니다."
+    },
+    "section3": {
+      "title": "3. 사용자 행동 규칙",
+      "content": "서비스를 이용할 때 다음 행위는 금지됩니다:",
+      "item1": "다른 사용자에게 해를 끼치는 행위",
+      "item2": "서비스의 안정성을 해치는 행위",
+      "item3": "부적절한 콘텐츠를 게시하거나 공유하는 행위",
+      "item4": "저작권을 침해하는 행위"
+    },
+    "section4": {
+      "title": "4. 서비스 제공 및 변경",
+      "content": "하이 플레이그라운드는 서비스의 내용, 기능, 게임 등을 사전 통지 없이 변경, 중단, 종료할 수 있습니다. 단, 서비스의 중단 또는 종료 시 가능한 한 사전에 공지하도록 노력하겠습니다."
+    },
+    "section5": {
+      "title": "5. 저작권",
+      "content": "하이 플레이그라운드의 모든 콘텐츠, 디자인, 로고 등은 하이 플레이그라운드의 저작권에 속합니다. 사용자는 개인적인 목적으로만 콘텐츠를 이용할 수 있으며, 상업적 목적으로 사용할 수 없습니다."
+    },
+    "section6": {
+      "title": "6. 면책 조항",
+      "content": "하이 플레이그라운드는 서비스 이용으로 인해 발생한 어떠한 손해에 대해서도 책임을 지지 않습니다. 서비스는 \"있는 그대로\" 제공되며, 완전성이나 정확성을 보장하지 않습니다."
+    },
+    "section7": {
+      "title": "7. 약관의 변경",
+      "content": "본 약관은 법령, 정책 또는 서비스 변경에 따라 수정될 수 있습니다. 약관이 변경될 경우 변경 사항을 사이트를 통해 공지하겠습니다."
+    },
+    "section8": {
+      "title": "8. 문의처",
+      "content": "이용약관에 대한 문의사항이 있으시면 아래로 연락해 주세요.",
+      "email": "이메일: ddiaddiq@gmail.com"
+    }
+  },
+  "gameDetails": {
+    "clicker": {
+      "title": "클리커 게임",
+      "description": "빠르게 클릭해서 점수를 모아보세요!",
+      "howToPlay": {
+        "title": "게임 방법",
+        "steps": [
+          "시작 버튼을 클릭하여 게임을 시작합니다.",
+          "화면 중앙의 큰 버튼을 클릭하여 에너지를 모읍니다. 클릭할 때마다 에너지가 증가합니다.",
+          "상점에서 자동 에너지 생산 업그레이드를 구매할 수 있습니다. 예를 들어 \"AA 건전지\"는 초당 자동으로 에너지를 생성합니다.",
+          "점수 표시창에서 현재 보유한 에너지와 초당 자동 생성량을 확인할 수 있습니다.",
+          "게임 모드: 무한 모드, 타임 어택(1억 목표), 제한 시간(3분) 모드 중 선택할 수 있습니다.",
+          "업그레이드는 구매할수록 비용이 증가하므로, 효율적인 순서로 구매하는 것이 중요합니다."
+        ]
+      },
+      "strategy": {
+        "title": "공략 팁 & 전략",
+        "tips": [
+          "초반에는 수동 클릭으로 에너지를 모은 후, 빠르게 자동 생산 업그레이드를 구매하는 것이 핵심입니다. AA 건전지나 홈 서버 같은 저렴한 자동 업그레이드를 먼저 구매하면 초당 생산량이 증가하여 수동 클릭 없이도 에너지가 계속 증가합니다.",
+          "업그레이드 비용은 구매할 때마다 1.25배씩 증가하므로, 한 가지 업그레이드에만 집중하기보다는 여러 업그레이드를 균형있게 구매하는 것이 장기적으로 더 유리합니다. 예를 들어 파워 글러브를 5레벨 정도 올린 후 자동 생산 업그레이드로 전환하는 것이 좋습니다.",
+          "타임 어택 모드에서는 빠른 초반 생산량 확보가 중요합니다. 초반 자동 생산 업그레이드를 우선적으로 구매하고, 어느 정도 여유가 생기면 수동 클릭 보너스 업그레이드도 함께 올려주세요.",
+          "제한 시간 모드에서는 3분 안에 최대한 많은 에너지를 모아야 하므로, 균형잡힌 업그레이드 전략이 필요합니다. 시간이 부족하므로 비싼 업그레이드보다는 합리적인 가격대의 업그레이드를 여러 개 구매하는 것이 효과적입니다."
+        ]
+      },
+      "about": {
+        "title": "게임 소개",
+        "description": "클리커 게임은 단순하면서도 중독성 있는 반응속도 훈련 게임입니다. 빠른 클릭과 전략적인 업그레이드 구매를 통해 에너지를 효율적으로 모으는 과정에서 두뇌의 순발력과 의사결정 능력을 향상시킬 수 있습니다. 특히 자동 생산 시스템을 활용한 자원 관리 전략을 통해 논리적 사고력을 기를 수 있으며, 목표 설정과 달성을 통한 성취감을 느낄 수 있습니다. 간단한 조작으로도 재미있게 즐길 수 있어 초등학생부터 성인까지 누구나 쉽게 접근할 수 있는 교육적 가치가 있는 게임입니다."
+      },
+      "ui": {
+        "title": "네온 코어: 오버로드",
+        "upgrade": "업그레이드",
+        "gameOver": "게임 종료",
+        "timeOver": "시간 종료",
+        "missionClear": "미션 클리어",
+        "mainMenu": "메인 메뉴",
+        "timeLeft": "남은 시간",
+        "timeElapsed": "경과 시간",
+        "finalScore": "최종 점수",
+        "record": "기록",
+        "perSec": "/ 초",
+        "modes": {
+          "infinite": {
+            "name": "무한 모드",
+            "desc": "저장 가능.<br>느긋하게 성장하세요.",
+            "goal": "무제한"
+          },
+          "timeAttack": {
+            "name": "타임 어택",
+            "desc": "1억 점 달성하기.<br>최단 기록 도전!",
+            "goal": "목표: 100M"
+          },
+          "timeLimit": {
+            "name": "제한 시간",
+            "desc": "3분 스코어링.<br>폭발적인 성장!",
+            "goal": "제한: 3분"
+          }
+        },
+        "upgrades": {
+          "glove": {
+            "name": "파워 글러브",
+            "desc": "클릭 당 +1"
+          },
+          "battery": {
+            "name": "AA 건전지",
+            "desc": "초당 +2"
+          },
+          "server": {
+            "name": "홈 서버",
+            "desc": "초당 +10"
+          },
+          "ai": {
+            "name": "AI 봇",
+            "desc": "초당 +50"
+          },
+          "farm": {
+            "name": "채굴 공장",
+            "desc": "초당 +250"
+          },
+          "nuclear": {
+            "name": "핵융합로",
+            "desc": "초당 +1,000"
+          },
+          "alien": {
+            "name": "외계 기술",
+            "desc": "초당 +10,000"
+          },
+          "dyson": {
+            "name": "다이슨 스피어",
+            "desc": "초당 +500,000"
+          }
+        }
+      }
+    },
+    "memory": {
+      "title": "기억력 게임",
+      "description": "카드를 뒤집어서 같은 그림을 찾아보세요!"
+    },
+    "math-quiz": {
+      "title": "초등 수학 마스터",
+      "description": "초등 저학년 필수! 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요.",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "MATH MASTER",
+            "desc": "제한 시간 60초! 4가지 연산을 마스터하세요.",
+            "button": "START"
+          },
+          "end": {
+            "title": "GAME OVER",
+            "finalScore": "최종 점수",
+            "reachedLevel": "도달 레벨",
+            "button": "RETRY"
+          }
+        },
+        "combo": "COMBO"
+      }
+    },
+    "weapon-levelup": {
+      "title": "내 무기만 레벨업",
+      "description": "대장간에서 무기를 강화하고 상점에서 판매하세요!",
+      "ui": {
+        "messages": {
+          "notEnoughGold": "골드가 부족합니다!",
+          "maxLevel": "최대 레벨입니다!",
+          "upgradeSuccess": "강화 성공! 레벨 업!",
+          "upgradeFailedProtected": "강화 실패! 하지만 무기는 보호되었습니다.",
+          "storedWeaponEquipped": "강화 실패.. 보관된 레벨 {level} 무기를 장착합니다.",
+          "upgradeFailedDestroyed": "강화 실패! 무기가 파괴되었습니다.. (Lv.1)",
+          "cannotSellLevel1": "레벨 1은 판매할 수 없습니다.",
+          "cannotStoreLevel1": "레벨 1은 보관할 수 없습니다.",
+          "alreadyStored": "이미 보관된 무기가 있습니다."
+        }
+      }
+    },
+    "omok": {
+      "title": "오목 마스터",
+      "description": "5개를 연속으로 놓아 승리하세요! 고스트 스톤과 마지막 수 표시로 더 편리하게 즐기세요."
+    },
+    "chess": {
+      "title": "체스",
+      "description": "전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.",
+      "ui": {
+        "modal": {
+          "victory": {
+            "title": "VICTORY!",
+            "desc": "라운드 {round} 클리어!",
+            "button": "다음 라운드"
+          },
+          "grandmaster": {
+            "title": "GRANDMASTER!",
+            "desc": "지옥을 정복했습니다.",
+            "button": "처음부터 다시"
+          },
+          "checkmate": {
+            "title": "CHECKMATE",
+            "desc": "AI의 수읽기에 당했습니다.",
+            "button": "재도전"
+          },
+          "draw": {
+            "title": "DRAW",
+            "desc": "스테일메이트입니다.",
+            "button": "재시작"
+          }
+        },
+        "ai": "AI",
+        "aiThinking": "AI (연산중...)",
+        "resetConfirm": "다시 시작합니까?"
+      }
+    },
+    "speed-number": {
+      "title": "순발력 숫자 터치",
+      "description": "눈보다 빠른 손! 1부터 50까지 숫자를 순서대로 찾아 터치하세요. 난이도별 10단계 스테이지 도전!",
+      "ui": {
+        "title": "SPEED NUMBER",
+        "subtitle": "OVERCLOCK EDITION",
+        "difficulty": {
+          "easy": "EASY (힌트/여유)",
+          "normal": "NORMAL (표준)",
+          "hard": "HARD (극한 도전)"
+        },
+        "stage": "STAGE {stage}",
+        "goal": "목표: 1 ~ {count}",
+        "timeLimit": "제한시간: {time}초",
+        "start": "START",
+        "stageClear": "STAGE CLEAR",
+        "timeBonus": "Time Bonus: +{bonus}",
+        "nextStage": "NEXT STAGE",
+        "timeOver": "TIME OVER",
+        "failed": "FAILED",
+        "gameOver": {
+          "title": "GAME OVER",
+          "finalScore": "Final Score: {score}"
+        },
+        "lives": "Lives: {lives}",
+        "retry": "RETRY",
+        "mainMenu": "MAIN MENU",
+        "allClear": {
+          "title": "ALL CLEAR!",
+          "legendaryScore": "LEGENDARY SCORE: {score}"
+        }
+      }
+    },
+    "physics-box": {
+      "title": "와르르 상자",
+      "description": "공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요."
+    },
+    "math-quiz-hard": {
+      "title": "암산 천재 (고학년)",
+      "description": "초등 고학년 도전! 큰 수 연산과 사칙연산 혼합 계산을 마스터하세요.",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "암산 천재",
+            "desc": "고학년 도전! 곱셈과 나눗셈 순서에 주의하세요.",
+            "button": "도전 시작"
+          },
+          "gameOver": {
+            "title": "GAME OVER",
+            "finalScore": "최종 점수",
+            "reachedLevel": "도달 레벨",
+            "button": "다시 도전"
+          }
+        }
+      }
+    },
+    "gravity-run": {
+      "title": "그래비티 런: 제로",
+      "description": "중력을 거스르는 질주! 터치 한 번으로 위아래를 뒤집으세요. 극한의 속도감에 도전하라.",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "GRAVITY RUN",
+            "desc": "Lv.40+ 엘리트 장애물 등장!<br>보라색 장애물은 움직입니다.",
+            "button": "RUN"
+          },
+          "gameOver": {
+            "title": "CRASHED!",
+            "score": "SCORE",
+            "button": "RETRY"
+          },
+          "complete": {
+            "title": "MISSION COMPLETE!",
+            "legendaryScore": "LEGENDARY SCORE",
+            "maxLevel": "MAX LEVEL 100 REACHED!"
+          }
+        }
+      }
+    },
+    "infinite-space": {
+      "title": "인피니티 스페이스: 로그",
+      "description": "끝없는 우주 전쟁! 적을 파괴하고, 경험치를 모아 나만의 전함을 진화시키세요."
+    },
+    "mystic-fortune": {
+      "title": "오늘의 운세",
+      "description": "별들이 속삭이는 당신의 하루 운세를 확인하세요."
+    },
+    "code-rabbit": {
+      "title": "코드 래빗",
+      "description": "토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)",
+      "ui": {
+        "emptyQueue": "명령어를 넣어주세요",
+        "allLevelsComplete": "대단해요! 코드 래빗 마스터! 🐰🥕🎓"
+      }
+    },
+    "word-pop": {
+      "title": "워드 팝",
+      "description": "영어 단어 방울을 터뜨리는 액션 게임",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "WORD POP",
+            "subtitle": "EXTREME",
+            "desc": "정답을 놓치면 목숨이 깎입니다!<br>피버 모드일 때는 괜찮아요.<br>쏟아지는 단어를 막아내세요.",
+            "button": "GAME START"
+          },
+          "gameOver": {
+            "title": "GAME OVER",
+            "button": "TRY AGAIN"
+          }
+        },
+        "bestScore": "BEST SCORE",
+        "score": "SCORE",
+        "best": "BEST",
+        "goal": "GOAL",
+        "stageClear": "STAGE CLEAR!",
+        "nextLevel": "NEXT LEVEL (+1 ❤️)",
+        "feverTime": "FEVER TIME!!",
+        "miss": "MISS!",
+        "wordClear": "WORD CLEAR!"
+      }
+    },
+    "jelly-legend": {
+      "title": "젤리 레전드",
+      "description": "젤리 합치기 로그라이크 게임"
+    },
+    "neon-beat": {
+      "title": "네온 비트",
+      "description": "20곡의 EDM과 함께하는 4/6/8키 리듬 게임"
+    },
+    "guardian-defense": {
+      "title": "가디언 디펜스",
+      "description": "타워 디펜스와 로그라이크의 만남! 카드를 선택해 전략을 완성하세요.",
+      "ui": {
+        "combat": "COMBAT...",
+        "nextWave": "NEXT WAVE"
+      }
+    },
+    "emoji-survivor": {
+      "title": "이모지 서바이버",
+      "description": "몰려오는 이모지 군단을 막아내세요! 로그라이크 액션."
+    },
+    "idle-factory": {
+      "title": "아이들 팩토리",
+      "description": "자동화 경영 게임! 생산라인을 구축하고 업그레이드해 점점 커지는 공장 운영. 30스테이지에 도전하세요!"
+    },
+    "memory": {
+      "title": "기억력 게임",
+      "description": "카드를 뒤집어서 같은 그림을 찾아보세요!",
+      "ui": {
+        "modal": {
+          "ready": {
+            "desc": "같은 그림의 카드를 찾아주세요!"
+          },
+          "start": {
+            "title": "기억력 마스터",
+            "desc": "제한 시간 안에 모든 카드의 짝을 맞춰주세요!",
+            "button": "게임 시작"
+          },
+          "clear": {
+            "title": "STAGE CLEAR!",
+            "desc": "다음 단계로 넘어갑니다.",
+            "button": "다음 레벨"
+          },
+          "fail": {
+            "title": "TIME OVER",
+            "desc": "시간이 초과되었습니다.",
+            "button": "다시 도전"
+          },
+          "allclear": {
+            "title": "LEGENDARY!",
+            "button": "처음부터 다시"
+          },
+          "help": {
+            "title": "게임 방법",
+            "desc": "1. 카드를 뒤집어 짝을 찾으세요.<br>2. 틀리면 다시 뒤집힙니다.<br>3. 시간 안에 모두 찾으면 승리!",
+            "button": "닫기"
+          }
+        },
+        "bonusScore": "보너스 점수",
+        "finalScore": "최종 점수"
+      }
+    },
+    "physics-box": {
+      "title": "와르르 상자",
+      "description": "공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요.",
+      "ui": {
+        "help": {
+          "title": "게임 가이드",
+          "control": {
+            "title": "조작",
+            "desc": "공을 뒤로 당겨서 발사하세요.<br>빈 화면을 드래그하면 맵을 정찰합니다."
+          },
+          "victory": {
+            "title": "승리",
+            "desc": "전체 상자의 <strong>70%</strong> 이상을 파괴하면 다음 스테이지가 열립니다."
+          },
+          "close": "닫기"
+        },
+        "soundToggle": "소리 켜기/끄기",
+        "helpButton": "게임 방법",
+        "next": "NEXT",
+        "retry": "RETRY",
+        "nextLevel": "NEXT LEVEL",
+        "restartAll": "RESTART ALL",
+        "gameOver": {
+          "title": "GAME OVER",
+          "retry": "처음부터 다시 시작!"
+        },
+        "stageClear": "STAGE {stage} CLEAR!",
+        "bonus": "Bonus",
+        "legendary": "LEGENDARY!",
+        "finalScore": "Final Score"
+      }
+    }
   }
 }
 

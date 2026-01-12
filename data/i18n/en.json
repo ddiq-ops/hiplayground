@@ -44,7 +44,496 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "retry": "Retry",
-    "close": "Close"
+    "close": "Close",
+    "copyright": "All rights reserved",
+    "loadingGame": "Loading game..."
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: January 1, 2024",
+    "section1": {
+      "title": "1. Purpose of Personal Information Processing",
+      "content": "Hi Playground is a child-friendly game platform that does not collect personal information. Game progress is stored only on the user's browser and is not transmitted to any server."
+    },
+    "section2": {
+      "title": "2. Personal Information Items Collected",
+      "content": "Currently, Hi Playground does not collect any personal information. Data such as game scores and progress are stored only on the user's device."
+    },
+    "section3": {
+      "title": "3. Retention and Use Period of Personal Information",
+      "content": "Since we do not collect personal information, retention and use periods do not apply. Game data stored in the browser can be deleted by the user at any time."
+    },
+    "section4": {
+      "title": "4. Protection of Children's Personal Information",
+      "content": "Hi Playground does not knowingly collect personal information from children under the age of 13. All of our services are designed to be used without collecting personal information."
+    },
+    "section5": {
+      "title": "5. Cookies and Local Storage",
+      "content": "We may use browser local storage to save game progress. This data is stored only on the user's device and is not transmitted to external servers. Users can delete this data at any time through browser settings."
+    },
+    "section6": {
+      "title": "6. Changes to Privacy Policy",
+      "content": "This privacy policy may be updated to add, delete, or modify content in accordance with changes in laws, policies, or security technology. We will notify users of any changes through the site before they take effect."
+    },
+    "section7": {
+      "title": "7. Contact",
+      "content": "If you have any questions about this privacy policy, please contact us at:",
+      "email": "Email: ddiaddiq@gmail.com"
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: January 1, 2024",
+    "section1": {
+      "title": "1. Service Introduction",
+      "content": "Hi Playground is a free online game platform for children. These terms apply to all use of Hi Playground services."
+    },
+    "section2": {
+      "title": "2. Terms of Use",
+      "item1": "Hi Playground is provided as a free service.",
+      "item2": "No registration or login is required.",
+      "item3": "A stable internet connection is required to use the service."
+    },
+    "section3": {
+      "title": "3. User Conduct Rules",
+      "content": "The following acts are prohibited when using the service:",
+      "item1": "Acts that harm other users",
+      "item2": "Acts that undermine service stability",
+      "item3": "Posting or sharing inappropriate content",
+      "item4": "Acts that infringe copyright"
+    },
+    "section4": {
+      "title": "4. Service Provision and Changes",
+      "content": "Hi Playground may change, suspend, or terminate the service's content, features, games, etc. without prior notice. However, we will make every effort to provide advance notice when suspending or terminating the service."
+    },
+    "section5": {
+      "title": "5. Copyright",
+      "content": "All content, designs, logos, etc. of Hi Playground are owned by Hi Playground. Users may use content only for personal purposes and may not use it for commercial purposes."
+    },
+    "section6": {
+      "title": "6. Disclaimer",
+      "content": "Hi Playground is not responsible for any damages arising from the use of the service. The service is provided \"as is\" and does not guarantee completeness or accuracy."
+    },
+    "section7": {
+      "title": "7. Changes to Terms",
+      "content": "These terms may be modified in accordance with changes in laws, policies, or services. If the terms are changed, we will notify users of the changes through the site."
+    },
+    "section8": {
+      "title": "8. Contact",
+      "content": "If you have any questions about these terms of service, please contact us at:",
+      "email": "Email: ddiaddiq@gmail.com"
+    }
+  },
+  "gameDetails": {
+    "clicker": {
+      "title": "Clicker Game",
+      "description": "Click fast to collect points!",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "Click the start button to begin the game.",
+          "Click the large button in the center of the screen to collect energy. Each click increases your energy.",
+          "You can purchase automatic energy production upgrades in the shop. For example, \"AA Battery\" automatically generates energy per second.",
+          "You can check your current energy and automatic production per second in the score display.",
+          "Game modes: Choose from Infinite Mode, Time Attack (100 million target), or Time Limit (3 minutes) mode.",
+          "Upgrade costs increase with each purchase, so it's important to buy them in an efficient order."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "In the early stages, it's key to collect energy by manual clicking first, then quickly purchase automatic production upgrades. Buying cheap automatic upgrades like AA Battery or Home Server first will increase your production per second, allowing energy to continue increasing without manual clicking.",
+          "Since upgrade costs increase by 1.25x with each purchase, it's more advantageous in the long run to balance multiple upgrades rather than focusing on just one. For example, it's good to level up Power Glove to about level 5, then switch to automatic production upgrades.",
+          "In Time Attack mode, securing fast early production is important. Prioritize early automatic production upgrades, and when you have some room, also level up manual click bonus upgrades.",
+          "In Time Limit mode, you need to collect as much energy as possible within 3 minutes, so a balanced upgrade strategy is needed. Since time is limited, it's more effective to buy several reasonably priced upgrades rather than expensive ones."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Clicker Game is a simple yet addictive reaction speed training game. Through fast clicking and strategic upgrade purchases to efficiently collect energy, you can improve your brain's agility and decision-making abilities. In particular, you can develop logical thinking through resource management strategies using the automatic production system, and feel a sense of achievement through goal setting and achievement. With simple controls that are fun to play, it's an educational game that anyone from elementary school students to adults can easily access."
+      },
+      "ui": {
+        "title": "NEON CORE: OVERLOAD",
+        "upgrade": "UPGRADE",
+        "gameOver": "GAME OVER",
+        "timeOver": "TIME OVER",
+        "missionClear": "MISSION CLEAR",
+        "mainMenu": "MAIN MENU",
+        "timeLeft": "Time Left",
+        "timeElapsed": "Time Elapsed",
+        "finalScore": "Final Score",
+        "record": "Record",
+        "perSec": "/ sec",
+        "modes": {
+          "infinite": {
+            "name": "Infinite Mode",
+            "desc": "Auto-save enabled.<br>Grow at your own pace.",
+            "goal": "Unlimited"
+          },
+          "timeAttack": {
+            "name": "Time Attack",
+            "desc": "Reach 100M points.<br>Challenge for best time!",
+            "goal": "Target: 100M"
+          },
+          "timeLimit": {
+            "name": "Time Limit",
+            "desc": "3-minute scoring.<br>Explosive growth!",
+            "goal": "Limit: 3 min"
+          }
+        },
+        "upgrades": {
+          "glove": {
+            "name": "Power Glove",
+            "desc": "+1 per click"
+          },
+          "battery": {
+            "name": "AA Battery",
+            "desc": "+2 per sec"
+          },
+          "server": {
+            "name": "Home Server",
+            "desc": "+10 per sec"
+          },
+          "ai": {
+            "name": "AI Bot",
+            "desc": "+50 per sec"
+          },
+          "farm": {
+            "name": "Mining Farm",
+            "desc": "+250 per sec"
+          },
+          "nuclear": {
+            "name": "Nuclear Reactor",
+            "desc": "+1,000 per sec"
+          },
+          "alien": {
+            "name": "Alien Tech",
+            "desc": "+10,000 per sec"
+          },
+          "dyson": {
+            "name": "Dyson Sphere",
+            "desc": "+500,000 per sec"
+          }
+        }
+      }
+    },
+    "memory": {
+      "title": "Memory Game",
+      "description": "Flip cards to find matching pairs!"
+    },
+    "math-quiz": {
+      "title": "Elementary Math Master",
+      "description": "Essential for lower elementary! Fun training for addition, subtraction, multiplication, and division.",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "MATH MASTER",
+            "desc": "60 second time limit! Master the 4 basic operations.",
+            "button": "START"
+          },
+          "end": {
+            "title": "GAME OVER",
+            "finalScore": "Final Score",
+            "reachedLevel": "Reached Level",
+            "button": "RETRY"
+          }
+        },
+        "combo": "COMBO"
+      }
+    },
+    "weapon-levelup": {
+      "title": "Weapon Level Up",
+      "description": "Upgrade your weapon at the blacksmith and sell it at the shop!",
+      "ui": {
+        "messages": {
+          "notEnoughGold": "Not enough gold!",
+          "maxLevel": "Max level reached!",
+          "upgradeSuccess": "Upgrade success! Level up!",
+          "upgradeFailedProtected": "Upgrade failed! But weapon is protected.",
+          "storedWeaponEquipped": "Upgrade failed.. Equipping stored level {level} weapon.",
+          "upgradeFailedDestroyed": "Upgrade failed! Weapon destroyed.. (Lv.1)",
+          "cannotSellLevel1": "Cannot sell level 1.",
+          "cannotStoreLevel1": "Cannot store level 1.",
+          "alreadyStored": "Weapon already stored."
+        }
+      }
+    },
+    "omok": {
+      "title": "Omok Master",
+      "description": "Place 5 in a row to win! Features ghost stone guide and last move marker.",
+      "ui": {
+        "modal": {
+          "miracle": {
+            "title": "MIRACLE!",
+            "desc": "Round {round} cleared!",
+            "button": "Next Hell"
+          },
+          "godlike": {
+            "title": "GODLIKE!",
+            "desc": "Human victory. You are a legend.",
+            "button": "Start Over"
+          },
+          "youDied": {
+            "title": "YOU DIED",
+            "desc": "The AI's wall was too high...",
+            "button": "Retry"
+          }
+        },
+        "ai": "AI",
+        "aiThinking": "AI (Thinking...)",
+        "resetConfirm": "Start over from the beginning?"
+      }
+    },
+    "chess": {
+      "title": "Chess",
+      "description": "Strategic chess game! Supports 1-player and 2-player modes.",
+      "ui": {
+        "modal": {
+          "victory": {
+            "title": "VICTORY!",
+            "desc": "Round {round} cleared!",
+            "button": "Next Round"
+          },
+          "grandmaster": {
+            "title": "GRANDMASTER!",
+            "desc": "You have conquered hell.",
+            "button": "Start Over"
+          },
+          "checkmate": {
+            "title": "CHECKMATE",
+            "desc": "Defeated by AI's calculation.",
+            "button": "Retry"
+          },
+          "draw": {
+            "title": "DRAW",
+            "desc": "Stalemate.",
+            "button": "Restart"
+          }
+        },
+        "ai": "AI",
+        "aiThinking": "AI (Thinking...)",
+        "resetConfirm": "Start again?"
+      }
+    },
+    "speed-number": {
+      "title": "Speed Number Tap",
+      "description": "Faster than eyes! Tap numbers in order up to 50. Challenge 10 stages with difficulty levels!",
+      "ui": {
+        "title": "SPEED NUMBER",
+        "subtitle": "OVERCLOCK EDITION",
+        "difficulty": {
+          "easy": "EASY (Hint/Relaxed)",
+          "normal": "NORMAL (Standard)",
+          "hard": "HARD (Extreme Challenge)"
+        },
+        "stage": "STAGE {stage}",
+        "goal": "Goal: 1 ~ {count}",
+        "timeLimit": "Time Limit: {time}s",
+        "start": "START",
+        "stageClear": "STAGE CLEAR",
+        "timeBonus": "Time Bonus: +{bonus}",
+        "nextStage": "NEXT STAGE",
+        "timeOver": "TIME OVER",
+        "failed": "FAILED",
+        "gameOver": {
+          "title": "GAME OVER",
+          "finalScore": "Final Score: {score}"
+        },
+        "lives": "Lives: {lives}",
+        "retry": "RETRY",
+        "mainMenu": "MAIN MENU",
+        "allClear": {
+          "title": "ALL CLEAR!",
+          "legendaryScore": "LEGENDARY SCORE: {score}"
+        }
+      }
+    },
+    "physics-box": {
+      "title": "Physics Box",
+      "description": "Drag, Shoot, and Crash! Knock down the box tower."
+    },
+    "math-quiz-hard": {
+      "title": "Mental Math Genius",
+      "description": "Master mixed operations and large numbers.",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "Mental Math Genius",
+            "desc": "Advanced challenge! Pay attention to multiplication and division order.",
+            "button": "Start Challenge"
+          },
+          "gameOver": {
+            "title": "GAME OVER",
+            "finalScore": "Final Score",
+            "reachedLevel": "Reached Level",
+            "button": "Retry"
+          }
+        }
+      }
+    },
+    "gravity-run": {
+      "title": "Gravity Run: Zero",
+      "description": "Defy gravity! Tap to flip up and down. Experience extreme speed.",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "GRAVITY RUN",
+            "desc": "Lv.40+ Elite obstacles appear!<br>Purple obstacles move.",
+            "button": "RUN"
+          },
+          "gameOver": {
+            "title": "CRASHED!",
+            "score": "SCORE",
+            "button": "RETRY"
+          },
+          "complete": {
+            "title": "MISSION COMPLETE!",
+            "legendaryScore": "LEGENDARY SCORE",
+            "maxLevel": "MAX LEVEL 100 REACHED!"
+          }
+        }
+      }
+    },
+    "infinite-space": {
+      "title": "Infinite Space: Rogue",
+      "description": "Endless space war! Gather EXP and evolve your ship with roguelike skills."
+    },
+    "mystic-fortune": {
+      "title": "Mystic Fortune",
+      "description": "Check your daily fortune whispered by the stars."
+    },
+    "code-rabbit": {
+      "title": "Code Rabbit",
+      "description": "Coding logic puzzle game",
+      "ui": {
+        "emptyQueue": "Add commands",
+        "allLevelsComplete": "Awesome! Code Rabbit Master! 🐰🥕🎓"
+      }
+    },
+    "word-pop": {
+      "title": "Word Pop",
+      "description": "Bubble shooting action word game",
+      "ui": {
+        "modal": {
+          "start": {
+            "title": "WORD POP",
+            "subtitle": "EXTREME",
+            "desc": "Missing the answer costs lives!<br>Fever mode is safe.<br>Block the pouring words.",
+            "button": "GAME START"
+          },
+          "gameOver": {
+            "title": "GAME OVER",
+            "button": "TRY AGAIN"
+          }
+        },
+        "bestScore": "BEST SCORE",
+        "score": "SCORE",
+        "best": "BEST",
+        "goal": "GOAL",
+        "stageClear": "STAGE CLEAR!",
+        "nextLevel": "NEXT LEVEL (+1 ❤️)",
+        "feverTime": "FEVER TIME!!",
+        "miss": "MISS!",
+        "wordClear": "WORD CLEAR!"
+      }
+    },
+    "jelly-legend": {
+      "title": "Jelly Legend",
+      "description": "Merge Puzzle Roguelike"
+    },
+    "neon-beat": {
+      "title": "Neon Beat",
+      "description": "Cyberpunk Rhythm Action with 20 tracks & 3 modes."
+    },
+    "guardian-defense": {
+      "title": "Guardian Defense",
+      "description": "Tower Defense meets Roguelike. Draft cards to build your defense.",
+      "ui": {
+        "combat": "COMBAT...",
+        "nextWave": "NEXT WAVE"
+      }
+    },
+    "emoji-survivor": {
+      "title": "Emoji Survivor",
+      "description": "Survive the emoji horde! Action Roguelike."
+    },
+    "idle-factory": {
+      "title": "Idle Factory",
+      "description": "Automation management game! Build production lines and upgrade your growing factory. Challenge 30 stages!"
+    },
+    "memory": {
+      "title": "Memory Game",
+      "description": "Flip cards to find matching pairs!",
+      "ui": {
+        "modal": {
+          "ready": {
+            "desc": "Find matching pairs of cards!"
+          },
+          "start": {
+            "title": "Memory Master",
+            "desc": "Match all card pairs before time runs out!",
+            "button": "Start Game"
+          },
+          "clear": {
+            "title": "STAGE CLEAR!",
+            "desc": "Moving to next level.",
+            "button": "Next Level"
+          },
+          "fail": {
+            "title": "TIME OVER",
+            "desc": "Time has run out.",
+            "button": "Try Again"
+          },
+          "allclear": {
+            "title": "LEGENDARY!",
+            "button": "Start Over"
+          },
+          "help": {
+            "title": "How to Play",
+            "desc": "1. Flip cards to find matching pairs.<br>2. Wrong matches will flip back.<br>3. Find all pairs before time runs out to win!",
+            "button": "Close"
+          }
+        },
+        "bonusScore": "Bonus Score",
+        "finalScore": "Final Score"
+      }
+    },
+    "physics-box": {
+      "title": "Physics Box",
+      "description": "Drag, Shoot, and Crash! Knock down the box tower.",
+      "ui": {
+        "help": {
+          "title": "Game Guide",
+          "control": {
+            "title": "Controls",
+            "desc": "Drag the ball back to shoot.<br>Drag on empty screen to scout the map."
+          },
+          "victory": {
+            "title": "Victory",
+            "desc": "Destroy <strong>70%</strong> or more of all boxes to unlock the next stage."
+          },
+          "close": "Close"
+        },
+        "soundToggle": "Toggle Sound",
+        "helpButton": "How to Play",
+        "next": "NEXT",
+        "retry": "RETRY",
+        "nextLevel": "NEXT LEVEL",
+        "restartAll": "RESTART ALL",
+        "gameOver": {
+          "title": "GAME OVER",
+          "retry": "Start over from the beginning!"
+        },
+        "stageClear": "STAGE {stage} CLEAR!",
+        "bonus": "Bonus",
+        "legendary": "LEGENDARY!",
+        "finalScore": "Final Score"
+      }
+    }
   }
 }
 

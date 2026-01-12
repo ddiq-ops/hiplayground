@@ -28,23 +28,88 @@
     // ================= DATA & CONFIG =================
     // 난이도 상향: 초기 가격 상승 & 가격 증가 배율 1.25
     const UPGRADES = [
-        { id: 'glove', name: '파워 글러브', type: 'manual', baseCost: 50, basePower: 1, icon: '🥊', desc: '클릭 당 +1' },
-        { id: 'battery', name: 'AA 건전지', type: 'auto', baseCost: 150, basePower: 2, icon: '🔋', desc: '초당 +2' },
-        { id: 'server', name: '홈 서버', type: 'auto', baseCost: 1000, basePower: 10, icon: '🖥️', desc: '초당 +10' },
-        { id: 'ai', name: 'AI 봇', type: 'auto', baseCost: 5000, basePower: 50, icon: '🤖', desc: '초당 +50' },
-        { id: 'farm', name: '채굴 공장', type: 'auto', baseCost: 20000, basePower: 250, icon: '⛏️', desc: '초당 +250' },
-        { id: 'nuclear', name: '핵융합로', type: 'auto', baseCost: 100000, basePower: 1000, icon: '⚛️', desc: '초당 +1,000' },
-        { id: 'alien', name: '외계 기술', type: 'auto', baseCost: 1000000, basePower: 10000, icon: '👽', desc: '초당 +10,000' },
-        { id: 'dyson', name: '다이슨 스피어', type: 'auto', baseCost: 50000000, basePower: 500000, icon: '☀️', desc: '초당 +500,000' }
+        { id: 'glove', type: 'manual', baseCost: 50, basePower: 1, icon: '🥊' },
+        { id: 'battery', type: 'auto', baseCost: 150, basePower: 2, icon: '🔋' },
+        { id: 'server', type: 'auto', baseCost: 1000, basePower: 10, icon: '🖥️' },
+        { id: 'ai', type: 'auto', baseCost: 5000, basePower: 50, icon: '🤖' },
+        { id: 'farm', type: 'auto', baseCost: 20000, basePower: 250, icon: '⛏️' },
+        { id: 'nuclear', type: 'auto', baseCost: 100000, basePower: 1000, icon: '⚛️' },
+        { id: 'alien', type: 'auto', baseCost: 1000000, basePower: 10000, icon: '👽' },
+        { id: 'dyson', type: 'auto', baseCost: 50000000, basePower: 500000, icon: '☀️' }
     ];
 
     const COST_MULTIPLIER = 1.25; // 1.15 -> 1.25 (난이도 대폭 상승)
 
     const MODES = {
-        infinite: { name: "무한 모드", desc: "제한 없이 계속 성장하세요. (자동 저장)", goal: "무제한" },
-        timeAttack: { name: "타임 어택", desc: "1억(100M) 에너지를 가장 빨리 모으세요!", target: 100000000, goal: "목표: 100M" },
-        timeLimit: { name: "제한 시간", desc: "3분 동안 최대한 많은 점수를 내세요!", limit: 180, goal: "제한: 3분" }
+        infinite: { target: null, limit: null },
+        timeAttack: { target: 100000000, limit: null },
+        timeLimit: { target: null, limit: 180 }
     };
+    
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.clicker.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            // If value is the key itself (not found), return defaultValue
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+    
+    // Helper function to get mode info
+    function getModeInfo(modeKey) {
+        if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
+            const modeData = I18n.t(`gameDetails.clicker.ui.modes.${modeKey}`, null);
+            if (modeData && typeof modeData === 'object' && modeData !== null && !Array.isArray(modeData) && modeData.name) {
+                return {
+                    name: modeData.name || '',
+                    desc: modeData.desc || '',
+                    goal: modeData.goal || '',
+                    ...MODES[modeKey]
+                };
+            }
+        }
+        // Fallback to default Korean text if translation not found
+        const defaults = {
+            infinite: { name: "무한 모드", desc: "저장 가능.<br>느긋하게 성장하세요.", goal: "무제한" },
+            timeAttack: { name: "타임 어택", desc: "1억 점 달성하기.<br>최단 기록 도전!", goal: "목표: 100M" },
+            timeLimit: { name: "제한 시간", desc: "3분 스코어링.<br>폭발적인 성장!", goal: "제한: 3분" }
+        };
+        const defaultMode = defaults[modeKey] || { name: '', desc: '', goal: '' };
+        return {
+            ...defaultMode,
+            ...MODES[modeKey]
+        };
+    }
+    
+    // Helper function to get upgrade info
+    function getUpgradeInfo(upgradeId) {
+        if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
+            const upgradeData = I18n.t(`gameDetails.clicker.ui.upgrades.${upgradeId}`, null);
+            if (upgradeData && typeof upgradeData === 'object' && upgradeData !== null && !Array.isArray(upgradeData) && upgradeData.name) {
+                return {
+                    name: upgradeData.name || '',
+                    desc: upgradeData.desc || ''
+                };
+            }
+        }
+        // Fallback to default Korean text if translation not found
+        const defaults = {
+            glove: { name: '파워 글러브', desc: '클릭 당 +1' },
+            battery: { name: 'AA 건전지', desc: '초당 +2' },
+            server: { name: '홈 서버', desc: '초당 +10' },
+            ai: { name: 'AI 봇', desc: '초당 +50' },
+            farm: { name: '채굴 공장', desc: '초당 +250' },
+            nuclear: { name: '핵융합로', desc: '초당 +1,000' },
+            alien: { name: '외계 기술', desc: '초당 +10,000' },
+            dyson: { name: '다이슨 스피어', desc: '초당 +500,000' }
+        };
+        return defaults[upgradeId] || { name: '', desc: '' };
+    }
 
     const Game = {
         container: null,
@@ -68,30 +133,49 @@
             this.container = container;
             Sound.init();
             this.renderModeSelect();
+            
+            // Listen for language changes
+            if (typeof window !== 'undefined') {
+                document.addEventListener('i18n:loaded', () => {
+                    console.log('i18n:loaded event received in clicker game');
+                    if (this.mode) {
+                        this.renderGameLayout();
+                        this.updateUI();
+                        this.updateShop();
+                    } else {
+                        this.renderModeSelect();
+                    }
+                });
+            }
         },
 
         // --- MODE SELECTION ---
         renderModeSelect: function() {
+            const title = getUIText('title', 'NEON CORE: OVERLOAD');
+            const infiniteMode = getModeInfo('infinite');
+            const timeAttackMode = getModeInfo('timeAttack');
+            const timeLimitMode = getModeInfo('timeLimit');
+            
             this.container.innerHTML = `
                 <div class="clk-wrapper">
                     <div class="game-frame">
                         <div class="mode-select-screen">
-                            <h1 class="mode-title">NEON CORE: OVERLOAD</h1>
+                            <h1 class="mode-title">${title}</h1>
                             <div class="mode-grid">
                                 <div class="mode-card" onclick="Game.startGame('infinite')">
                                     <span class="mode-icon">♾️</span>
-                                    <div class="mode-name">무한 모드</div>
-                                    <div class="mode-desc">저장 가능.<br>느긋하게 성장하세요.</div>
+                                    <div class="mode-name">${infiniteMode.name}</div>
+                                    <div class="mode-desc">${infiniteMode.desc}</div>
                                 </div>
                                 <div class="mode-card" onclick="Game.startGame('timeAttack')">
                                     <span class="mode-icon">⏱️</span>
-                                    <div class="mode-name">타임 어택</div>
-                                    <div class="mode-desc">1억 점 달성하기.<br>최단 기록 도전!</div>
+                                    <div class="mode-name">${timeAttackMode.name}</div>
+                                    <div class="mode-desc">${timeAttackMode.desc}</div>
                                 </div>
                                 <div class="mode-card" onclick="Game.startGame('timeLimit')">
                                     <span class="mode-icon">⏳</span>
-                                    <div class="mode-name">제한 시간</div>
-                                    <div class="mode-desc">3분 스코어링.<br>폭발적인 성장!</div>
+                                    <div class="mode-name">${timeLimitMode.name}</div>
+                                    <div class="mode-desc">${timeLimitMode.desc}</div>
                                 </div>
                             </div>
                         </div>
@@ -127,7 +211,11 @@
         },
 
         renderGameLayout: function() {
-            const modeInfo = MODES[this.mode];
+            const modeInfo = getModeInfo(this.mode);
+            const upgradeText = getUIText('upgrade', 'UPGRADE');
+            const gameOverText = getUIText('gameOver', 'GAME OVER');
+            const mainMenuText = getUIText('mainMenu', 'MAIN MENU');
+            
             this.container.innerHTML = `
                 <div class="clk-wrapper">
                     <div class="game-frame">
@@ -135,7 +223,7 @@
                             <div class="clk-header">
                                 <div class="mode-target" id="mode-target">${modeInfo.goal}</div>
                                 <div class="clk-score" id="score-display">0</div>
-                                <div class="clk-gps" id="gps-display">0 / sec</div>
+                                <div class="clk-gps" id="gps-display">0 ${getUIText('perSec', '/ sec')}</div>
                             </div>
                             
                             <div class="core-btn" id="core-btn"></div>
@@ -144,7 +232,7 @@
 
                         <div class="clk-shop">
                             <div class="shop-header">
-                                <h3 class="shop-title">UPGRADE</h3>
+                                <h3 class="shop-title">${upgradeText}</h3>
                                 <div>
                                     <button class="btn-util" id="btn-sound">🔊</button>
                                     <button class="btn-util" onclick="Game.init(Game.container)">🏠</button>
@@ -154,9 +242,9 @@
                         </div>
 
                         <div class="game-modal" id="result-modal">
-                            <h2 class="end-title" id="end-title">GAME OVER</h2>
+                            <h2 class="end-title" id="end-title">${gameOverText}</h2>
                             <p class="end-desc" id="end-desc">Result here</p>
-                            <button class="btn-restart" onclick="Game.init(Game.container)">MAIN MENU</button>
+                            <button class="btn-restart" onclick="Game.init(Game.container)">${mainMenuText}</button>
                         </div>
                     </div>
                 </div>
@@ -180,19 +268,21 @@
             };
 
             this.renderShop();
+            this.updateModeUI(); // Update mode-specific UI
         },
 
         renderShop: function() {
             this.el.shop.innerHTML = '';
             UPGRADES.forEach(item => {
+                const upgradeInfo = getUpgradeInfo(item.id);
                 const div = document.createElement('div');
                 div.className = 'upgrade-item';
                 div.id = `item-${item.id}`;
                 div.innerHTML = `
                     <div class="item-icon">${item.icon}</div>
                     <div class="item-info">
-                        <span class="item-name">${item.name}</span>
-                        <span class="item-effect">${item.desc}</span>
+                        <span class="item-name">${upgradeInfo.name}</span>
+                        <span class="item-effect">${upgradeInfo.desc}</span>
                         <span class="item-cost">⚡ 0</span>
                     </div>
                     <div class="item-count" id="count-${item.id}">0</div>
@@ -264,25 +354,35 @@
         updateModeUI: function() {
             // 점수 업데이트
             this.el.score.innerText = this.formatNumber(Math.floor(this.state.score));
-            this.el.gps.innerText = `⚡ ${this.formatNumber(this.state.autoPower)} / SEC`;
+            const perSec = getUIText('perSec', '/ sec');
+            this.el.gps.innerText = `⚡ ${this.formatNumber(this.state.autoPower)} ${perSec.toUpperCase()}`;
 
             // 모드별 상단 텍스트 업데이트
+            const modeInfo = getModeInfo(this.mode);
             if (this.mode === 'timeLimit') {
                 const left = Math.max(0, MODES.timeLimit.limit - this.state.elapsedTime);
-                this.el.target.innerText = `남은 시간: ${left.toFixed(1)}초`;
+                const timeLeft = getUIText('timeLeft', '남은 시간');
+                this.el.target.innerText = `${timeLeft}: ${left.toFixed(1)}초`;
             } else if (this.mode === 'timeAttack') {
-                this.el.target.innerText = `경과 시간: ${this.state.elapsedTime.toFixed(1)}초`;
+                const timeElapsed = getUIText('timeElapsed', '경과 시간');
+                this.el.target.innerText = `${timeElapsed}: ${this.state.elapsedTime.toFixed(1)}초`;
+            } else {
+                this.el.target.innerText = modeInfo.goal;
             }
         },
 
         checkWinCondition: function() {
             if (this.mode === 'timeLimit') {
                 if (this.state.elapsedTime >= MODES.timeLimit.limit) {
-                    this.gameOver("TIME OVER", `최종 점수: ${this.formatNumber(Math.floor(this.state.score))}`);
+                    const timeOver = getUIText('timeOver', 'TIME OVER');
+                    const finalScore = getUIText('finalScore', '최종 점수');
+                    this.gameOver(timeOver, `${finalScore}: ${this.formatNumber(Math.floor(this.state.score))}`);
                 }
             } else if (this.mode === 'timeAttack') {
                 if (this.state.score >= MODES.timeAttack.target) {
-                    this.gameOver("MISSION CLEAR", `기록: ${this.state.elapsedTime.toFixed(2)}초`);
+                    const missionClear = getUIText('missionClear', 'MISSION CLEAR');
+                    const record = getUIText('record', '기록');
+                    this.gameOver(missionClear, `${record}: ${this.state.elapsedTime.toFixed(2)}초`);
                 }
             }
         },

@@ -1,6 +1,19 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.code-rabbit.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
     // ================= LEVEL DATA =================
     // grid: 0:땅, 1:벽, 2:시작, 3:당근, 4:물
     // timeLimit: 제한 시간(초)
@@ -123,6 +136,11 @@
             Sound.init();
             this.renderLayout();
             this.loadLevel(0);
+            
+            // Listen for language changes
+            document.addEventListener('i18n:loaded', () => {
+                this.updateQueueUI();
+            });
         },
 
         renderLayout: function() {
@@ -335,7 +353,7 @@
         updateQueueUI: function() {
             this.el.queue.innerHTML = '';
             if (this.state.commands.length === 0) {
-                this.el.queue.innerHTML = '<span style="color:#aaa; font-size:0.9rem;">명령어를 넣어주세요</span>';
+                this.el.queue.innerHTML = `<span style="color:#aaa; font-size:0.9rem;">${getUIText('emptyQueue', '명령어를 넣어주세요')}</span>`;
                 return;
             }
             
@@ -497,7 +515,7 @@
             if (nextIdx < LEVELS.length) {
                 this.loadLevel(nextIdx);
             } else {
-                alert("대단해요! 코드 래빗 마스터! 🐰🥕🎓");
+                alert(getUIText('allLevelsComplete', '대단해요! 코드 래빗 마스터! 🐰🥕🎓'));
                 this.loadLevel(0);
             }
         }

@@ -1,6 +1,19 @@
 (function() {
   'use strict';
 
+  // Helper function to get translated text
+  function getUIText(key, defaultValue) {
+      if (typeof I18n !== 'undefined' && I18n.t) {
+          const fullKey = `gameDetails.math-quiz.ui.${key}`;
+          const value = I18n.t(fullKey, defaultValue);
+          if (value === fullKey || value === defaultValue) {
+              return defaultValue;
+          }
+          return value;
+      }
+      return defaultValue;
+  }
+
   // ================= SOUND ENGINE =================
   const Sound = {
       ctx: null,
@@ -42,6 +55,7 @@
           currentQ: null
       },
       timerId: null,
+      currentModalType: 'start',
 
       init: function(container) {
           this.container = container;
@@ -108,6 +122,14 @@
               this.ui.btnSound.innerText = Sound.isMuted ? "🔇" : "🔊";
               this.ui.btnSound.blur();
           };
+          
+          // Listen for language changes
+          document.addEventListener('i18n:loaded', () => {
+              if (this.ui && this.ui.modal) {
+                  this.showModal(this.currentModalType || 'start');
+                  this.updateUI();
+              }
+          });
       },
 
       startGame: function() {
@@ -248,7 +270,8 @@
           this.ui.score.innerText = this.state.score;
           
           if(this.state.combo > 1) {
-              this.ui.combo.innerText = `${this.state.combo} COMBO!`;
+              const comboText = getUIText('combo', 'COMBO');
+              this.ui.combo.innerText = `${this.state.combo} ${comboText}!`;
               this.ui.combo.classList.add('active');
           } else {
               this.ui.combo.classList.remove('active');
@@ -305,14 +328,17 @@
 
       showModal: function(type) {
           this.ui.modal.classList.add('active');
+          this.currentModalType = type;
           if(type === 'start') {
-              this.ui.mTitle.innerText = "MATH MASTER";
-              this.ui.mDesc.innerText = "제한 시간 60초! 4가지 연산을 마스터하세요.";
-              this.ui.mBtn.innerText = "START";
+              this.ui.mTitle.innerText = getUIText('modal.start.title', 'MATH MASTER');
+              this.ui.mDesc.innerText = getUIText('modal.start.desc', '제한 시간 60초! 4가지 연산을 마스터하세요.');
+              this.ui.mBtn.innerText = getUIText('modal.start.button', 'START');
           } else {
-              this.ui.mTitle.innerText = "GAME OVER";
-              this.ui.mDesc.innerHTML = `최종 점수: <strong style="color:#f1c40f">${this.state.score}</strong><br>도달 레벨: ${this.state.level}`;
-              this.ui.mBtn.innerText = "RETRY";
+              const finalScoreText = getUIText('modal.end.finalScore', '최종 점수');
+              const reachedLevelText = getUIText('modal.end.reachedLevel', '도달 레벨');
+              this.ui.mTitle.innerText = getUIText('modal.end.title', 'GAME OVER');
+              this.ui.mDesc.innerHTML = `${finalScoreText}: <strong style="color:#f1c40f">${this.state.score}</strong><br>${reachedLevelText}: ${this.state.level}`;
+              this.ui.mBtn.innerText = getUIText('modal.end.button', 'RETRY');
           }
       },
       

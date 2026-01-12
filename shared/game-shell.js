@@ -168,7 +168,18 @@ const GameShell = {
   setupUI(manifest) {
     const title = document.getElementById('game-title');
     if (title) {
-      title.textContent = manifest.title || '게임';
+      // Use I18n to get translated title
+      if (typeof I18n !== 'undefined') {
+        title.textContent = I18n.getGameTitle(this.gameId, manifest);
+      } else {
+        // Fallback to manifest title
+        const lang = document.documentElement.lang || 'ko';
+        if (lang === 'en' && manifest.titleEn) {
+          title.textContent = manifest.titleEn;
+        } else {
+          title.textContent = manifest.title || '게임';
+        }
+      }
     }
     
     // 오목 게임은 점수/레벨 표시를 사용하지 않음

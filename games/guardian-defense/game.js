@@ -1,6 +1,19 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.guardian-defense.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
     // ================= CONFIG =================
     const GAME_W = 800;
     const GAME_H = 450;
@@ -74,6 +87,11 @@
             
             this.canvas.width = GAME_W;
             this.canvas.height = GAME_H;
+            
+            // Listen for language changes
+            document.addEventListener('i18n:loaded', () => {
+                this.updateUI();
+            });
             
             // Mouse Events
             const trackMouse = (e) => {
@@ -237,14 +255,14 @@
             this.state.spawnQueue = q;
             
             document.getElementById('btn-next').disabled = true;
-            document.getElementById('btn-next').innerText = "COMBAT...";
+            document.getElementById('btn-next').innerText = getUIText('combat', 'COMBAT...');
             this.updateUI();
         },
 
         endWave: function() {
             this.state.waveActive = false;
             document.getElementById('btn-next').disabled = false;
-            document.getElementById('btn-next').innerText = "NEXT WAVE";
+            document.getElementById('btn-next').innerText = getUIText('nextWave', 'NEXT WAVE');
             
             if (this.state.wave >= this.state.maxWave) {
                 alert("VICTORY!");

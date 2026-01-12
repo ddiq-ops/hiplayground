@@ -1,6 +1,19 @@
 (function() {
     'use strict';
 
+    // Helper function to get translated text
+    function getUIText(key, defaultValue) {
+        if (typeof I18n !== 'undefined' && I18n.t) {
+            const fullKey = `gameDetails.math-quiz-hard.ui.${key}`;
+            const value = I18n.t(fullKey, defaultValue);
+            if (value === fullKey || value === defaultValue) {
+                return defaultValue;
+            }
+            return value;
+        }
+        return defaultValue;
+    }
+
     // ================= SOUND ENGINE =================
     const Sound = {
         ctx: null,
@@ -48,6 +61,13 @@
             Sound.init();
             this.renderLayout();
             this.showModal('start');
+            
+            // Listen for language changes
+            document.addEventListener('i18n:loaded', () => {
+                if (this.currentModalType) {
+                    this.showModal(this.currentModalType);
+                }
+            });
         },
 
         renderLayout: function() {
@@ -319,14 +339,17 @@
 
         showModal: function(type) {
             this.ui.modal.classList.add('active');
+            this.currentModalType = type;
             if(type === 'start') {
-                this.ui.mTitle.innerText = "암산 천재";
-                this.ui.mDesc.innerText = "고학년 도전! 곱셈과 나눗셈 순서에 주의하세요.";
-                this.ui.mBtn.innerText = "도전 시작";
+                this.ui.mTitle.innerText = getUIText('modal.start.title', '암산 천재');
+                this.ui.mDesc.innerText = getUIText('modal.start.desc', '고학년 도전! 곱셈과 나눗셈 순서에 주의하세요.');
+                this.ui.mBtn.innerText = getUIText('modal.start.button', '도전 시작');
             } else {
-                this.ui.mTitle.innerText = "GAME OVER";
-                this.ui.mDesc.innerHTML = `최종 점수: <strong style="color:#3498db">${this.state.score}</strong><br>도달 레벨: ${this.state.level}`;
-                this.ui.mBtn.innerText = "다시 도전";
+                this.ui.mTitle.innerText = getUIText('modal.gameOver.title', 'GAME OVER');
+                const finalScoreText = getUIText('modal.gameOver.finalScore', '최종 점수');
+                const reachedLevelText = getUIText('modal.gameOver.reachedLevel', '도달 레벨');
+                this.ui.mDesc.innerHTML = `${finalScoreText}: <strong style="color:#3498db">${this.state.score}</strong><br>${reachedLevelText}: ${this.state.level}`;
+                this.ui.mBtn.innerText = getUIText('modal.gameOver.button', '다시 도전');
             }
         },
         reset: function() { this.showModal('start'); }

@@ -39,12 +39,25 @@
   <!-- Navigation -->
   <nav class="nav">
     <div class="container nav-container">
-      <a href="../index.html" class="nav-brand">🎮 하이 플레이그라운드</a>
-      <ul class="nav-links">
-        <li><a href="../index.html" class="nav-link">홈</a></li>
-        <li><a href="games.html" class="nav-link">게임</a></li>
-        <li><a href="about.html" class="nav-link">소개</a></li>
-      </ul>
+      <a href="../index.html" class="nav-brand" data-i18n="site.name">🎮 하이 플레이그라운드</a>
+      <div style="display: flex; align-items: center; gap: var(--spacing-lg);">
+        <ul class="nav-links">
+          <li><a href="../index.html" class="nav-link" data-i18n="nav.home">홈</a></li>
+          <li><a href="games.html" class="nav-link" data-i18n="nav.games">게임</a></li>
+          <li><a href="about.html" class="nav-link" data-i18n="nav.about">소개</a></li>
+        </ul>
+        <div class="lang-selector" id="lang-selector">
+          <button class="lang-selector-toggle" id="lang-selector-toggle">
+            <span class="lang-selector-icon">🌐</span>
+            <span id="lang-selector-current">한국어</span>
+          </button>
+          <div class="lang-selector-menu">
+            <button class="lang-selector-item" data-lang="ko">한국어</button>
+            <button class="lang-selector-item" data-lang="en">English</button>
+            <button class="lang-selector-item" data-lang="zh-HK">繁體中文(香港)</button>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -85,13 +98,14 @@
   <!-- Footer -->
   <footer style="background-color: var(--color-bg-card); padding: var(--spacing-xl) 0; margin-top: var(--spacing-2xl); text-align: center; color: var(--color-text-light);">
     <div class="container">
-      <p>&copy; 2024 하이 플레이그라운드. 모든 권리 보유.</p>
+      <p>&copy; 2024 <span data-i18n="site.name">하이 플레이그라운드</span>. <span data-i18n="common.copyright">모든 권리 보유</span>.</p>
     </div>
   </footer>
 
   <!-- JavaScript -->
   <script src="../assets/js/storage.js"></script>
   <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/language-selector.js"></script>
   <script src="../assets/js/analytics.js"></script>
   <script src="../assets/js/router.js"></script>
   <script src="../assets/js/app.js"></script>

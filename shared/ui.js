@@ -75,12 +75,23 @@ const UI = {
     
     const isFavorite = Storage.isFavorite(game.id);
     
+    // Use I18n to get translated title and description
+    let gameTitle = game.title;
+    let gameDescription = game.description;
+    let playButtonText = '플레이';
+    
+    if (typeof I18n !== 'undefined') {
+      gameTitle = I18n.getGameTitle(game.id, null, game);
+      gameDescription = I18n.getGameDescription(game.id, null, game);
+      playButtonText = I18n.t('games.play', '플레이');
+    }
+    
     card.innerHTML = `
       ${isFavorite ? '<div class="game-card-badge">⭐</div>' : ''}
       ${this.renderIcon(game.icon)}
-      <div class="game-card-title">${game.title}</div>
-      <div class="game-card-description">${game.description}</div>
-      <button class="btn btn-primary">플레이</button>
+      <div class="game-card-title">${gameTitle}</div>
+      <div class="game-card-description">${gameDescription}</div>
+      <button class="btn btn-primary">${playButtonText}</button>
     `;
     
     return card;
