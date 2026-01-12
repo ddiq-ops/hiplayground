@@ -143,6 +143,19 @@
             const saved = localStorage.getItem('jl_highscore');
             this.state.bestScore = saved ? parseInt(saved) : 0;
             document.getElementById('ui-best').innerText = this.state.bestScore;
+            
+            // Listen for language changes
+            document.addEventListener('i18n:loaded', () => {
+                this.renderLayout();
+                this.resize();
+                const savedScore = localStorage.getItem('jl_highscore');
+                this.state.bestScore = savedScore ? parseInt(savedScore) : 0;
+                document.getElementById('ui-best').innerText = this.state.bestScore;
+                if (this.state.screen === 'playing') {
+                    this.updateUI();
+                    this.setNextBall();
+                }
+            });
 
             // Input Handling
             const trackMouse = (e) => {
@@ -170,43 +183,41 @@
                 <div class="jl-wrapper">
                     <div class="jl-header">
                         <div class="jl-score-box">
-                            <span class="jl-label">BEST: <span id="ui-best">0</span></span>
+                            <span class="jl-label">${getUIText('labels.best', 'BEST')}: <span id="ui-best">0</span></span>
                             <span class="jl-val" id="ui-score">0</span>
                         </div>
                         <div class="jl-next-box">
-                            <span class="jl-label">NEXT</span>
+                            <span class="jl-label">${getUIText('labels.next', 'NEXT')}</span>
                             <div class="jl-next-ball" id="ui-next"></div>
                         </div>
                     </div>
                     <div class="jl-exp-container">
                         <div class="jl-exp-fill" id="ui-exp"></div>
-                        <span class="jl-level-badge" id="ui-level">LV.1</span>
+                        <span class="jl-level-badge" id="ui-level">${getUIText('labels.level', 'LV.')}1</span>
                     </div>
 
                     <div class="jl-game-area" id="game-area">
-                        <div class="jl-deadline" id="ui-deadline"><span>DEAD LINE</span></div>
+                        <div class="jl-deadline" id="ui-deadline"><span>${getUIText('labels.deadline', 'DEAD LINE')}</span></div>
                         <canvas id="game-canvas"></canvas>
                     </div>
 
                     <div class="jl-modal active" id="modal-start">
-                        <div class="jl-levelup-title">JELLY LEGEND</div>
+                        <div class="jl-levelup-title">${getUIText('modal.start.title', 'JELLY LEGEND')}</div>
                         <p style="color:#ddd; margin-bottom:20px; text-align:center;">
-                            화면을 터치해 젤리를 떨어뜨리세요.<br>
-                            같은 젤리끼리 합치면 더 커집니다!<br>
-                            레벨업하면 강력한 스킬을 얻을 수 있어요.
+                            ${getUIText('modal.start.desc', '화면을 터치해 젤리를 떨어뜨리세요.<br>같은 젤리끼리 합치면 더 커집니다!<br>레벨업하면 강력한 스킬을 얻을 수 있어요.')}
                         </p>
-                        <button class="jl-btn" onclick="Game.startGame()">PLAY</button>
+                        <button class="jl-btn" onclick="Game.startGame()">${getUIText('modal.start.button', 'PLAY')}</button>
                     </div>
 
                     <div class="jl-modal" id="modal-levelup">
-                        <div class="jl-levelup-title">LEVEL UP!</div>
+                        <div class="jl-levelup-title">${getUIText('modal.levelup.title', 'LEVEL UP!')}</div>
                         <div class="jl-cards-container" id="ui-cards"></div>
                     </div>
 
                     <div class="jl-modal" id="modal-gameover">
-                        <h1 style="color:#ff5252; font-size:3rem; margin-bottom:10px;">GAME OVER</h1>
-                        <p style="font-size:1.5rem; color:white;">SCORE: <span id="end-score">0</span></p>
-                        <button class="jl-btn" onclick="Game.startGame()">RETRY</button>
+                        <h1 style="color:#ff5252; font-size:3rem; margin-bottom:10px;">${getUIText('modal.gameover.title', 'GAME OVER')}</h1>
+                        <p style="font-size:1.5rem; color:white;">${getUIText('labels.score', 'SCORE')}: <span id="end-score">0</span></p>
+                        <button class="jl-btn" onclick="Game.startGame()">${getUIText('modal.gameover.button', 'RETRY')}</button>
                     </div>
                 </div>
             `;
@@ -443,7 +454,8 @@
 
         updateUI: function() {
             document.getElementById('ui-score').innerText = this.state.score;
-            document.getElementById('ui-level').innerText = `LV.${this.state.level}`;
+            const levelText = getUIText('labels.level', 'LV.');
+            document.getElementById('ui-level').innerText = `${levelText}${this.state.level}`;
             const pct = (this.state.xp / this.state.maxXp) * 100;
             document.getElementById('ui-exp').style.width = `${pct}%`;
             

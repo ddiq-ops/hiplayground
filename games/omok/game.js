@@ -89,6 +89,14 @@
           this.renderBoard(); 
           this.updateUI();
           this.setupEvents();
+          
+          // Listen for language changes
+          document.addEventListener('i18n:loaded', () => {
+              this.renderLayout();
+              this.renderBoard();
+              this.updateUI();
+              this.setupEvents();
+          });
       },
 
       resetRound: function(round) {
@@ -396,13 +404,22 @@
           if (winner === BLACK) { // 플레이어 승리
               Sound.playWin();
               if (this.state.round < this.state.maxRound) {
-                  this.showModal("기적입니다!", `라운드 ${this.state.round} 돌파!`, "다음 지옥으로", 'next');
+                  const title = getUIText('modal.miracle.title', '기적입니다!');
+                  const desc = getUIText('modal.miracle.desc', '라운드 {round} 돌파!').replace('{round}', this.state.round);
+                  const button = getUIText('modal.miracle.button', '다음 지옥으로');
+                  this.showModal(title, desc, button, 'next');
               } else {
-                  this.showModal("GODLIKE!", "인간의 승리입니다. 당신은 전설입니다.", "처음부터 다시", 'reset');
+                  const title = getUIText('modal.godlike.title', 'GODLIKE!');
+                  const desc = getUIText('modal.godlike.desc', '인간의 승리입니다. 당신은 전설입니다.');
+                  const button = getUIText('modal.godlike.button', '처음부터 다시');
+                  this.showModal(title, desc, button, 'reset');
               }
           } else { // 패배
               Sound.playLose();
-              this.showModal("YOU DIED", "AI의 벽은 높았습니다...", "재도전", 'retry');
+              const title = getUIText('modal.youDied.title', 'YOU DIED');
+              const desc = getUIText('modal.youDied.desc', 'AI의 벽은 높았습니다...');
+              const button = getUIText('modal.youDied.button', '재도전');
+              this.showModal(title, desc, button, 'retry');
           }
       },
 
@@ -421,15 +438,15 @@
                   <div class="game-frame">
                       <div class="omok-header">
                           <div class="omok-status-group">
-                              <div class="round-badge" id="ui-round">ROUND 1</div>
+                              <div class="round-badge" id="ui-round">${getUIText('roundText', 'ROUND 1 / 12 (HELL)').replace('{round}', this.state.round)}</div>
                               <div class="turn-info">
-                                  <div class="player-badge active" id="badge-black"><span class="stone-icon black"></span> YOU</div>
-                                  <div class="player-badge" id="badge-white"><span class="stone-icon white"></span> AI</div>
+                                  <div class="player-badge active" id="badge-black"><span class="stone-icon black"></span> ${getUIText('you', 'YOU')}</div>
+                                  <div class="player-badge" id="badge-white"><span class="stone-icon white"></span> ${getUIText('ai', 'AI')}</div>
                               </div>
                           </div>
                           <div class="btn-group">
-                              <button class="btn-util" id="btn-undo">무르기</button>
-                              <button class="btn-util" id="btn-reset">포기</button>
+                              <button class="btn-util" id="btn-undo">${getUIText('buttons.undo', '무르기')}</button>
+                              <button class="btn-util" id="btn-reset">${getUIText('buttons.forfeit', '포기')}</button>
                               <button class="btn-util" id="btn-sound">🔊</button>
                           </div>
                       </div>
@@ -442,7 +459,7 @@
                           <div class="modal-box">
                               <div class="modal-title" id="m-title"></div>
                               <div class="modal-desc" id="m-desc"></div>
-                              <button class="btn-action" id="m-btn">확인</button>
+                              <button class="btn-action" id="m-btn">${getUIText('buttons.confirm', '확인')}</button>
                           </div>
                       </div>
                   </div>
@@ -451,18 +468,25 @@
       },
 
       updateUI: function() {
-          document.getElementById('ui-round').innerText = `ROUND ${this.state.round} / 12 (HELL)`;
+          const roundText = getUIText('roundText', 'ROUND {round} / 12 (HELL)').replace('{round}', this.state.round);
+          document.getElementById('ui-round').innerText = roundText;
           const bBadge = document.getElementById('badge-black');
           const wBadge = document.getElementById('badge-white');
           if (this.state.currentPlayer === BLACK) {
               bBadge.classList.add('active'); wBadge.classList.remove('active');
-              if(this.state.isThinking) wBadge.innerText = getUIText('aiThinking', 'AI (연산중...)');
+              if(this.state.isThinking) {
+                  wBadge.innerText = getUIText('aiThinking', 'AI (연산중...)');
+              }
           } else {
               bBadge.classList.remove('active'); wBadge.classList.add('active');
-              wBadge.innerText = getUIText('aiThinking', 'AI (연산중...)');
+              if(this.state.isThinking) {
+                  wBadge.innerText = getUIText('aiThinking', 'AI (연산중...)');
+              }
           }
           if(!this.state.isThinking) {
+              const youText = getUIText('you', 'YOU');
               const aiText = getUIText('ai', 'AI');
+              document.getElementById('badge-black').innerHTML = `<span class="stone-icon black"></span> ${youText}`;
               document.getElementById('badge-white').innerHTML = `<span class="stone-icon white"></span> ${aiText}`;
           }
       },
@@ -541,53 +565,29 @@
           modal.classList.add('active');
       },
       setupEvents: function() {
-          document.getElementById('btn-undo').onclick = () => this.undoMove();
-          const resetConfirmText = getUIText('resetConfirm', '처음부터 다시 시작합니까?');
-          document.getElementById('btn-reset').onclick = () => { if(confirm(resetConfirmText)) this.resetRound(1); this.renderBoard(); this.updateUI(); };
-          const btnSound = document.getElementById('btn-sound');
-          btnSound.onclick = () => { Sound.isMuted = !Sound.isMuted; btnSound.innerText = Sound.isMuted ? "🔇" : "🔊"; btnSound.blur(); };
+          const btnUndo = document.getElementById('btn-undo');
+          if (btnUndo) btnUndo.onclick = () => this.undoMove();
           
-          // Listen for language changes
-          document.addEventListener('i18n:loaded', () => {
-              if (this.state && this.state.gameEnded) {
-                  // Re-show modal with updated text
-                  const modal = document.getElementById('modal-result');
-                  if (modal && modal.classList.contains('active')) {
-                      // Modal is already shown, update it
-                      const titleEl = document.getElementById('modal-title');
-                      const descEl = document.getElementById('modal-desc');
-                      const btnEl = document.getElementById('modal-btn');
-                      if (titleEl && descEl && btnEl) {
-                          // Re-trigger the modal display logic
-                          if (this.state.winner === 'b') {
-                              if (this.state.round < 10) {
-                                  const miracleText = getUIText('modal.miracle.title', '기적입니다!');
-                                  const roundText = getUIText('modal.miracle.desc', '라운드 {round} 돌파!').replace('{round}', this.state.round);
-                                  const nextHellText = getUIText('modal.miracle.button', '다음 지옥으로');
-                                  titleEl.innerText = miracleText;
-                                  descEl.innerText = roundText;
-                                  btnEl.innerText = nextHellText;
-                              } else {
-                                  const godlikeText = getUIText('modal.godlike.title', 'GODLIKE!');
-                                  const godlikeDesc = getUIText('modal.godlike.desc', '인간의 승리입니다. 당신은 전설입니다.');
-                                  const resetText = getUIText('modal.godlike.button', '처음부터 다시');
-                                  titleEl.innerText = godlikeText;
-                                  descEl.innerText = godlikeDesc;
-                                  btnEl.innerText = resetText;
-                              }
-                          } else {
-                              const youDiedText = getUIText('modal.youDied.title', 'YOU DIED');
-                              const youDiedDesc = getUIText('modal.youDied.desc', 'AI의 벽은 높았습니다...');
-                              const retryText = getUIText('modal.youDied.button', '재도전');
-                              titleEl.innerText = youDiedText;
-                              descEl.innerText = youDiedDesc;
-                              btnEl.innerText = retryText;
-                          }
-                      }
+          const btnReset = document.getElementById('btn-reset');
+          if (btnReset) {
+              btnReset.onclick = () => {
+                  const resetConfirmText = getUIText('resetConfirm', '처음부터 다시 시작합니까?');
+                  if(confirm(resetConfirmText)) {
+                      this.resetRound(1);
+                      this.renderBoard();
+                      this.updateUI();
                   }
-              }
-              this.updateUI();
-          });
+              };
+          }
+          
+          const btnSound = document.getElementById('btn-sound');
+          if (btnSound) {
+              btnSound.onclick = () => {
+                  Sound.isMuted = !Sound.isMuted;
+                  btnSound.innerText = Sound.isMuted ? "🔇" : "🔊";
+                  btnSound.blur();
+              };
+          }
       }
   };
 

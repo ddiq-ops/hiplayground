@@ -324,6 +324,60 @@
         "description": "Weapon Level Up is a strategy simulation game that can develop resource management and economic thinking. Through the process of upgrading weapons at the blacksmith and selling them at the shop, you can naturally learn the relationship between investment and profit. Through the game, you can develop the ability to calculate cost-effectiveness and thinking power to make optimal decisions, and experience the importance of resource management. Also, it simultaneously utilizes mathematical calculation abilities and logical reasoning abilities, helping comprehensive brain development. Economic concepts can be easily and enjoyably understood through games, making it a very useful learning tool for elementary school students' economic education and improvement of mathematical thinking."
       },
       "ui": {
+        "gameTitle": "Weapon Level Up",
+        "labels": {
+          "weaponLevel": "Weapon Level",
+          "gold": "Gold",
+          "successRate": "Success Rate",
+          "cost": "Cost",
+          "sellPrice": "Sell Price",
+          "stored": "Stored",
+          "none": "None",
+          "inventory": "Inventory"
+        },
+        "panels": {
+          "blacksmith": "🔨 Blacksmith",
+          "management": "📦 Management"
+        },
+        "buttons": {
+          "upgrade": "Upgrade",
+          "sell": "Sell",
+          "store": "Store",
+          "openShop": "Open Shop",
+          "buy": "Buy",
+          "closeShop": "Close"
+        },
+        "shop": {
+          "title": "Item Shop"
+        },
+        "info": {
+          "failReset": "Reset to Lv.1 on failure!",
+          "failUseStored": "Equip stored Lv.{level} on failure",
+          "potionActive": "Active: {name}",
+          "inventoryClick": "(Click to use)"
+        },
+        "potions": {
+          "potion1": {
+            "name": "Chance Potion (1.2x)",
+            "desc": "Increases success rate by 1.2x"
+          },
+          "potion2": {
+            "name": "Advanced Chance (1.5x)",
+            "desc": "Increases success rate by 1.5x"
+          },
+          "potion3": {
+            "name": "Shield (50%)",
+            "desc": "50% chance to keep weapon on failure"
+          },
+          "potion4": {
+            "name": "Steel Protection (80%)",
+            "desc": "80% chance to keep weapon on failure"
+          },
+          "potion5": {
+            "name": "Random Box",
+            "desc": "Gain 1 random potion when used"
+          }
+        },
         "messages": {
           "notEnoughGold": "Not enough gold!",
           "maxLevel": "Max level reached!",
@@ -333,7 +387,16 @@
           "upgradeFailedDestroyed": "Upgrade failed! Weapon destroyed.. (Lv.1)",
           "cannotSellLevel1": "Cannot sell level 1.",
           "cannotStoreLevel1": "Cannot store level 1.",
-          "alreadyStored": "Weapon already stored."
+          "alreadyStored": "Weapon already stored.",
+          "sellConfirm": "Sell current weapon (Lv.{level}) for {price} gold?",
+          "sellComplete": "Sale complete! +{price} G",
+          "storeConfirm": "Store current weapon (Lv.{level})? Current equipment will be Lv.1.",
+          "storeComplete": "Weapon stored! Safe and sound.",
+          "buyNotEnoughGold": "Not enough gold.",
+          "buyComplete": "{name} purchase complete!",
+          "potionAlreadyActive": "A potion is already active.",
+          "potionUsed": "{name} used! Will apply to next upgrade.",
+          "randomBoxResult": "🎁 Random box result: {name} obtained!"
         }
       }
     },
@@ -366,6 +429,13 @@
         "description": "Omok Master is a strategy game that digitally implements the traditional board game Omok. While the rules are simple, it's a game that requires deep strategy, making it very effective for improving strategic thinking and reading ability. Through the game, you can develop logical thinking that involves thinking before acting, and train prediction abilities and situation judgment by understanding and responding to your opponent's intentions. The ghost stone and last move marker features improve game readability, making it easy even for beginners to enjoy, and you can gradually improve your skills. It's a highly educational brain game that simultaneously improves strategic thinking and concentration."
       },
       "ui": {
+        "you": "YOU",
+        "roundText": "ROUND {round} / 12 (HELL)",
+        "buttons": {
+          "undo": "Undo",
+          "forfeit": "Forfeit",
+          "confirm": "Confirm"
+        },
         "modal": {
           "miracle": {
             "title": "MIRACLE!",
@@ -392,6 +462,15 @@
       "title": "Chess",
       "description": "Strategic chess game! Supports 1-player and 2-player modes.",
       "ui": {
+        "you": "YOU",
+        "roundText": "ROUND {round} / 12 (HELL)",
+        "buttons": {
+          "forfeit": "Forfeit",
+          "confirm": "Confirm"
+        },
+        "promotion": {
+          "title": "Promotion"
+        },
         "modal": {
           "victory": {
             "title": "VICTORY!",
@@ -697,7 +776,39 @@
         "description": "Code Rabbit is an educational game that allows you to learn coding logic easily and enjoyably through games. Through block-based programming, even elementary school students can learn basic coding concepts without burden. Through the game, you can improve sequential thinking, logical reasoning, and problem-solving abilities, and naturally develop algorithmic thinking. You can visually and intuitively understand basic programming principles such as command order, repetition, and conditions, making it very effective for laying the foundation for future actual programming language learning. It's a highly educational game that allows you to enjoyably develop Computational Thinking, an essential 21st-century skill."
       },
       "ui": {
+        "labels": {
+          "level": "LEVEL",
+          "time": "TIME",
+          "cmd": "CMD"
+        },
         "emptyQueue": "Add commands",
+        "buttons": {
+          "jump": "JUMP",
+          "clear": "Clear",
+          "run": "Run (RUN)",
+          "running": "...",
+          "nextLevel": "Next Level",
+          "retry": "Try Again"
+        },
+        "modal": {
+          "success": {
+            "title": "Success!",
+            "msg": "Carrot eaten deliciously!",
+            "msgAlt": "Carrot found!"
+          },
+          "fail": {
+            "title": "Failed :(",
+            "msg": "Fell into water or hit something."
+          },
+          "timeout": {
+            "title": "Time's Up!",
+            "msg": "Not enough time to think."
+          },
+          "notReached": {
+            "title": "Try Again?",
+            "msg": "Didn't reach the destination."
+          }
+        },
         "allLevelsComplete": "Awesome! Code Rabbit Master! 🐰🥕🎓"
       }
     },
@@ -784,6 +895,28 @@
         "description": "Jelly Legend is a physics engine-based jelly merging puzzle game, a unique game combining roguelike elements. Through the game, you can improve strategic thinking and spatial perception abilities, and develop quick judgment and timing sense. Through realistic jelly movement using a physics engine, scientific curiosity is stimulated, and mathematical thinking (the concept of multiples of 2) can be naturally learned through the process of merging jellies. Through the roguelike skill system, you can try different strategies each game, giving it high replay value, and it can improve challenge spirit and problem-solving abilities. It's a game that requires simple controls but deep strategy, a highly educational game that helps elementary school students' brain development and logical thinking improvement."
       },
       "ui": {
+        "gameTitle": "JELLY LEGEND",
+        "labels": {
+          "best": "BEST",
+          "next": "NEXT",
+          "deadline": "DEAD LINE",
+          "level": "LV.",
+          "score": "SCORE"
+        },
+        "modal": {
+          "start": {
+            "title": "JELLY LEGEND",
+            "desc": "Touch the screen to drop jellies.<br>Merge same jellies to make them bigger!<br>Level up to get powerful skills.",
+            "button": "PLAY"
+          },
+          "levelup": {
+            "title": "LEVEL UP!"
+          },
+          "gameover": {
+            "title": "GAME OVER",
+            "button": "RETRY"
+          }
+        },
         "skills": {
           "pop_small": { "title": "Clean", "desc": "Pops all smallest jellies (2)" },
           "gravity": { "title": "Zero Gravity", "desc": "Gravity weakens for 10 seconds, jellies float" },
@@ -856,6 +989,59 @@
         "description": "Guardian Defense is a strategy game combining tower defense and roguelike elements. Through the game, you can improve strategic thinking and resource management abilities, and develop situation judgment and planning skills. Understanding 6 diverse tower types and their characteristics and appropriately combining them improves logical thinking, and through the card draft system, you can try different strategies each game, giving it high replay value. Through the game, you can improve spatial perception and prediction abilities, and problem-solving abilities develop through the process of building optimal defense lines with limited resources. Especially as waves progress, difficulty increases, maintaining a continuous sense of challenge, and you can feel the achievement of completing 20 waves. It's a highly educational game that helps elementary school students' strategic thinking and planning abilities."
       },
       "ui": {
+        "gameTitle": "GUARDIAN DEFENSE",
+        "labels": {
+          "wave": "WAVE",
+          "level": "LV.",
+          "upgrade": "UPGRADE",
+          "sell": "SELL"
+        },
+        "buttons": {
+          "start": "START",
+          "gameStart": "GAME START",
+          "upgrade": "UPGRADE ({cost}G)",
+          "sell": "SELL ({cost}G)"
+        },
+        "modal": {
+          "start": {
+            "title": "GUARDIAN DEFENSE",
+            "desc": "Build Towers, Draft Cards, Survive!",
+            "button": "GAME START"
+          },
+          "draft": {
+            "title": "REINFORCEMENTS",
+            "desc": "Choose one reward"
+          },
+          "victory": {
+            "title": "VICTORY!",
+            "msg": "All waves cleared!"
+          },
+          "gameover": {
+            "title": "GAME OVER",
+            "msg": "All lives lost."
+          }
+        },
+        "towers": {
+          "archer": { "name": "Archer", "desc": "Basic tower\nGround+Air" },
+          "cannon": { "name": "Cannon", "desc": "Area attack\nGround only" },
+          "ballista": { "name": "Ballista", "desc": "Powerful shot\nAir only" },
+          "ice": { "name": "Ice", "desc": "Slow movement\nGround+Air" },
+          "thunder": { "name": "Thunder", "desc": "3-chain attack\nGround+Air" },
+          "sniper": { "name": "Sniper", "desc": "Long range snipe\nGround+Air" }
+        },
+        "cards": {
+          "t_archer": { "title": "Archer Tower x2", "desc": "Gain 2 Archer towers." },
+          "t_cannon": { "title": "Cannon Tower x1", "desc": "Gain 1 Cannon tower." },
+          "t_ballista": { "title": "Ballista x1", "desc": "Gain 1 Ballista tower." },
+          "t_ice": { "title": "Ice x1", "desc": "Gain 1 Ice tower." },
+          "t_thunder": { "title": "Thunder x1", "desc": "Gain 1 Thunder tower." },
+          "t_sniper": { "title": "Sniper x1", "desc": "Gain 1 Sniper tower." },
+          "b_dmg": { "title": "Damage Boost", "desc": "All towers +20% damage" },
+          "b_spd": { "title": "Speed Boost", "desc": "All towers +15% attack speed" },
+          "b_rng": { "title": "Range Boost", "desc": "All towers +20% range" },
+          "r_gold": { "title": "Supply: Gold", "desc": "Gain 150 gold." },
+          "r_life": { "title": "Wall Repair", "desc": "Restore 5 lives." }
+        },
         "combat": "COMBAT...",
         "nextWave": "NEXT WAVE"
       }
@@ -895,6 +1081,23 @@
         "description": "Emoji Survivor is a Vampire Survivors-style survivor action roguelike game. It features unique visuals composed of various enemies and weapons expressed as emojis, and you can enjoy intense action with simple controls. Through the game, you can improve reaction speed and situational judgment, and develop strategic thinking through weapon combinations and selection. The infinite survival system where difficulty increases over time maintains continuous challenge, and you can try different weapon combinations each game, giving it high replay value. The game helps with stress relief and concentration improvement, and you can develop quick decision-making and multitasking abilities. You can feel a sense of achievement in the process of defeating enemies and leveling up, and the goal of surviving as long as possible improves patience and concentration. It's an educational game that helps improve elementary school students' reaction speed training and strategic thinking."
       },
       "ui": {
+        "gameTitle": "EMOJI SURVIVOR",
+        "modal": {
+          "start": {
+            "title": "EMOJI SURVIVOR",
+            "desc": "Survive the endless horde!",
+            "button": "GAME START"
+          },
+          "levelup": {
+            "title": "LEVEL UP!",
+            "new": "NEW!",
+            "level": "LV "
+          },
+          "gameover": {
+            "title": "GAME OVER!",
+            "msg": "You survived for {time}"
+          }
+        },
         "weapons": {
           "magic": { "name": "Magic Missile", "desc": "Fires magic at nearest enemy" },
           "axe": { "name": "Rotating Axe", "desc": "Throws axe in air for area attack" },

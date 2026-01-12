@@ -36,13 +36,20 @@
       '🐲👑' 
   ]; 
 
-  const POTIONS = [
-      { id: 1, name: '확률 포션 (1.2배)', icon: '🧪', price: 1000, desc: '성공 확률 1.2배 증가' },
-      { id: 2, name: '고급 확률 (1.5배)', icon: '⚗️', price: 3000, desc: '성공 확률 1.5배 증가' },
-      { id: 3, name: '보호막 (50%)', icon: '🛡️', price: 10000, desc: '실패 시 50% 확률로 유지' },
-      { id: 4, name: '강철 보호 (80%)', icon: '🏰', price: 30000, desc: '실패 시 80% 확률로 유지' },
-      { id: 5, name: '랜덤 박스', icon: '🎁', price: 3000, desc: '사용 시 포션 1개 획득' }
-  ];
+  // Helper to get potion data with translations
+  function getPotions() {
+      return [
+          { id: 1, icon: '🧪', price: 1000 },
+          { id: 2, icon: '⚗️', price: 3000 },
+          { id: 3, icon: '🛡️', price: 10000 },
+          { id: 4, icon: '🏰', price: 30000 },
+          { id: 5, icon: '🎁', price: 3000 }
+      ].map((p, idx) => ({
+          ...p,
+          name: getUIText(`potions.potion${idx + 1}.name`, ['확률 포션 (1.2배)', '고급 확률 (1.5배)', '보호막 (50%)', '강철 보호 (80%)', '랜덤 박스'][idx]),
+          desc: getUIText(`potions.potion${idx + 1}.desc`, ['성공 확률 1.2배 증가', '성공 확률 1.5배 증가', '실패 시 50% 확률로 유지', '실패 시 80% 확률로 유지', '사용 시 포션 1개 획득'][idx])
+      }));
+  }
 
   // ================= GAME LOGIC =================
   const Game = {
@@ -65,7 +72,9 @@
           
           // Listen for language changes
           document.addEventListener('i18n:loaded', () => {
+              this.renderLayout();
               this.updateUI();
+              this.setupEvents();
           });
       },
 
@@ -148,23 +157,30 @@
           if(this.state.weaponLevel <= 1) return this.showMsg(getUIText('messages.cannotSellLevel1', '레벨 1은 판매할 수 없습니다.'), "error");
           
           const price = this.getSellPrice();
-          if(confirm(`현재 무기(Lv.${this.state.weaponLevel})를 ${price.toLocaleString()} 골드에 판매하시겠습니까?`)) {
+          const confirmMsg = getUIText('messages.sellConfirm', '현재 무기(Lv.{level})를 {price} 골드에 판매하시겠습니까?')
+              .replace('{level}', this.state.weaponLevel)
+              .replace('{price}', price.toLocaleString());
+          if(confirm(confirmMsg)) {
               this.state.gold += price;
               this.state.weaponLevel = 1;
-              this.showMsg(`판매 완료! +${price.toLocaleString()} G`, "success");
+              const completeMsg = getUIText('messages.sellComplete', '판매 완료! +{price} G')
+                  .replace('{price}', price.toLocaleString());
+              this.showMsg(completeMsg, "success");
               this.saveProgress();
               this.updateUI();
           }
       },
 
       store: function() {
-          if(this.state.weaponLevel <= 1) return this.showMsg("레벨 1은 보관할 수 없습니다.", "error");
-          if(this.state.storedWeapon > 0) return this.showMsg("이미 보관된 무기가 있습니다.", "error");
+          if(this.state.weaponLevel <= 1) return this.showMsg(getUIText('messages.cannotStoreLevel1', '레벨 1은 보관할 수 없습니다.'), "error");
+          if(this.state.storedWeapon > 0) return this.showMsg(getUIText('messages.alreadyStored', '이미 보관된 무기가 있습니다.'), "error");
 
-          if(confirm(`현재 무기(Lv.${this.state.weaponLevel})를 보관하시겠습니까? 현재 장비는 Lv.1이 됩니다.`)) {
+          const confirmMsg = getUIText('messages.storeConfirm', '현재 무기(Lv.{level})를 보관하시겠습니까? 현재 장비는 Lv.1이 됩니다.')
+              .replace('{level}', this.state.weaponLevel);
+          if(confirm(confirmMsg)) {
               this.state.storedWeapon = this.state.weaponLevel;
               this.state.weaponLevel = 1;
-              this.showMsg("무기 보관 완료! 든든하군요.", "success");
+              this.showMsg(getUIText('messages.storeComplete', '무기 보관 완료! 든든하군요.'), "success");
               this.saveProgress();
               this.updateUI();
           }
@@ -172,13 +188,18 @@
 
       // --- SHOP & INVENTORY ---
       buyPotion: function(idx) {
-          const item = POTIONS[idx];
-          if(this.state.gold < item.price) return alert("골드가 부족합니다.");
+          const potions = getPotions();
+          const item = potions[idx];
+          if(this.state.gold < item.price) {
+              return alert(getUIText('messages.buyNotEnoughGold', '골드가 부족합니다.'));
+          }
 
           this.state.gold -= item.price;
           this.state.inventory[idx]++; // [수정] 랜덤박스도 일단 인벤토리에 들어감
           
-          this.showMsg(`${item.name} 구매 완료!`, "success");
+          const completeMsg = getUIText('messages.buyComplete', '{name} 구매 완료!')
+              .replace('{name}', item.name);
+          this.showMsg(completeMsg, "success");
           this.saveProgress();
           this.updateUI();
           this.renderShop(); 
@@ -186,6 +207,8 @@
 
       usePotion: function(idx) {
           if(this.state.inventory[idx] <= 0) return;
+
+          const potions = getPotions();
 
           // [수정] 랜덤박스(idx 4) 사용 시 로직
           if(idx === 4) {
@@ -200,7 +223,9 @@
               else rewardIdx = 3;
 
               this.state.inventory[rewardIdx]++; // [핵심] 해당 아이템 개수 증가
-              this.showMsg(`🎁 랜덤박스 결과: ${POTIONS[rewardIdx].name} 획득!`, "success");
+              const resultMsg = getUIText('messages.randomBoxResult', '🎁 랜덤박스 결과: {name} 획득!')
+                  .replace('{name}', potions[rewardIdx].name);
+              this.showMsg(resultMsg, "success");
               
               this.saveProgress();
               this.updateUI();
@@ -208,11 +233,15 @@
           }
 
           // 일반 포션 로직
-          if(this.state.activePotion !== null) return this.showMsg("이미 사용 중인 포션이 있습니다.", "warning");
+          if(this.state.activePotion !== null) {
+              return this.showMsg(getUIText('messages.potionAlreadyActive', '이미 사용 중인 포션이 있습니다.'), "warning");
+          }
 
           this.state.inventory[idx]--;
           this.state.activePotion = idx;
-          this.showMsg(`${POTIONS[idx].name} 사용됨! 다음 강화에 적용됩니다.`, "info");
+          const usedMsg = getUIText('messages.potionUsed', '{name} 사용됨! 다음 강화에 적용됩니다.')
+              .replace('{name}', potions[idx].name);
+          this.showMsg(usedMsg, "info");
           
           this.saveProgress();
           this.updateUI();
@@ -224,23 +253,23 @@
               <div class="wl-wrapper">
                   <div class="game-frame">
                       <div class="wl-header">
-                          <h2 class="wl-title">내 무기만 레벨업</h2>
+                          <h2 class="wl-title">${getUIText('gameTitle', '내 무기만 레벨업')}</h2>
                           <div class="wl-stats">
-                              <div class="wl-stat-card"><span class="stat-label">무기 레벨</span><span class="stat-value" id="val-lv">1</span></div>
-                              <div class="wl-stat-card"><span class="stat-label">보유 골드</span><span class="stat-value" id="val-gold">0</span></div>
-                              <div class="wl-stat-card"><span class="stat-label">성공 확률</span><span class="stat-value" id="val-rate">99%</span></div>
+                              <div class="wl-stat-card"><span class="stat-label">${getUIText('labels.weaponLevel', '무기 레벨')}</span><span class="stat-value" id="val-lv">1</span></div>
+                              <div class="wl-stat-card"><span class="stat-label">${getUIText('labels.gold', '보유 골드')}</span><span class="stat-value" id="val-gold">0</span></div>
+                              <div class="wl-stat-card"><span class="stat-label">${getUIText('labels.successRate', '성공 확률')}</span><span class="stat-value" id="val-rate">99%</span></div>
                           </div>
                       </div>
 
                       <div class="wl-body">
                           <div class="wl-panel">
-                              <div class="panel-title">🔨 대장간</div>
+                              <div class="panel-title">${getUIText('panels.blacksmith', '🔨 대장간')}</div>
                               <div class="info-box">
-                                  비용: <span class="highlight" id="cost-upgrade">0</span> G<br>
-                                  <span id="txt-fail-risk" class="risk">실패 시 Lv.1로 초기화!</span>
+                                  ${getUIText('labels.cost', '비용')}: <span class="highlight" id="cost-upgrade">0</span> G<br>
+                                  <span id="txt-fail-risk" class="risk">${getUIText('info.failReset', '실패 시 Lv.1로 초기화!')}</span>
                               </div>
                               <div id="potion-status" style="display:none; background:#2980b9; padding:10px; border-radius:8px; font-size:0.9rem;"></div>
-                              <button class="btn btn-upgrade" id="btn-upgrade">강화하기</button>
+                              <button class="btn btn-upgrade" id="btn-upgrade">${getUIText('buttons.upgrade', '강화하기')}</button>
                           </div>
 
                           <div class="wl-center">
@@ -252,14 +281,14 @@
                           </div>
 
                           <div class="wl-panel">
-                              <div class="panel-title">📦 관리</div>
+                              <div class="panel-title">${getUIText('panels.management', '📦 관리')}</div>
                               <div class="info-box">
-                                  판매가: <span class="highlight" id="cost-sell">0</span> G<br>
-                                  보관중: <span class="highlight" id="val-stored">없음</span>
+                                  ${getUIText('labels.sellPrice', '판매가')}: <span class="highlight" id="cost-sell">0</span> G<br>
+                                  ${getUIText('labels.stored', '보관중')}: <span class="highlight" id="val-stored">${getUIText('labels.none', '없음')}</span>
                               </div>
-                              <button class="btn btn-sell" id="btn-sell">판매하기</button>
-                              <button class="btn btn-secondary" id="btn-store" style="margin-top:10px">보관하기</button>
-                              <button class="btn btn-shop" id="btn-open-shop">상점 열기</button>
+                              <button class="btn btn-sell" id="btn-sell">${getUIText('buttons.sell', '판매하기')}</button>
+                              <button class="btn btn-secondary" id="btn-store" style="margin-top:10px">${getUIText('buttons.store', '보관하기')}</button>
+                              <button class="btn btn-shop" id="btn-open-shop">${getUIText('buttons.openShop', '상점 열기')}</button>
                           </div>
                       </div>
 
@@ -268,7 +297,7 @@
                       <div class="modal-overlay" id="shop-modal">
                           <div class="modal-box">
                               <div class="modal-header">
-                                  <h3>아이템 상점</h3>
+                                  <h3>${getUIText('shop.title', '아이템 상점')}</h3>
                                   <button class="modal-close" id="btn-close-shop">×</button>
                               </div>
                               <div class="modal-body">
@@ -297,27 +326,33 @@
           document.getElementById('cost-sell').innerText = this.getSellPrice().toLocaleString();
           
           // Stored
-          const storedText = this.state.storedWeapon > 0 ? `Lv.${this.state.storedWeapon}` : "없음";
+          const storedText = this.state.storedWeapon > 0 ? `Lv.${this.state.storedWeapon}` : getUIText('labels.none', '없음');
           document.getElementById('val-stored').innerText = storedText;
-          document.getElementById('txt-fail-risk').innerText = this.state.storedWeapon > 0 
-              ? `실패 시 보관된 Lv.${this.state.storedWeapon} 장착` 
-              : "실패 시 Lv.1로 초기화!";
+          const failRiskText = this.state.storedWeapon > 0 
+              ? getUIText('info.failUseStored', '실패 시 보관된 Lv.{level} 장착').replace('{level}', this.state.storedWeapon)
+              : getUIText('info.failReset', '실패 시 Lv.1로 초기화!');
+          document.getElementById('txt-fail-risk').innerText = failRiskText;
 
           // Potion Status
           const pStatus = document.getElementById('potion-status');
           if(this.state.activePotion !== null) {
+              const potions = getPotions();
               pStatus.style.display = 'block';
-              pStatus.innerText = `적용 중: ${POTIONS[this.state.activePotion].name}`;
+              const activeText = getUIText('info.potionActive', '적용 중: {name}')
+                  .replace('{name}', potions[this.state.activePotion].name);
+              pStatus.innerText = activeText;
           } else {
               pStatus.style.display = 'none';
           }
 
           // Inventory Bar (전체 포션 표시)
           const invBar = document.getElementById('inventory-bar');
-          let invHtml = '<span class="inv-title">가방:</span>';
-          POTIONS.forEach((p, idx) => {
+          const potions = getPotions();
+          let invHtml = `<span class="inv-title">${getUIText('labels.inventory', '가방')}:</span>`;
+          potions.forEach((p, idx) => {
+              const clickHint = getUIText('info.inventoryClick', '(클릭하여 사용)');
               invHtml += `
-                  <div class="inv-slot" onclick="Game.usePotion(${idx})" title="${p.name} (클릭하여 사용)">
+                  <div class="inv-slot" onclick="Game.usePotion(${idx})" title="${p.name} ${clickHint}">
                       ${p.icon}
                       <span class="inv-count">${this.state.inventory[idx]}</span>
                   </div>
@@ -329,7 +364,8 @@
       renderShop: function() {
           const grid = document.getElementById('shop-list');
           grid.innerHTML = '';
-          POTIONS.forEach((p, idx) => {
+          const potions = getPotions();
+          potions.forEach((p, idx) => {
               const canBuy = this.state.gold >= p.price;
               const div = document.createElement('div');
               div.className = 'shop-item';
@@ -338,7 +374,7 @@
                   <div class="shop-name">${p.name}</div>
                   <div class="shop-desc">${p.desc}</div>
                   <div class="shop-price">${p.price.toLocaleString()} G</div>
-                  <button class="btn btn-buy" ${canBuy ? '' : 'disabled'}>구매하기</button>
+                  <button class="btn btn-buy" ${canBuy ? '' : 'disabled'}>${getUIText('buttons.buy', '구매하기')}</button>
               `;
               div.querySelector('button').onclick = () => this.buyPotion(idx);
               grid.appendChild(div);

@@ -140,6 +140,14 @@
           this.renderBoard();
           this.updateUI();
           this.setupEvents();
+          
+          // Listen for language changes
+          document.addEventListener('i18n:loaded', () => {
+              this.renderLayout();
+              this.renderBoard();
+              this.updateUI();
+              this.setupEvents();
+          });
       },
 
       resetRound: function(round) {
@@ -511,24 +519,24 @@
                   <div class="game-frame">
                       <div class="chess-header">
                           <div class="chess-status-group">
-                              <div class="round-badge" id="ui-round">ROUND 1</div>
+                              <div class="round-badge" id="ui-round">${getUIText('roundText', 'ROUND 1 / 12 (HELL)').replace('{round}', this.state.round)}</div>
                               <div class="turn-info">
-                                  <div class="player-badge active" id="badge-w"><span class="king-icon">♔</span> YOU</div>
-                                  <div class="player-badge" id="badge-b"><span class="king-icon">♚</span> AI</div>
+                                  <div class="player-badge active" id="badge-w"><span class="king-icon">♔</span> ${getUIText('you', 'YOU')}</div>
+                                  <div class="player-badge" id="badge-b"><span class="king-icon">♚</span> ${getUIText('ai', 'AI')}</div>
                               </div>
                           </div>
                           <div class="btn-group">
-                              <button class="btn-util" id="btn-reset">포기</button>
+                              <button class="btn-util" id="btn-reset">${getUIText('buttons.forfeit', '포기')}</button>
                               <button class="btn-util" id="btn-sound">🔊</button>
                           </div>
                       </div>
                       <div class="chess-body">
                           <div class="chess-board" id="board"></div>
                           <div class="chess-modal" id="promo-modal">
-                              <div class="modal-box"><h3 class="modal-title">승급</h3><div class="promotion-select" id="promo-options"></div></div>
+                              <div class="modal-box"><h3 class="modal-title">${getUIText('promotion.title', '승급')}</h3><div class="promotion-select" id="promo-options"></div></div>
                           </div>
                           <div class="chess-modal" id="msg-modal">
-                              <div class="modal-box"><h3 class="modal-title" id="m-title"></h3><p class="modal-desc" id="m-desc"></p><button class="btn-action" id="m-btn">확인</button></div>
+                              <div class="modal-box"><h3 class="modal-title" id="m-title"></h3><p class="modal-desc" id="m-desc"></p><button class="btn-action" id="m-btn">${getUIText('buttons.confirm', '확인')}</button></div>
                           </div>
                       </div>
                   </div>
@@ -562,10 +570,22 @@
           }
       },
       updateUI: function() {
-          document.getElementById('ui-round').innerText = `ROUND ${this.state.round} / 12 (HELL)`;
+          const roundText = getUIText('roundText', 'ROUND {round} / 12 (HELL)').replace('{round}', this.state.round);
+          document.getElementById('ui-round').innerText = roundText;
           const w=document.getElementById('badge-w'), b=document.getElementById('badge-b');
-          if(this.state.turn==='w') { w.classList.add('active'); b.classList.remove('active'); b.innerText = "AI"; }
-          else { w.classList.remove('active'); b.classList.add('active'); b.innerText = "AI (연산중...)"; }
+          if(this.state.turn==='w') {
+              w.classList.add('active');
+              b.classList.remove('active');
+              const aiText = getUIText('ai', 'AI');
+              b.innerHTML = `<span class="king-icon">♚</span> ${aiText}`;
+          } else {
+              w.classList.remove('active');
+              b.classList.add('active');
+              const aiThinkingText = getUIText('aiThinking', 'AI (연산중...)');
+              b.innerHTML = `<span class="king-icon">♚</span> ${aiThinkingText}`;
+          }
+          const youText = getUIText('you', 'YOU');
+          w.innerHTML = `<span class="king-icon">♔</span> ${youText}`;
       },
       showPromotionModal: function(r, c) {
           const modal = document.getElementById('promo-modal');
@@ -617,56 +637,24 @@
           }
       },
       setupEvents: function() {
-          const resetConfirmText = getUIText('resetConfirm', '다시 시작합니까?');
-          document.getElementById('btn-reset').onclick = () => { if(confirm(resetConfirmText)) { this.resetRound(1); this.renderBoard(); this.updateUI(); } };
-          const btnSound = document.getElementById('btn-sound');
-          btnSound.onclick = () => { Sound.isMuted = !Sound.isMuted; btnSound.innerText = Sound.isMuted ? "🔇" : "🔊"; };
-          
-          // Listen for language changes
-          document.addEventListener('i18n:loaded', () => {
-              if (this.state && this.state.gameOver) {
-                  const modal = document.getElementById('msg-modal');
-                  if (modal && modal.classList.contains('active')) {
-                      const titleEl = document.getElementById('m-title');
-                      const descEl = document.getElementById('m-desc');
-                      const btnEl = document.getElementById('m-btn');
-                      if (titleEl && descEl && btnEl) {
-                          if (this.state.winner === 'w') {
-                              if(this.state.round<this.state.maxRound) {
-                                  const victoryText = getUIText('modal.victory.title', 'VICTORY!');
-                                  const roundClearText = getUIText('modal.victory.desc', '라운드 {round} 클리어!').replace('{round}', this.state.round);
-                                  const nextRoundText = getUIText('modal.victory.button', '다음 라운드');
-                                  titleEl.innerText = victoryText;
-                                  descEl.innerText = roundClearText;
-                                  btnEl.innerText = nextRoundText;
-                              } else {
-                                  const grandmasterText = getUIText('modal.grandmaster.title', 'GRANDMASTER!');
-                                  const grandmasterDesc = getUIText('modal.grandmaster.desc', '지옥을 정복했습니다.');
-                                  const resetText = getUIText('modal.grandmaster.button', '처음부터 다시');
-                                  titleEl.innerText = grandmasterText;
-                                  descEl.innerText = grandmasterDesc;
-                                  btnEl.innerText = resetText;
-                              }
-                          } else if (this.state.winner === 'draw') {
-                              const drawText = getUIText('modal.draw.title', 'DRAW');
-                              const stalemateText = getUIText('modal.draw.desc', '스테일메이트입니다.');
-                              const restartText = getUIText('modal.draw.button', '재시작');
-                              titleEl.innerText = drawText;
-                              descEl.innerText = stalemateText;
-                              btnEl.innerText = restartText;
-                          } else {
-                              const checkmateText = getUIText('modal.checkmate.title', 'CHECKMATE');
-                              const checkmateDesc = getUIText('modal.checkmate.desc', 'AI의 수읽기에 당했습니다.');
-                              const retryText = getUIText('modal.checkmate.button', '재도전');
-                              titleEl.innerText = checkmateText;
-                              descEl.innerText = checkmateDesc;
-                              btnEl.innerText = retryText;
-                          }
-                      }
+          const btnReset = document.getElementById('btn-reset');
+          if (btnReset) {
+              btnReset.onclick = () => {
+                  const resetConfirmText = getUIText('resetConfirm', '다시 시작합니까?');
+                  if(confirm(resetConfirmText)) {
+                      this.resetRound(1);
+                      this.renderBoard();
+                      this.updateUI();
                   }
-              }
-              this.updateUI();
-          });
+              };
+          }
+          const btnSound = document.getElementById('btn-sound');
+          if (btnSound) {
+              btnSound.onclick = () => {
+                  Sound.isMuted = !Sound.isMuted;
+                  btnSound.innerText = Sound.isMuted ? "🔇" : "🔊";
+              };
+          }
       }
   };
 

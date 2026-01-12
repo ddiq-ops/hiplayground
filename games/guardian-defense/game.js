@@ -21,7 +21,24 @@
     const COLS = 20; 
     const ROWS = 11.25;
 
-    // 타워 데이터
+    // Helper function to get tower info with translations
+    function getTowerInfo(type) {
+        const tower = {
+            archer:   { icon: '🏹', range: 140, damage: 15, rate: 40,  target: 'both',   color: '#4CAF50' },
+            cannon:   { icon: '💣', range: 130, damage: 40, rate: 100, target: 'ground', color: '#212121' },
+            ballista: { icon: '🦂', range: 250, damage: 80, rate: 90,  target: 'air',    color: '#795548' },
+            ice:      { icon: '❄️', range: 110, damage: 5,  rate: 50,  target: 'both',   color: '#03A9F4' },
+            thunder:  { icon: '⚡', range: 150, damage: 25, rate: 70,  target: 'both',   color: '#FFEB3B' },
+            sniper:   { icon: '🎯', range: 350, damage: 150,rate: 150, target: 'both',   color: '#607D8B' }
+        }[type] || {};
+        return {
+            ...tower,
+            name: getUIText(`towers.${type}.name`, ''),
+            desc: getUIText(`towers.${type}.desc`, '')
+        };
+    }
+
+    // 타워 데이터 (레거시 호환성을 위해 유지, 하지만 동적으로 번역 사용)
     const TOWERS = {
         archer:   { name: '아처', icon: '🏹', range: 140, damage: 15, rate: 40,  target: 'both',   color: '#4CAF50', desc: '기본 타워\n지상+공중' },
         cannon:   { name: '캐논', icon: '💣', range: 130, damage: 40, rate: 100, target: 'ground', color: '#212121', desc: '범위 공격\n지상 전용' },
@@ -40,7 +57,30 @@
         dragon:  { hp: 1500,speed: 0.6, fly: true,  reward: 200,color: '#D32F2F', r: 30 }
     };
 
-    // 카드 데이터
+    // Helper function to get card info with translations
+    function getCardInfo(cardId) {
+        const cardTemplates = [
+            { id: 't_archer', type:'tower', val:'archer', count:2, icon:'🏹' },
+            { id: 't_cannon', type:'tower', val:'cannon', count:1, icon:'💣' },
+            { id: 't_ballista',type:'tower',val:'ballista',count:1,icon:'🦂' },
+            { id: 't_ice',    type:'tower', val:'ice',    count:1, icon:'❄️' },
+            { id: 't_thunder',type:'tower', val:'thunder',count:1, icon:'⚡' },
+            { id: 't_sniper', type:'tower', val:'sniper', count:1, icon:'🎯' },
+            { id: 'b_dmg',    type:'buff',  val:'damage', rate:1.2, icon:'⚔️' },
+            { id: 'b_spd',    type:'buff',  val:'rate',   rate:0.85, icon:'⏩' },
+            { id: 'b_rng',    type:'buff',  val:'range',  rate:1.2, icon:'🔭' },
+            { id: 'r_gold',   type:'res',   val:'gold',   amount:150, icon:'💰' },
+            { id: 'r_life',   type:'res',   val:'life',   amount:5, icon:'❤️' }
+        ];
+        const template = cardTemplates.find(c => c.id === cardId) || {};
+        return {
+            ...template,
+            title: getUIText(`cards.${cardId}.title`, ''),
+            desc: getUIText(`cards.${cardId}.desc`, '')
+        };
+    }
+
+    // 카드 데이터 (레거시 호환성을 위해 유지, 하지만 동적으로 번역 사용)
     const CARDS = [
         { id: 't_archer', type:'tower', val:'archer', count:2, title:'아처 타워 x2', icon:'🏹', desc:'아처 타워 2개를 획득합니다.' },
         { id: 't_cannon', type:'tower', val:'cannon', count:1, title:'캐논 타워 x1', icon:'💣', desc:'캐논 타워 1개를 획득합니다.' },
@@ -88,36 +128,25 @@
             this.canvas.width = GAME_W;
             this.canvas.height = GAME_H;
             
+            this.setupCanvasEvents();
+            
             // Listen for language changes
             document.addEventListener('i18n:loaded', () => {
-                this.updateUI();
-            });
-            
-            // Mouse Events
-            const trackMouse = (e) => {
-                const rect = this.canvas.getBoundingClientRect();
-                const cx = e.touches ? e.touches[0].clientX : e.clientX;
-                const cy = e.touches ? e.touches[0].clientY : e.clientY;
-                
-                // 가로/세로 비율 각각 계산 (터치 좌표 보정)
-                const scaleX = this.canvas.width / rect.width;
-                const scaleY = this.canvas.height / rect.height;
-                
-                this.state.mouseX = (cx - rect.left) * scaleX;
-                this.state.mouseY = (cy - rect.top) * scaleY;
-            };
-
-            this.canvas.addEventListener('mousemove', trackMouse);
-            this.canvas.addEventListener('touchmove', trackMouse);
-
-            this.canvas.addEventListener('mousedown', e => { 
-                trackMouse(e); 
-                this.handleClick(); 
-            });
-            this.canvas.addEventListener('touchstart', e => { 
-                e.preventDefault(); 
-                trackMouse(e); 
-                this.handleClick(); 
+                this.renderLayout();
+                this.canvas = document.getElementById('game-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.canvas.width = GAME_W;
+                this.canvas.height = GAME_H;
+                this.setupCanvasEvents();
+                if (this.state.screen === 'playing' || this.state.screen === 'draft') {
+                    this.updateUI();
+                    if (this.state.selectedTower) {
+                        this.handleClick();
+                    }
+                    if (this.state.screen === 'draft') {
+                        this.showDraft();
+                    }
+                }
             });
             
             if(this.loopId) cancelAnimationFrame(this.loopId);
@@ -125,40 +154,41 @@
         },
 
         renderLayout: function() {
+            const waveText = getUIText('labels.wave', 'WAVE');
             this.container.innerHTML = `
                 <div class="gd-wrapper">
                     <div class="gd-screen">
                         <div class="gd-header">
                             <div class="gd-stat"><span class="gd-icon">❤️</span> <span id="ui-lives">20</span></div>
-                            <div class="gd-stat"><span class="gd-wave-badge" id="ui-wave">WAVE 1/20</span></div>
+                            <div class="gd-stat"><span class="gd-wave-badge" id="ui-wave">${waveText} 1/20</span></div>
                             <div class="gd-stat"><span class="gd-icon">💰</span> <span id="ui-gold">100</span></div>
                         </div>
                         
                         <div class="gd-game-area" id="game-area">
                             <canvas id="game-canvas"></canvas>
                             <div class="gd-upgrade-menu" id="ui-upgrade">
-                                <div id="up-info" style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">LV.1 Archer</div>
-                                <button class="gd-up-btn" id="btn-up" onclick="Game.upgradeTower()">UPGRADE (50G)</button>
-                                <button class="gd-up-btn sell" onclick="Game.sellTower()">SELL (30G)</button>
+                                <div id="up-info" style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${getUIText('labels.level', 'LV.')}1 Archer</div>
+                                <button class="gd-up-btn" id="btn-up" onclick="Game.upgradeTower()">${getUIText('buttons.upgrade', 'UPGRADE ({cost}G)').replace('{cost}', '50')}</button>
+                                <button class="gd-up-btn sell" onclick="Game.sellTower()">${getUIText('buttons.sell', 'SELL ({cost}G)').replace('{cost}', '30')}</button>
                             </div>
                         </div>
 
                         <div class="gd-controls" id="ui-controls">
                             <button class="gd-btn speed" id="btn-speed" onclick="Game.toggleSpeed()">x1</button>
                             ${this.renderSlots()}
-                            <button class="gd-btn" id="btn-next" onclick="Game.startWave()">START</button>
+                            <button class="gd-btn" id="btn-next" onclick="Game.startWave()">${getUIText('buttons.start', 'START')}</button>
                         </div>
 
                         <div class="gd-modal" id="modal-draft">
-                            <h2 style="color:#fff; font-size:2rem; margin-bottom:10px;">REINFORCEMENTS</h2>
-                            <p style="color:#aaa;">Choose one reward</p>
+                            <h2 style="color:#fff; font-size:2rem; margin-bottom:10px;">${getUIText('modal.draft.title', 'REINFORCEMENTS')}</h2>
+                            <p style="color:#aaa;">${getUIText('modal.draft.desc', 'Choose one reward')}</p>
                             <div class="gd-card-container" id="ui-cards"></div>
                         </div>
 
                         <div class="gd-modal active" id="modal-start">
-                            <h1 style="font-size:3rem; color:#4CAF50; margin-bottom:20px;">GUARDIAN DEFENSE</h1>
-                            <p style="color:#ddd; margin-bottom:30px;">Build Towers, Draft Cards, Survive!</p>
-                            <button class="gd-btn" style="padding:15px 40px;" onclick="Game.startGame()">GAME START</button>
+                            <h1 style="font-size:3rem; color:#4CAF50; margin-bottom:20px;">${getUIText('modal.start.title', 'GUARDIAN DEFENSE')}</h1>
+                            <p style="color:#ddd; margin-bottom:30px;">${getUIText('modal.start.desc', 'Build Towers, Draft Cards, Survive!')}</p>
+                            <button class="gd-btn" style="padding:15px 40px;" onclick="Game.startGame()">${getUIText('modal.start.button', 'GAME START')}</button>
                         </div>
                     </div>
                 </div>
@@ -265,7 +295,9 @@
             document.getElementById('btn-next').innerText = getUIText('nextWave', 'NEXT WAVE');
             
             if (this.state.wave >= this.state.maxWave) {
-                alert("VICTORY!");
+                const victoryTitle = getUIText('modal.victory.title', 'VICTORY!');
+                const victoryMsg = getUIText('modal.victory.msg', '모든 웨이브를 클리어했습니다!');
+                alert(`${victoryTitle}\n${victoryMsg}`);
                 location.reload();
             } else {
                 this.showDraft();
@@ -282,12 +314,13 @@
             for(let i=0; i<3; i++) choices.push(pool[Math.floor(Math.random() * pool.length)]);
 
             choices.forEach(card => {
+                const cardInfo = getCardInfo(card.id);
                 const div = document.createElement('div');
                 div.className = 'gd-card';
                 div.innerHTML = `
                     <div class="gd-card-icon">${card.icon}</div>
-                    <div class="gd-card-title">${card.title}</div>
-                    <div class="gd-card-desc">${card.desc}</div>
+                    <div class="gd-card-title">${cardInfo.title}</div>
+                    <div class="gd-card-desc">${cardInfo.desc}</div>
                 `;
                 div.onclick = () => this.pickCard(card);
                 container.appendChild(div);
@@ -346,8 +379,11 @@
                     menu.style.top = (screenY - 70) + 'px';
 
                     const upCost = Math.floor(50 * Math.pow(1.5, tower.level-1));
-                    document.getElementById('up-info').innerText = `LV.${tower.level} ${TOWERS[tower.type].name}`;
-                    document.getElementById('btn-up').innerText = `UPGRADE (${upCost}G)`;
+                    const levelText = getUIText('labels.level', 'LV.');
+                    const towerInfo = getTowerInfo(tower.type);
+                    document.getElementById('up-info').innerText = `${levelText}${tower.level} ${towerInfo.name}`;
+                    const upgradeText = getUIText('buttons.upgrade', 'UPGRADE ({cost}G)').replace('{cost}', upCost);
+                    document.getElementById('btn-up').innerText = upgradeText;
                 } else {
                     document.getElementById('ui-upgrade').style.display = 'none';
                     this.state.selectedTower = null;
@@ -394,6 +430,42 @@
             document.getElementById('ui-upgrade').style.display = 'none';
             this.state.selectedTower = null;
             this.updateUI();
+        },
+        
+        setupCanvasEvents: function() {
+            if (!this.canvas) return;
+            
+            // Mouse Events
+            const trackMouse = (e) => {
+                const rect = this.canvas.getBoundingClientRect();
+                const cx = e.touches ? e.touches[0].clientX : e.clientX;
+                const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                
+                // 가로/세로 비율 각각 계산 (터치 좌표 보정)
+                const scaleX = this.canvas.width / rect.width;
+                const scaleY = this.canvas.height / rect.height;
+                
+                this.state.mouseX = (cx - rect.left) * scaleX;
+                this.state.mouseY = (cy - rect.top) * scaleY;
+            };
+
+            this.canvas.removeEventListener('mousemove', trackMouse);
+            this.canvas.removeEventListener('touchmove', trackMouse);
+            this.canvas.removeEventListener('mousedown', () => {});
+            this.canvas.removeEventListener('touchstart', () => {});
+
+            this.canvas.addEventListener('mousemove', trackMouse);
+            this.canvas.addEventListener('touchmove', trackMouse);
+
+            this.canvas.addEventListener('mousedown', e => { 
+                trackMouse(e); 
+                this.handleClick(); 
+            });
+            this.canvas.addEventListener('touchstart', e => { 
+                e.preventDefault(); 
+                trackMouse(e); 
+                this.handleClick(); 
+            });
         },
 
         toggleSpeed: function() {
@@ -509,7 +581,9 @@
 
         gameOver: function() {
             this.state.screen = 'gameover';
-            alert("GAME OVER");
+            const gameoverTitle = getUIText('modal.gameover.title', 'GAME OVER');
+            const gameoverMsg = getUIText('modal.gameover.msg', '라이프가 모두 소진되었습니다.');
+            alert(`${gameoverTitle}\n${gameoverMsg}`);
             location.reload();
         },
 
@@ -614,7 +688,8 @@
 
         updateUI: function() {
             document.getElementById('ui-lives').innerText = this.state.lives;
-            document.getElementById('ui-wave').innerText = `WAVE ${this.state.wave}/20`;
+            const waveText = getUIText('labels.wave', 'WAVE');
+            document.getElementById('ui-wave').innerText = `${waveText} ${this.state.wave}/20`;
             document.getElementById('ui-gold').innerText = this.state.gold;
             for(let key in TOWERS) {
                 const el = document.getElementById(`cnt-${key}`);

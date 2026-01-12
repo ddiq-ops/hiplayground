@@ -139,6 +139,8 @@
             
             // Listen for language changes
             document.addEventListener('i18n:loaded', () => {
+                this.renderLayout();
+                this.loadLevel(this.state.levelIdx);
                 this.updateQueueUI();
             });
         },
@@ -148,7 +150,7 @@
                 <div class="cr-wrapper">
                     <div class="cr-status-bar">
                         <div class="cr-stat-item">
-                            <span class="cr-label">LEVEL</span>
+                            <span class="cr-label">${getUIText('labels.level', 'LEVEL')}</span>
                             <div class="cr-value-row">
                                 <span id="ui-level">1</span>
                             </div>
@@ -156,14 +158,14 @@
                         
                         <div class="cr-stat-group">
                             <div class="cr-stat-item">
-                                <span class="cr-label">TIME</span>
+                                <span class="cr-label">${getUIText('labels.time', 'TIME')}</span>
                                 <div class="cr-value-row" style="flex-direction:column; gap:0;">
                                     <span id="ui-time">20</span>
                                     <div class="cr-timer-bar-bg"><div id="ui-timer-bar" class="cr-timer-bar-fill"></div></div>
                                 </div>
                             </div>
                             <div class="cr-stat-item">
-                                <span class="cr-label">CMD</span>
+                                <span class="cr-label">${getUIText('labels.cmd', 'CMD')}</span>
                                 <div class="cr-value-row">
                                     <span id="ui-count">0/0</span>
                                 </div>
@@ -179,27 +181,27 @@
 
                     <div class="cr-controls">
                         <div class="cr-queue" id="cr-queue">
-                            <span style="color:#aaa; font-size:0.9rem;">명령어를 넣어주세요</span>
+                            <span style="color:#aaa; font-size:0.9rem;">${getUIText('emptyQueue', '명령어를 넣어주세요')}</span>
                         </div>
                         
                         <div class="cr-palette">
                             <button class="cr-btn cr-btn-left" data-cmd="left">↺</button>
                             <button class="cr-btn cr-btn-fwd" data-cmd="fwd">⬆️</button>
-                            <button class="cr-btn cr-btn-jump" data-cmd="jump">JUMP</button>
+                            <button class="cr-btn cr-btn-jump" data-cmd="jump">${getUIText('buttons.jump', 'JUMP')}</button>
                             <button class="cr-btn cr-btn-right" data-cmd="right">↻</button>
                         </div>
 
                         <div class="cr-actions">
-                            <button class="cr-action-btn cr-btn-clear" id="btn-clear">지우기</button>
-                            <button class="cr-action-btn cr-btn-run" id="btn-run">실행 (RUN)</button>
+                            <button class="cr-action-btn cr-btn-clear" id="btn-clear">${getUIText('buttons.clear', '지우기')}</button>
+                            <button class="cr-action-btn cr-btn-run" id="btn-run">${getUIText('buttons.run', '실행 (RUN)')}</button>
                         </div>
                     </div>
 
                     <div class="cr-modal" id="cr-modal">
                         <div class="cr-modal-content">
-                            <h2 id="modal-title">성공!</h2>
-                            <p id="modal-msg">당근을 찾았어요!</p>
-                            <button class="cr-action-btn cr-btn-run" id="modal-btn">다음 레벨</button>
+                            <h2 id="modal-title">${getUIText('modal.success.title', '성공!')}</h2>
+                            <p id="modal-msg">${getUIText('modal.success.msgAlt', '당근을 찾았어요!')}</p>
+                            <button class="cr-action-btn cr-btn-run" id="modal-btn">${getUIText('buttons.nextLevel', '다음 레벨')}</button>
                         </div>
                     </div>
                 </div>
@@ -264,7 +266,9 @@
                 if (this.state.timeLeft <= 0) {
                     clearInterval(this.state.timerId);
                     Sound.fail();
-                    this.showModal('시간 초과!', '생각할 시간이 부족했어요.', false);
+                    const timeoutTitle = getUIText('modal.timeout.title', '시간 초과!');
+                    const timeoutMsg = getUIText('modal.timeout.msg', '생각할 시간이 부족했어요.');
+                    this.showModal(timeoutTitle, timeoutMsg, false);
                 }
             }, 1000);
         },
@@ -396,7 +400,7 @@
             this.renderGrid();
 
             this.state.isRunning = true;
-            document.getElementById('btn-run').innerText = '...';
+            document.getElementById('btn-run').innerText = getUIText('buttons.running', '...');
             document.getElementById('btn-run').style.opacity = 0.7;
 
             for (let i = 0; i < this.state.commands.length; i++) {
@@ -413,13 +417,17 @@
                 if (result === 'win') {
                     if (this.state.timerId) clearInterval(this.state.timerId);
                     Sound.win();
-                    this.showModal('성공!', '당근을 맛있게 먹었어요!', true);
+                    const successTitle = getUIText('modal.success.title', '성공!');
+                    const successMsg = getUIText('modal.success.msg', '당근을 맛있게 먹었어요!');
+                    this.showModal(successTitle, successMsg, true);
                     this.state.isRunning = false;
                     this.resetBtn();
                     return;
                 } else if (result === 'fail') {
                     Sound.fail();
-                    this.showModal('실패 ㅠㅠ', '물에 빠지거나 부딪혔어요.', false);
+                    const failTitle = getUIText('modal.fail.title', '실패 ㅠㅠ');
+                    const failMsg = getUIText('modal.fail.msg', '물에 빠지거나 부딪혔어요.');
+                    this.showModal(failTitle, failMsg, false);
                     this.state.isRunning = false;
                     this.resetBtn();
                     return;
@@ -429,8 +437,10 @@
                 await new Promise(r => setTimeout(r, delay)); 
             }
             
-            if (this.state.isRunning) { 
-                this.showModal('다시 해볼까요?', '목적지에 도착하지 못했어요.', false);
+            if (this.state.isRunning) {
+                const notReachedTitle = getUIText('modal.notReached.title', '다시 해볼까요?');
+                const notReachedMsg = getUIText('modal.notReached.msg', '목적지에 도착하지 못했어요.');
+                this.showModal(notReachedTitle, notReachedMsg, false);
                 this.state.isRunning = false;
                 this.resetBtn();
             }
@@ -483,7 +493,7 @@
         },
 
         resetBtn: function() {
-            document.getElementById('btn-run').innerText = '실행 (RUN)';
+            document.getElementById('btn-run').innerText = getUIText('buttons.run', '실행 (RUN)');
             document.getElementById('btn-run').style.opacity = 1;
             document.querySelectorAll('.cr-cmd-block').forEach(b => b.classList.remove('active'));
         },
@@ -495,7 +505,7 @@
             document.getElementById('modal-msg').innerText = msg;
             
             const btn = document.getElementById('modal-btn');
-            btn.innerText = isWin ? '다음 레벨' : '다시 하기';
+            btn.innerText = isWin ? getUIText('buttons.nextLevel', '다음 레벨') : getUIText('buttons.retry', '다시 하기');
             btn.onclick = () => {
                 if (isWin) this.nextLevel();
                 else {

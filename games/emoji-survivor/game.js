@@ -75,8 +75,17 @@
             
             // 언어 변경 이벤트 리스너 추가
             document.addEventListener('i18n:loaded', () => {
+                this.renderLayout();
+                this.canvas = document.getElementById('game-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.resize();
+                this.setupInputs();
+                if (this.state.screen === 'playing') {
+                    document.getElementById('ui-hud').style.display = 'flex';
+                    if('ontouchstart' in window) document.getElementById('ui-joy').style.display = 'flex';
+                }
                 if (this.state.screen === 'levelup') {
-                    this.renderLevelup();
+                    this.showLevelUp();
                 }
             });
             
@@ -108,15 +117,15 @@
                     </div>
 
                     <div class="es-modal" id="modal-levelup">
-                        <div class="es-levelup-title">LEVEL UP!</div>
+                        <div class="es-levelup-title" id="modal-levelup-title">${getUIText('modal.levelup.title', 'LEVEL UP!')}</div>
                         <div class="es-cards" id="ui-cards"></div>
                     </div>
 
                     <div class="es-modal active" id="modal-start">
                         <h1 style="font-size:4rem; margin-bottom:10px;">🧙‍♂️</h1>
-                        <h1 style="font-size:3rem; color:#fff; margin-bottom:20px;">EMOJI SURVIVOR</h1>
-                        <p style="color:#aaa; margin-bottom:30px;">Survive the endless horde!</p>
-                        <button class="es-btn" onclick="Game.startGame()">GAME START</button>
+                        <h1 style="font-size:3rem; color:#fff; margin-bottom:20px;" id="modal-start-title">${getUIText('modal.start.title', 'EMOJI SURVIVOR')}</h1>
+                        <p style="color:#aaa; margin-bottom:30px;" id="modal-start-desc">${getUIText('modal.start.desc', 'Survive the endless horde!')}</p>
+                        <button class="es-btn" id="modal-start-button" onclick="Game.startGame()">${getUIText('modal.start.button', 'GAME START')}</button>
                     </div>
                 </div>
             `;
@@ -453,13 +462,16 @@
             container.innerHTML = '';
             cards.forEach(c => {
                 const curLv = this.state.player.weapons[c.id] || 0;
+                const weaponInfo = getWeaponInfo(c.id);
                 const el = document.createElement('div');
                 el.className = 'es-card';
+                const newText = getUIText('modal.levelup.new', 'NEW!');
+                const levelText = getUIText('modal.levelup.level', 'LV ');
                 el.innerHTML = `
                     <div class="es-card-icon">${c.icon}</div>
-                    <div class="es-card-name">${c.name}</div>
-                    <div class="es-card-desc">${c.desc}</div>
-                    <div class="es-card-lv">${curLv === 0 ? 'NEW!' : 'LV ' + (curLv+1)}</div>
+                    <div class="es-card-name">${weaponInfo.name}</div>
+                    <div class="es-card-desc">${weaponInfo.desc}</div>
+                    <div class="es-card-lv">${curLv === 0 ? newText : levelText + (curLv+1)}</div>
                 `;
                 el.onclick = () => this.selectUpgrade(c.id);
                 container.appendChild(el);
@@ -497,7 +509,10 @@
 
         gameOver: function() {
             this.state.screen = 'gameover';
-            alert(`GAME OVER! You survived for ${document.getElementById('ui-timer').innerText}`);
+            const timer = document.getElementById('ui-timer').innerText;
+            const title = getUIText('modal.gameover.title', 'GAME OVER!');
+            const msg = getUIText('modal.gameover.msg', 'You survived for {time}').replace('{time}', timer);
+            alert(`${title}\n${msg}`);
             location.reload();
         },
 
