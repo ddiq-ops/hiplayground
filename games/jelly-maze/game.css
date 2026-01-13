@@ -4,107 +4,151 @@
   width: 100%; height: 100%;
   background: #fff0f5; color: #4a4a4a;
   font-family: 'Pretendard', sans-serif;
-  display: flex; flex-direction: column;
-  overflow: hidden; user-select: none; position: relative;
+  overflow: hidden; user-select: none;
+  display: grid;
+  /* 모바일: 헤더 / 게임 / 상점 */
+  grid-template-areas: "header" "game" "shop";
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr;
 }
 
-/* 상단 정보창 */
+/* PC 레이아웃 */
+@media (min-width: 1024px) {
+  .jm-wrapper {
+    grid-template-areas: "header header" "game shop";
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr 340px; /* 상점 너비 약간 증가 */
+  }
+}
+
+/* 1. 헤더 */
 .jm-header {
+  grid-area: header;
   padding: 10px 20px; background: #ffc1e3;
   display: flex; justify-content: space-between; align-items: center;
   border-bottom: 4px solid #ff80ab;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 20;
 }
 .jm-stat { font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 5px; }
-.jm-icon { font-size: 1.4rem; }
-
 .header-left { display: flex; align-items: center; gap: 10px; }
 
-/* 버튼 스타일 */
 .btn-help {
   width: 32px; height: 32px; border-radius: 50%;
   background: #fff; border: 2px solid #ff4081; color: #ff4081;
   font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
 }
 .btn-speed {
   width: 40px; height: 32px; border-radius: 16px;
-  background: #673ab7; color: #fff; border: none;
-  font-weight: bold; cursor: pointer; font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: background 0.2s;
+  background: #673ab7; color: #fff; border: none; font-weight: bold; cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-.btn-speed:hover { background: #5e35b1; }
 
-/* 게임 캔버스 영역 */
+/* 2. 게임 영역 (버튼 제거됨, 맵만 존재) */
 .jm-game-area {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  background-color: #fff0f5; position: relative; overflow: hidden;
+  grid-area: game;
+  display: flex; align-items: center; justify-content: center;
+  background-color: #fff0f5; 
+  position: relative; 
+  overflow: hidden; padding: 20px;
 }
+
 canvas {
   box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  background-color: #fff;
-  border-radius: 8px;
+  background-color: #fff; border-radius: 12px;
+  width: auto; height: auto;
   max-width: 100%; max-height: 100%;
+  aspect-ratio: 1/1; object-fit: contain;
 }
 
-/* 하단 상점 (크기 대폭 확대) */
-.jm-shop {
-  height: 300px; /* 높이 증가 */
-  background: #fff; border-top: 2px solid #ddd;
-  padding: 20px; display: flex; flex-direction: column; gap: 15px;
-  box-sizing: border-box; flex-shrink: 0; /* 크기 줄어듦 방지 */
+.jm-toast {
+  position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.8); color: #fff; padding: 12px 24px;
+  border-radius: 30px; pointer-events: none; opacity: 0; transition: opacity 0.3s; z-index: 100;
 }
+
+/* 3. 상점 (버튼 포함) */
+.jm-shop {
+  grid-area: shop;
+  background: #fff; 
+  padding: 15px; 
+  display: flex; flex-direction: column; gap: 10px;
+  box-sizing: border-box; z-index: 15;
+  
+  /* 모바일 높이 자동 조절 (내용물에 맞춤) */
+  height: auto; 
+  min-height: 280px; 
+  border-top: 2px solid #ddd;
+}
+
+@media (min-width: 1024px) {
+  .jm-shop {
+    height: 100%; 
+    border-top: none; border-left: 2px solid #ddd;
+    box-shadow: -4px 0 10px rgba(0,0,0,0.05);
+  }
+}
+
 .jm-shop-header {
   display: flex; justify-content: space-between; align-items: center;
-  font-size: 1rem; color: #333; font-weight: bold;
+  font-size: 0.95rem; color: #333; font-weight: bold;
 }
+
 .jm-cards {
-  display: flex; gap: 15px; height: 100%; justify-content: center; align-items: stretch;
+  display: flex; gap: 10px; 
+  flex: 1; /* 남은 공간 차지 */
+  justify-content: center; align-items: stretch;
 }
+
+/* PC: 카드 세로 배치 */
+@media (min-width: 1024px) {
+  .jm-cards { flex-direction: column; justify-content: flex-start; overflow-y: auto; }
+}
+
 .jm-card {
-  flex: 1; max-width: 140px; min-width: 110px;
+  flex: 1; 
   background: #f8f9fa; border: 2px solid #e9ecef;
-  border-radius: 12px; padding: 15px 10px; cursor: pointer;
+  border-radius: 12px; padding: 10px; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   transition: all 0.2s; text-align: center; position: relative;
 }
-.jm-card:active { transform: scale(0.95); }
-.jm-card.selected { border-color: #ff4081; background: #ffeef5; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255, 64, 129, 0.25); }
-
+.jm-card.selected { border-color: #ff4081; background: #ffeef5; transform: translateY(-3px); }
 .jm-card.relic { border-color: #ffd700; background: #fffde7; }
 .jm-card.relic .jm-card-name { color: #f57f17; }
 
-.jm-card-icon { font-size: 2.5rem; margin-bottom: 10px; }
-.jm-card-name { font-weight: bold; font-size: 1rem; margin-bottom: 5px; line-height: 1.2; word-break: keep-all; }
-.jm-card-cost { color: #f57c00; font-weight: bold; font-size: 1.1rem; margin-top: auto; }
-.jm-card-desc { font-size: 0.85rem; color: #666; margin-bottom: 5px; word-break: keep-all; line-height: 1.3; }
+/* PC 카드 가로형 */
+@media (min-width: 1024px) {
+  .jm-card {
+    flex: none; width: 100%; flex-direction: row; gap: 15px; text-align: left; height: 90px;
+  }
+  .jm-card-icon { margin-bottom: 0 !important; font-size: 2rem !important; }
+  .jm-card-cost { margin-top: 0 !important; }
+}
+
+.jm-card-icon { font-size: 2rem; margin-bottom: 5px; }
+.jm-card-name { font-weight: bold; font-size: 0.85rem; margin-bottom: 3px; line-height: 1.2; word-break: keep-all; }
+.jm-card-desc { font-size: 0.75rem; color: #666; margin-bottom: 3px; word-break: keep-all; }
+.jm-card-cost { color: #f57c00; font-weight: bold; font-size: 0.9rem; margin-top: auto; }
 
 .btn-reroll {
-  padding: 8px 20px; background: #607d8b; color: white;
-  border: none; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s;
+  padding: 6px 15px; background: #607d8b; color: white; border: none; border-radius: 15px; cursor: pointer; font-size: 0.85rem;
 }
-.btn-reroll:hover { background: #546e7a; }
 
+/* [핵심 수정] BATTLE START 버튼 (상점 하단 배치) */
 .btn-next {
-  position: absolute; bottom: 320px; /* 상점 높이 고려하여 위로 이동 */
-  right: 20px;
-  padding: 15px 30px; background: #ff4081; color: white;
-  border: none; border-radius: 30px; font-size: 1.2rem; font-weight: bold;
-  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.4); cursor: pointer;
-  z-index: 20; transition: transform 0.2s;
+  /* position absolute 제거 -> 상점 흐름에 배치 */
+  width: 100%;
+  padding: 15px; 
+  background: linear-gradient(45deg, #ff4081, #f50057);
+  color: white; border: none; border-radius: 12px;
+  font-size: 1.2rem; font-weight: 900; letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(245, 0, 87, 0.3); cursor: pointer;
+  margin-top: 10px; /* 카드와 간격 */
+  transition: transform 0.1s;
 }
-.btn-next:active { transform: scale(0.95); }
-.btn-next:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
+.btn-next:active { transform: scale(0.98); }
+.btn-next:disabled { background: #bdbdbd; box-shadow: none; cursor: not-allowed; }
 
-.jm-toast {
-  position: absolute; top: 100px; left: 50%; transform: translateX(-50%);
-  background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px;
-  border-radius: 25px; font-size: 1rem; pointer-events: none;
-  opacity: 0; transition: opacity 0.3s; z-index: 100; white-space: nowrap;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-/* 도움말 모달 (스크롤 개선) */
+/* 모달 */
 .jm-modal {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.8); z-index: 100;
@@ -112,32 +156,10 @@ canvas {
   opacity: 0; pointer-events: none; transition: opacity 0.3s;
 }
 .jm-modal.active { opacity: 1; pointer-events: auto; }
-
 .jm-guide {
-  background: #fff; 
-  width: 90%; max-width: 500px; 
-  max-height: 80vh; /* 화면 높이의 80%로 제한 */
-  border-radius: 15px; padding: 25px; 
-  overflow-y: auto; /* 세로 스크롤 활성화 */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  box-sizing: border-box; /* 패딩 포함 크기 */
-  display: flex; flex-direction: column; /* 내용 정렬 */
+  background: #fff; width: 90%; max-width: 500px; max-height: 80vh;
+  border-radius: 15px; padding: 25px; overflow-y: auto;
 }
-/* 스크롤바 디자인 */
-.jm-guide::-webkit-scrollbar { width: 8px; }
-.jm-guide::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-.jm-guide::-webkit-scrollbar-thumb { background: #ff80ab; border-radius: 4px; }
-.jm-guide::-webkit-scrollbar-thumb:hover { background: #ff4081; }
-
-.jm-guide h2 { margin-top: 0; color: #ff4081; border-bottom: 2px solid #ffeef5; padding-bottom: 10px; flex-shrink: 0; }
-.jm-guide h3 { margin: 20px 0 10px; color: #333; font-size: 1.1rem; flex-shrink: 0; }
-.jm-guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; flex-shrink: 0; }
+.jm-guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
 .jm-guide-item { background: #f8f9fa; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
-.jm-guide-icon { font-size: 2rem; margin-bottom: 5px; }
-.jm-guide-text { font-size: 0.8rem; color: #666; }
-.jm-guide-desc { font-size: 0.9rem; color: #555; line-height: 1.6; background: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 10px; flex-shrink: 0; }
-.btn-close {
-  display: block; width: 100%; padding: 12px; margin-top: 20px;
-  background: #ff4081; color: white; border: none; border-radius: 8px;
-  font-weight: bold; cursor: pointer; font-size: 1rem; flex-shrink: 0;
-}
+.btn-close { width: 100%; padding: 12px; margin-top: 20px; background: #ff4081; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }

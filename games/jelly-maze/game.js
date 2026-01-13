@@ -1,124 +1,45 @@
 (function() {
     'use strict';
 
-    // Helper function to get translated text
-    function getUIText(key, defaultValue) {
-        if (typeof I18n !== 'undefined' && I18n.t && I18n.translations && Object.keys(I18n.translations).length > 0) {
-            const fullKey = `gameDetails.jelly-maze.ui.${key}`;
-            const value = I18n.t(fullKey, defaultValue);
-            if (value === fullKey || value === defaultValue) {
-                return defaultValue;
-            }
-            return value;
-        }
-        return defaultValue;
-    }
-
-    // Helper function to get tower info
-    function getTowerInfo(id) {
-        const defaultTower = TOWERS_BASE[id] || {};
-        return {
-            ...defaultTower,
-            name: getUIText(`towers.${id}.name`, defaultTower.name || ''),
-            desc: getUIText(`towers.${id}.desc`, defaultTower.desc || '')
-        };
-    }
-
-    // Helper function to get relic info
-    function getRelicInfo(id) {
-        const defaultRelic = RELICS_BASE[id] || {};
-        return {
-            ...defaultRelic,
-            name: getUIText(`relics.${id}.name`, defaultRelic.name || ''),
-            desc: getUIText(`relics.${id}.desc`, defaultRelic.desc || '')
-        };
-    }
-
-    // Helper function to get enemy info
-    function getEnemyInfo(index) {
-        const enemyKeys = ['red', 'yellow', 'green', 'king'];
-        const key = enemyKeys[index] || '';
-        const defaultEnemy = ENEMIES_BASE[index] || {};
-        return {
-            ...defaultEnemy,
-            name: getUIText(`enemies.${key}.name`, defaultEnemy.name || ''),
-            desc: getUIText(`enemies.${key}.desc`, defaultEnemy.desc || '')
-        };
-    }
-
-    // ================= DATA =================
-    const TILE_SIZE = 40;
+    const TILE_SIZE = 50; 
     const GRID_W = 15;
     const GRID_H = 15;
 
-    const TOWERS_BASE = {
-        pudding: { icon: '🍮', cost: 10, range: 2.5, damage: 10, rate: 30, crit: 0.1, color: '#FFD54F', name: '푸딩', desc: '사거리: 2.5칸' },
-        cake:    { icon: '🍰', cost: 25, range: 4.0, damage: 20, rate: 50, crit: 0.15, color: '#F48FB1', name: '케이크', desc: '사거리: 4칸 (장거리)' },
-        donut:   { icon: '🍩', cost: 40, range: 2.0, damage: 45, rate: 60, crit: 0.1, color: '#8D6E63', name: '도넛', desc: '사거리: 2칸 (강력)' },
-        icecream:{ icon: '🍦', cost: 30, range: 2.5, damage: 5,  rate: 40, crit: 0, color: '#4FC3F7', name: '아이스', desc: '사거리: 2.5칸 (슬로우)', slow: 0.5 },
-        cookie:  { icon: '🍪', cost: 60, range: 3.0, damage: 12, rate: 15, crit: 0.2, color: '#A1887F', name: '쿠키', desc: '사거리: 3칸 (속사)' },
-        macaron: { icon: '🥯', cost: 80, range: 6.0, damage: 100, rate: 120, crit: 0.5, color: '#CE93D8', name: '마카롱', desc: '사거리: 6칸 (저격)' },
-        choco:   { icon: '🍫', cost: 50, range: 2.5, damage: 15, rate: 30, crit: 0.6, color: '#3E2723', name: '초코', desc: '사거리: 2.5칸 (크리 60%)' }
+    const TOWERS = {
+        pudding: { name: '푸딩', icon: '🍮', cost: 10, range: 2.5, damage: 10, rate: 30, crit: 0.1, color: '#FFD54F', desc: '사거리: 2.5칸' },
+        cake:    { name: '케이크', icon: '🍰', cost: 25, range: 4.0, damage: 20, rate: 50, crit: 0.15, color: '#F48FB1', desc: '사거리: 4칸 (장거리)' },
+        donut:   { name: '도넛', icon: '🍩', cost: 40, range: 2.0, damage: 45, rate: 60, crit: 0.1, color: '#8D6E63', desc: '사거리: 2칸 (강력)' },
+        icecream:{ name: '아이스', icon: '🍦', cost: 30, range: 2.5, damage: 5,  rate: 40, crit: 0, color: '#4FC3F7', desc: '사거리: 2.5칸 (슬로우)', slow: 0.5 },
+        cookie:  { name: '쿠키', icon: '🍪', cost: 60, range: 3.0, damage: 12, rate: 15, crit: 0.2, color: '#A1887F', desc: '사거리: 3칸 (속사)' },
+        macaron: { name: '마카롱', icon: '🥯', cost: 80, range: 6.0, damage: 100, rate: 120, crit: 0.5, color: '#CE93D8', desc: '사거리: 6칸 (저격)' },
+        choco:   { name: '초코', icon: '🍫', cost: 50, range: 2.5, damage: 15, rate: 30, crit: 0.6, color: '#3E2723', desc: '사거리: 2.5칸 (크리 60%)' }
     };
 
-    const RELICS_BASE = {
-        spoon:   { icon: '🥄', cost: 50, type: 'relic', effect: 'dmg', val: 1.2, name: '황금 스푼', desc: '공격력 +20% (패시브)' },
-        shoes:   { icon: '👟', cost: 30, type: 'relic', effect: 'rate', val: 0.9, name: '신발 끈', desc: '공격속도 +10% (패시브)' },
-        lens:    { icon: '🔍', cost: 40, type: 'relic', effect: 'range', val: 1.2, name: '확대경', desc: '사거리 +20% (패시브)' },
-        clover:  { icon: '🍀', cost: 60, type: 'relic', effect: 'crit', val: 0.1, name: '네잎클로버', desc: '크리율 +10% (패시브)' },
-        wallet:  { icon: '👛', cost: 0,  type: 'relic', effect: 'gold', val: 30, name: '지갑', desc: '즉시 30골드 획득' }
+    const RELICS = {
+        spoon:   { name: '황금 스푼', icon: '🥄', cost: 50, type: 'relic', effect: 'dmg', val: 1.2, desc: '공격력 +20%' },
+        shoes:   { name: '신발 끈',   icon: '👟', cost: 30, type: 'relic', effect: 'rate', val: 0.9, desc: '공격속도 +10%' },
+        lens:    { name: '확대경',   icon: '🔍', cost: 40, type: 'relic', effect: 'range', val: 1.2, desc: '사거리 +20%' },
+        clover:  { name: '네잎클로버',icon: '🍀', cost: 60, type: 'relic', effect: 'crit', val: 0.1, desc: '크리율 +10%' },
+        wallet:  { name: '지갑',     icon: '👛', cost: 0,  type: 'relic', effect: 'gold', val: 30, desc: '즉시 30골드' }
     };
 
-    const ENEMIES_BASE = [
-        { icon: '🔴', hp: 30, speed: 2, reward: 2, name: '레드 젤리', desc: '빠르고 약함' },
-        { icon: '🟡', hp: 60, speed: 3, reward: 3, name: '옐로 젤리', desc: '매우 빠름!' },
-        { icon: '🟢', hp: 150, speed: 1.5, reward: 5, name: '그린 젤리', desc: '튼튼함' },
-        { icon: '👑', hp: 800, speed: 1, reward: 20, name: '왕 젤리', desc: '보스' }
+    const ENEMIES = [
+        { name: '레드 젤리', icon: '🔴', hp: 30, speed: 2, reward: 2, desc: '빠르고 약함' },
+        { name: '옐로 젤리', icon: '🟡', hp: 60, speed: 3, reward: 3, desc: '매우 빠름!' },
+        { name: '그린 젤리', icon: '🟢', hp: 150, speed: 1.5, reward: 5, desc: '튼튼함' },
+        { name: '왕 젤리',   icon: '👑', hp: 800, speed: 1, reward: 20, desc: '보스' }
     ];
 
-    // Get translated versions
-    const TOWERS = {};
-    const RELICS = {};
-    const ENEMIES = [];
-
-    function updateTranslations() {
-        for(let k in TOWERS_BASE) {
-            TOWERS[k] = getTowerInfo(k);
-        }
-        for(let k in RELICS_BASE) {
-            RELICS[k] = getRelicInfo(k);
-        }
-        for(let i = 0; i < ENEMIES_BASE.length; i++) {
-            ENEMIES[i] = getEnemyInfo(i);
-        }
-    }
-    updateTranslations();
-
-    // ================= ENGINE =================
     const Game = {
         canvas: null, ctx: null,
         
         state: {
             gold: 60, lives: 20, wave: 0,
-            map: [],
-            towers: [],
-            enemies: [],
-            projectiles: [],
-            path: [], 
-            start: {x:0, y:0},
-            end: {x:GRID_W-1, y:GRID_H-1},
-            
-            shopCards: [],
-            selectedCardIdx: -1,
-            
+            map: [], towers: [], enemies: [], projectiles: [], path: [], 
+            start: {x:0, y:0}, end: {x:GRID_W-1, y:GRID_H-1},
+            shopCards: [], selectedCardIdx: -1,
             buffs: { dmg: 1, rate: 1, range: 1, crit: 0 },
-            
-            waveActive: false,
-            spawnQueue: [],
-            spawnTimer: 0,
-            
-            gameSpeed: 1, // [New] 1x or 2x
-            lastTime: 0
+            waveActive: false, spawnQueue: [], spawnTimer: 0, gameSpeed: 1
         },
 
         init: function(container) {
@@ -145,14 +66,6 @@
             this.updateUI();
 
             setTimeout(() => this.showGuide(), 100);
-
-            // Listen for language changes
-            document.addEventListener('i18n:loaded', () => {
-                updateTranslations();
-                this.renderLayout();
-                this.rerollShop(true);
-                this.updateUI();
-            });
         },
 
         renderLayout: function() {
@@ -171,15 +84,15 @@
                     <div class="jm-game-area">
                         <canvas id="jm-canvas"></canvas>
                         <div class="jm-toast" id="ui-toast"></div>
-                        <button class="btn-next" id="btn-next" onclick="Game.startWave()">${getUIText('nextWave', 'NEXT WAVE')}</button>
                     </div>
 
                     <div class="jm-shop">
                         <div class="jm-shop-header">
-                            <span>${getUIText('shopTitle', '상점 (타워 건설 & 유물 구입)')}</span>
-                            <button class="btn-reroll" onclick="Game.rerollShop()">${getUIText('rerollButton', '새로고침 (5G)')}</button>
+                            <span>상점 (타워 건설 & 유물)</span>
+                            <button class="btn-reroll" onclick="Game.rerollShop()">새로고침 (5G)</button>
                         </div>
                         <div class="jm-cards" id="ui-cards"></div>
+                        <button class="btn-next" id="btn-next" onclick="Game.startWave()">BATTLE START</button>
                     </div>
 
                     <div class="jm-modal" id="modal-guide">
@@ -196,30 +109,26 @@
 
         showGuide: function() {
             const guide = document.getElementById('guide-content');
-            let html = `<h2>${getUIText('guideTitle', '게임 가이드')}</h2>`;
-
-            html += `<h3>🚩 ${getUIText('guideHowToPlay', '게임 방법')}</h3>
+            let html = `<h2>게임 가이드</h2>`;
+            html += `<h3>🚩 게임 방법</h3>
                 <div class="jm-guide-desc">
-                    1. <strong>${getUIText('guideSteps.step1', '타워를 설치해 젤리의 길을 막으세요.')}</strong><br>
-                    2. ${getUIText('guideSteps.step2', '젤리는 최단 경로로 이동합니다.')}<br>
-                    3. <span style="color:#f57f17; font-weight:bold;">${getUIText('guideSteps.step3', '노란색 카드(유물)는 구매 즉시 효과가 적용됩니다. (설치 X)')}</span>
+                    1. <strong>타워</strong>를 설치해 젤리의 길을 막으세요.<br>
+                    2. 젤리는 <strong>최단 경로</strong>로 이동합니다.<br>
+                    3. <span style="color:#f57f17; font-weight:bold;">노란색 카드(유물)</span>는 구매 즉시 효과가 적용됩니다. (설치 X)
                 </div>`;
-
-            html += `<h3>🏰 ${getUIText('guideTowers', '타워 & 유물')}</h3><div class="jm-guide-grid">`;
+            html += `<h3>🏰 타워 & 유물</h3><div class="jm-guide-grid">`;
             for(let k in TOWERS) {
                 const t = TOWERS[k];
-                html += `<div class="jm-guide-item"><div class="jm-guide-icon">${t.icon}</div><div>${t.name}</div><div class="jm-guide-text" style="font-size:0.7rem">${t.desc}</div></div>`;
+                html += `<div class="jm-guide-item"><div class="jm-guide-icon">${t.icon}</div><div>${t.name}</div></div>`;
             }
-            html += `<div class="jm-guide-item" style="border-color:#ffd700; background:#fffde7;"><div class="jm-guide-icon">🥄</div><div>${getUIText('relicLabel', '유물')}</div><div class="jm-guide-text" style="font-size:0.7rem; color:#f57f17;">${getUIText('relicDesc', '즉시 강화')}</div></div>`;
+            html += `<div class="jm-guide-item" style="border-color:#ffd700; background:#fffde7;"><div class="jm-guide-icon">🥄</div><div>유물</div></div>`;
             html += `</div>`;
-
-            html += `<button class="btn-close" onclick="document.getElementById('modal-guide').classList.remove('active')">${getUIText('startButton', '게임 시작!')}</button>`;
+            html += `<button class="btn-close" onclick="document.getElementById('modal-guide').classList.remove('active')">게임 시작!</button>`;
             
             guide.innerHTML = html;
             document.getElementById('modal-guide').classList.add('active');
         },
 
-        // --- PATHFINDING & SHOP Logic (동일) ---
         recalcPath: function() {
             const path = this.findPath(this.state.start, this.state.end);
             if(path) this.state.path = path;
@@ -276,7 +185,7 @@
 
         rerollShop: function(free = false) {
             if(!free) {
-                if(this.state.gold < 5) { this.showToast(getUIText('toastNoGold', '골드가 부족합니다!')); return; }
+                if(this.state.gold < 5) { this.showToast("골드가 부족합니다!"); return; }
                 this.state.gold -= 5;
             }
             
@@ -314,8 +223,10 @@
 
                 el.innerHTML = `
                     <div class="jm-card-icon">${card.icon}</div>
-                    <div class="jm-card-name">${card.name}</div>
-                    <div class="jm-card-desc">${card.desc}</div>
+                    <div style="flex:1;">
+                        <div class="jm-card-name">${card.name}</div>
+                        <div class="jm-card-desc">${card.desc}</div>
+                    </div>
                     <div class="jm-card-cost">${card.cost}G</div>
                 `;
                 container.appendChild(el);
@@ -330,15 +241,15 @@
 
         buyRelic: function(idx) {
             const card = this.state.shopCards[idx];
-            if(this.state.gold < card.cost) { this.showToast(getUIText('toastNoGoldShort', '골드가 부족합니다.')); return; }
+            if(this.state.gold < card.cost) { this.showToast("골드가 부족합니다."); return; }
             
             this.state.gold -= card.cost;
-            this.showToast(`✨ ${card.name} ${getUIText('toastRelicApplied', '적용됨! (설치 X)')}`);
+            this.showToast(`✨ ${card.name} 적용됨!`);
             
             if(card.effect === 'gold') this.state.gold += card.val;
             else if(this.state.buffs[card.effect] !== undefined) {
                 if(card.effect === 'crit') this.state.buffs.crit += card.val;
-                else if(card.effect === 'rate') this.state.buffs.rate *= card.val; // rate(cooldown) multiplier
+                else if(card.effect === 'rate') this.state.buffs.rate *= card.val; 
                 else this.state.buffs[card.effect] *= card.val; 
             }
 
@@ -364,11 +275,11 @@
 
         buildTower: function(x, y) {
             if(x < 0 || x >= GRID_W || y < 0 || y >= GRID_H) return;
-            if(this.state.map[y][x] !== 0) { this.showToast(getUIText('toastBuildingExists', '이미 건물이 있습니다.')); return; }
+            if(this.state.map[y][x] !== 0) { this.showToast("이미 건물이 있습니다."); return; }
             if((x===this.state.start.x && y===this.state.start.y) || (x===this.state.end.x && y===this.state.end.y)) return;
 
             const card = this.state.shopCards[this.state.selectedCardIdx];
-            if(this.state.gold < card.cost) { this.showToast(getUIText('toastNoGoldShort', '골드가 부족합니다.')); return; }
+            if(this.state.gold < card.cost) { this.showToast("골드가 부족합니다."); return; }
 
             this.state.map[y][x] = 1; 
             const newPath = this.findPath(this.state.start, this.state.end);
@@ -382,7 +293,7 @@
 
             if(!newPath || enemiesTrapped) {
                 this.state.map[y][x] = 0; 
-                this.showToast(getUIText('toastPathBlocked', '길을 완전히 막을 수 없습니다!'));
+                this.showToast("길을 완전히 막을 수 없습니다!");
                 return;
             }
 
@@ -420,7 +331,7 @@
             for(let i=0; i<count; i++) this.state.spawnQueue.push({...type, hp: type.hp * (1 + this.state.wave*0.3)});
             
             document.getElementById('btn-next').disabled = true;
-            document.getElementById('btn-next').innerText = getUIText('waveActive', 'WAVE...');
+            document.getElementById('btn-next').innerText = "진행 중...";
             this.updateUI();
         },
 
@@ -432,10 +343,10 @@
 
         update: function() {
             const st = this.state;
-            const spd = st.gameSpeed; // [New] 배속 변수 적용
+            const spd = st.gameSpeed; 
 
             if(st.waveActive && st.spawnQueue.length > 0) {
-                st.spawnTimer += spd; // [Modified] 배속 적용
+                st.spawnTimer += spd; 
                 if(st.spawnTimer > 60) { 
                     const data = st.spawnQueue.shift();
                     st.enemies.push({
@@ -449,8 +360,8 @@
 
             for(let i=st.enemies.length-1; i>=0; i--) {
                 const e = st.enemies[i];
-                let speed = e.speed * spd; // [Modified] 배속 적용
-                if(e.slow > 0) { speed *= 0.5; e.slow -= spd; } // [Modified] 슬로우 시간 감소에도 배속 적용
+                let speed = e.speed * spd; 
+                if(e.slow > 0) { speed *= 0.5; e.slow -= spd; } 
 
                 if(e.path && e.path[e.pathIdx]) {
                     const target = e.path[e.pathIdx];
@@ -463,7 +374,7 @@
                         e.x = tx; e.y = ty; e.pathIdx++;
                         if(e.pathIdx >= e.path.length) {
                             st.lives--; st.enemies.splice(i, 1); this.updateUI();
-                            if(st.lives <= 0) { alert(getUIText('gameOver', 'GAME OVER')); location.reload(); }
+                            if(st.lives <= 0) { alert("GAME OVER"); location.reload(); }
                             continue;
                         }
                     } else {
@@ -473,7 +384,7 @@
             }
 
             st.towers.forEach(t => {
-                if(t.cd > 0) t.cd -= spd; // [Modified] 쿨타임 감소에 배속 적용
+                if(t.cd > 0) t.cd -= spd; 
                 else {
                     const range = t.range * st.buffs.range;
                     const target = st.enemies.find(e => Math.hypot(e.x - (t.x*TILE_SIZE+20), e.y - (t.y*TILE_SIZE+20)) <= range);
@@ -498,7 +409,7 @@
                 
                 const dx = p.target.x - p.x, dy = p.target.y - p.y;
                 const dist = Math.hypot(dx, dy);
-                const moveDist = p.speed * spd; // [Modified] 투사체 속도 배속 적용
+                const moveDist = p.speed * spd; 
 
                 if(dist < moveDist) {
                     p.target.hp -= p.damage;
@@ -518,7 +429,7 @@
             if(st.waveActive && st.spawnQueue.length === 0 && st.enemies.length === 0) {
                 st.waveActive = false;
                 document.getElementById('btn-next').disabled = false;
-                document.getElementById('btn-next').innerText = getUIText('nextWave', 'NEXT WAVE');
+                document.getElementById('btn-next').innerText = "BATTLE START";
                 st.gold += 10 + st.wave * 2;
                 this.updateUI();
             }
