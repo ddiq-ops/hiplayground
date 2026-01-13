@@ -1,0 +1,12 @@
+{
+  "id": "jelly-maze",
+  "title": "젤리 메이즈",
+  "titleEn": "Jelly Maze",
+  "description": "타워와 유물로 나만의 미로를 만드세요! 로그라이크 디펜스.",
+  "descriptionEn": "Build a maze with towers and relics! Roguelike TD.",
+  "icon": "🍮",
+  "category": "strategy",
+  "difficulty": "hard",
+  "version": "2.0.0",
+  "orientation": "portrait"
+}

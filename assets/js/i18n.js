@@ -42,17 +42,49 @@ const I18n = {
     
     return './';
   },
+
+  /**
+   * [NEW] Detect browser language
+   * Returns: 'ko', 'zh-HK', or 'en'
+   */
+  detectBrowserLanguage() {
+    const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    
+    // 1. 한국어 감지
+    if (browserLang.startsWith('ko')) {
+      return 'ko';
+    }
+    
+    // 2. 번체 중국어 (홍콩, 대만) 감지 -> zh-HK로 매핑
+    if (browserLang.includes('zh-hk') || browserLang.includes('zh-tw') || browserLang.includes('hant')) {
+      return 'zh-HK';
+    }
+    
+    // 3. 그 외 모든 언어는 영어로 설정 (글로벌 대응)
+    return 'en';
+  },
   
   /**
    * Initialize i18n system
    */
   async init(language = null) {
-    // If language is not provided, try to get from storage or default to 'ko'
-    if (!language && typeof Storage !== 'undefined') {
+    // 1. 인자로 언어가 전달된 경우 (최우선)
+    if (language) {
+      this.currentLanguage = language;
+    } 
+    // 2. 저장된 설정 확인
+    else if (typeof Storage !== 'undefined') {
       const settings = Storage.getSettings();
-      language = settings.language || 'ko';
+      if (settings.language) {
+        this.currentLanguage = settings.language;
+      } else {
+        // 3. 저장된 설정이 없으면 브라우저 언어 감지 (자동 설정)
+        this.currentLanguage = this.detectBrowserLanguage();
+      }
+    } else {
+      // 4. 스토리지 사용 불가 시 브라우저 언어 감지
+      this.currentLanguage = this.detectBrowserLanguage();
     }
-    this.currentLanguage = language || 'ko';
     
     try {
       const basePath = this.getBasePath();
@@ -79,9 +111,9 @@ const I18n = {
       return true;
     } catch (error) {
       console.error('i18n init error:', error);
-      // Fallback to default language
-      if (this.currentLanguage !== 'ko') {
-        return this.init('ko');
+      // Fallback to English if loading fails (Global standard)
+      if (this.currentLanguage !== 'en') {
+        return this.init('en');
       }
       return false;
     }
@@ -316,4 +348,3 @@ if (typeof document !== 'undefined') {
 if (typeof window !== 'undefined') {
   window.I18n = I18n;
 }
-

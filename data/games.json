@@ -315,6 +315,20 @@
   "popularity": 88,
   "releaseDate": "2026-01-13",
   "orientation": "portrait"
+},
+{
+  "id": "jelly-maze",
+  "title": "젤리 메이즈",
+  "titleEn": "Jelly Maze",
+  "category": "strategy",
+  "difficulty": "hard",
+  "description": "타워로 미로를 만들어 젤리를 막으세요! 길찾기 디펜스.",
+  "descriptionEn": "Build a maze to stop the jellies! A* pathfinding TD.",
+  "icon": "🍮",
+  "tags": ["전략", "디펜스", "미로"],
+  "popularity": 85,
+  "releaseDate": "2026-01-13",
+  "orientation": "portrait"
 }
   
 ]

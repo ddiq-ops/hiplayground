@@ -1497,6 +1497,85 @@
         "legendary": "LEGENDARY!",
         "finalScore": "Final Score"
       }
+    },
+    "jelly-maze": {
+      "title": "Jelly Maze",
+      "description": "Build your own maze with towers and relics! Roguelike TD.",
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "Select a tower card from the shop, then click on the map to build a tower. Towers attack jelly enemies.",
+          "Yellow cards (relics) apply their effects immediately upon purchase. Just click them - no need to place them.",
+          "Jelly enemies start from the starting point (🚩) and move to the goal (🏁) along the shortest path.",
+          "When you build a tower, the enemies' path is automatically recalculated. You cannot completely block the path.",
+          "Press the NEXT WAVE button to start the next wave. Each wave spawns more enemies.",
+          "Defeating jellies gives you gold, which you can use to buy stronger towers or relics.",
+          "The game ends when your lives reach 0. Try to survive as many waves as possible.",
+          "Use the x1/x2 button to adjust the game speed."
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "In the early game, build multiple cheap Pudding towers to establish a basic defense line. Pudding offers good cost efficiency.",
+          "Cake towers have long range, so placing them near paths where many enemies pass is effective.",
+          "Donut towers are powerful but have short range, so place them at points where enemies gather.",
+          "Ice cream towers slow down enemies, giving other towers more time to attack. Place them at mid-points along the path.",
+          "Relics apply effects immediately, so buy them actively when you have enough gold. Especially the Golden Spoon (+20% damage) is very helpful if bought early.",
+          "When placing towers, consider positions where enemies will stay longer. Longer paths create more attack opportunities.",
+          "Use the shop refresh (5 gold) to find desired towers or relics. However, use it carefully when gold is scarce.",
+          "You receive bonus gold when a wave ends, so it's good to complete your tower placement before starting the next wave."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Jelly Maze is a strategy game that combines tower defense with roguelike elements. You must build towers to defeat jelly enemies before they reach the goal. The game's core feature is a dynamic pathfinding system using shortest path algorithms, where enemy paths are automatically recalculated whenever you build a tower. This requires players to use strategic thinking and spatial awareness to find optimal tower placements. The goal is to build your own strategy by combining various towers and relics, and survive against enemies that grow stronger with each wave. Through the game, you can develop abilities such as resource management, strategic planning, and spatial perception, while fostering a growth mindset of learning and improving from failures."
+      },
+      "ui": {
+        "shopTitle": "Shop (Build Towers & Buy Relics)",
+        "rerollButton": "Refresh (5G)",
+        "nextWave": "NEXT WAVE",
+        "waveActive": "WAVE...",
+        "guideTitle": "Game Guide",
+        "guideHowToPlay": "How to Play",
+        "guideTowers": "Towers & Relics",
+        "relicLabel": "Relics",
+        "relicDesc": "Instant Boost",
+        "startButton": "Start Game!",
+        "toastNoGold": "Not enough gold!",
+        "toastNoGoldShort": "Not enough gold.",
+        "toastBuildingExists": "Building already exists.",
+        "toastPathBlocked": "Cannot completely block the path!",
+        "toastRelicApplied": "Applied! (No placement)",
+        "gameOver": "GAME OVER",
+        "towers": {
+          "pudding": { "name": "Pudding", "desc": "Range: 2.5 tiles" },
+          "cake": { "name": "Cake", "desc": "Range: 4 tiles (Long range)" },
+          "donut": { "name": "Donut", "desc": "Range: 2 tiles (Powerful)" },
+          "icecream": { "name": "Ice Cream", "desc": "Range: 2.5 tiles (Slow)" },
+          "cookie": { "name": "Cookie", "desc": "Range: 3 tiles (Rapid fire)" },
+          "macaron": { "name": "Macaron", "desc": "Range: 6 tiles (Sniper)" },
+          "choco": { "name": "Chocolate", "desc": "Range: 2.5 tiles (60% crit)" }
+        },
+        "relics": {
+          "spoon": { "name": "Golden Spoon", "desc": "Damage +20% (Passive)" },
+          "shoes": { "name": "Shoelace", "desc": "Attack Speed +10% (Passive)" },
+          "lens": { "name": "Magnifying Glass", "desc": "Range +20% (Passive)" },
+          "clover": { "name": "Four-Leaf Clover", "desc": "Crit Rate +10% (Passive)" },
+          "wallet": { "name": "Wallet", "desc": "Instantly gain 30 gold" }
+        },
+        "enemies": {
+          "red": { "name": "Red Jelly", "desc": "Fast and weak" },
+          "yellow": { "name": "Yellow Jelly", "desc": "Very fast!" },
+          "green": { "name": "Green Jelly", "desc": "Tough" },
+          "king": { "name": "King Jelly", "desc": "Boss" }
+        },
+        "guideSteps": {
+          "step1": "Build towers to block the jelly's path.",
+          "step2": "Jellies move along the shortest path.",
+          "step3": "Yellow cards (relics) apply effects immediately upon purchase. (No placement)"
+        }
+      }
     }
   }
 }

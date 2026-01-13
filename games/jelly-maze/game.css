@@ -1,0 +1,143 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+.jm-wrapper {
+  width: 100%; height: 100%;
+  background: #fff0f5; color: #4a4a4a;
+  font-family: 'Pretendard', sans-serif;
+  display: flex; flex-direction: column;
+  overflow: hidden; user-select: none; position: relative;
+}
+
+/* 상단 정보창 */
+.jm-header {
+  padding: 10px 20px; background: #ffc1e3;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 4px solid #ff80ab;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 10;
+}
+.jm-stat { font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 5px; }
+.jm-icon { font-size: 1.4rem; }
+
+.header-left { display: flex; align-items: center; gap: 10px; }
+
+/* 버튼 스타일 */
+.btn-help {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #fff; border: 2px solid #ff4081; color: #ff4081;
+  font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.btn-speed {
+  width: 40px; height: 32px; border-radius: 16px;
+  background: #673ab7; color: #fff; border: none;
+  font-weight: bold; cursor: pointer; font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: background 0.2s;
+}
+.btn-speed:hover { background: #5e35b1; }
+
+/* 게임 캔버스 영역 */
+.jm-game-area {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  background-color: #fff0f5; position: relative; overflow: hidden;
+}
+canvas {
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  background-color: #fff;
+  border-radius: 8px;
+  max-width: 100%; max-height: 100%;
+}
+
+/* 하단 상점 (크기 대폭 확대) */
+.jm-shop {
+  height: 300px; /* 높이 증가 */
+  background: #fff; border-top: 2px solid #ddd;
+  padding: 20px; display: flex; flex-direction: column; gap: 15px;
+  box-sizing: border-box; flex-shrink: 0; /* 크기 줄어듦 방지 */
+}
+.jm-shop-header {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 1rem; color: #333; font-weight: bold;
+}
+.jm-cards {
+  display: flex; gap: 15px; height: 100%; justify-content: center; align-items: stretch;
+}
+.jm-card {
+  flex: 1; max-width: 140px; min-width: 110px;
+  background: #f8f9fa; border: 2px solid #e9ecef;
+  border-radius: 12px; padding: 15px 10px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: all 0.2s; text-align: center; position: relative;
+}
+.jm-card:active { transform: scale(0.95); }
+.jm-card.selected { border-color: #ff4081; background: #ffeef5; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(255, 64, 129, 0.25); }
+
+.jm-card.relic { border-color: #ffd700; background: #fffde7; }
+.jm-card.relic .jm-card-name { color: #f57f17; }
+
+.jm-card-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.jm-card-name { font-weight: bold; font-size: 1rem; margin-bottom: 5px; line-height: 1.2; word-break: keep-all; }
+.jm-card-cost { color: #f57c00; font-weight: bold; font-size: 1.1rem; margin-top: auto; }
+.jm-card-desc { font-size: 0.85rem; color: #666; margin-bottom: 5px; word-break: keep-all; line-height: 1.3; }
+
+.btn-reroll {
+  padding: 8px 20px; background: #607d8b; color: white;
+  border: none; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s;
+}
+.btn-reroll:hover { background: #546e7a; }
+
+.btn-next {
+  position: absolute; bottom: 320px; /* 상점 높이 고려하여 위로 이동 */
+  right: 20px;
+  padding: 15px 30px; background: #ff4081; color: white;
+  border: none; border-radius: 30px; font-size: 1.2rem; font-weight: bold;
+  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.4); cursor: pointer;
+  z-index: 20; transition: transform 0.2s;
+}
+.btn-next:active { transform: scale(0.95); }
+.btn-next:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
+
+.jm-toast {
+  position: absolute; top: 100px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px;
+  border-radius: 25px; font-size: 1rem; pointer-events: none;
+  opacity: 0; transition: opacity 0.3s; z-index: 100; white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* 도움말 모달 (스크롤 개선) */
+.jm-modal {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8); z-index: 100;
+  display: flex; justify-content: center; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.jm-modal.active { opacity: 1; pointer-events: auto; }
+
+.jm-guide {
+  background: #fff; 
+  width: 90%; max-width: 500px; 
+  max-height: 80vh; /* 화면 높이의 80%로 제한 */
+  border-radius: 15px; padding: 25px; 
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  box-sizing: border-box; /* 패딩 포함 크기 */
+  display: flex; flex-direction: column; /* 내용 정렬 */
+}
+/* 스크롤바 디자인 */
+.jm-guide::-webkit-scrollbar { width: 8px; }
+.jm-guide::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+.jm-guide::-webkit-scrollbar-thumb { background: #ff80ab; border-radius: 4px; }
+.jm-guide::-webkit-scrollbar-thumb:hover { background: #ff4081; }
+
+.jm-guide h2 { margin-top: 0; color: #ff4081; border-bottom: 2px solid #ffeef5; padding-bottom: 10px; flex-shrink: 0; }
+.jm-guide h3 { margin: 20px 0 10px; color: #333; font-size: 1.1rem; flex-shrink: 0; }
+.jm-guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; flex-shrink: 0; }
+.jm-guide-item { background: #f8f9fa; padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
+.jm-guide-icon { font-size: 2rem; margin-bottom: 5px; }
+.jm-guide-text { font-size: 0.8rem; color: #666; }
+.jm-guide-desc { font-size: 0.9rem; color: #555; line-height: 1.6; background: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 10px; flex-shrink: 0; }
+.btn-close {
+  display: block; width: 100%; padding: 12px; margin-top: 20px;
+  background: #ff4081; color: white; border: none; border-radius: 8px;
+  font-weight: bold; cursor: pointer; font-size: 1rem; flex-shrink: 0;
+}
