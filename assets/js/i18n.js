@@ -15,7 +15,13 @@ const I18n = {
     const href = window.location.href;
     const pathname = window.location.pathname;
     
-    // Check if we're in pages/ folder
+    // Check if we're in pages/game/ folder (2 levels deep)
+    if (href.includes('/pages/game/') || href.includes('\\pages\\game\\') || 
+        pathname.includes('/pages/game/') || pathname.includes('\\pages\\game\\')) {
+      return '../../';
+    }
+    
+    // Check if we're in pages/ folder (1 level deep)
     if (href.includes('/pages/') || href.includes('\\pages\\') || 
         pathname.includes('/pages/') || pathname.includes('\\pages\\')) {
       return '../';
@@ -27,6 +33,10 @@ const I18n = {
         const url = new URL(href);
         const pathParts = url.pathname.split('/').filter(p => p);
         if (pathParts.length > 0) {
+          // If the file is in pages/game/ directory
+          if (pathParts.includes('pages') && pathParts.includes('game')) {
+            return '../../';
+          }
           // If the file is in pages/ directory
           if (pathParts.includes('pages')) {
             return '../';
@@ -34,12 +44,16 @@ const I18n = {
         }
       } catch (e) {
         // If URL parsing fails, use simple string check
+        if (href.includes('pages/game') || href.includes('pages\\game')) {
+          return '../../';
+        }
         if (href.includes('pages')) {
           return '../';
         }
       }
     }
     
+    // Root level
     return './';
   },
 
