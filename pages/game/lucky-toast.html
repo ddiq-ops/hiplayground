@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="화구를 늘리고 알바를 고용하세요! 돌발 이벤트가 가득한 경영 게임.">
+  <title>럭키 토스트 - 하이 플레이그라운드</title>
+  
+  <!-- Domain Security Check -->
+  <script src="../../assets/js/security.js"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/theme.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../shared/game-shell.css">
+  
+  <style>
+    /* Game Description Section Styles (SEO optimized) */
+    .game-description-section {
+      background-color: #f9f9f9;
+      padding: var(--spacing-2xl) 0;
+      margin-top: 0;
+      border-top: 2px solid var(--color-border);
+    }
+    
+    .game-description-section .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-lg);
+    }
+    
+    .description-block {
+      background-color: #ffffff;
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .description-block:last-child {
+      margin-bottom: 0;
+    }
+    
+    .description-block h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0 0 var(--spacing-lg) 0;
+      padding-bottom: var(--spacing-md);
+      border-bottom: 2px solid var(--color-primary);
+    }
+    
+    .description-block p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      margin: 0 0 var(--spacing-md) 0;
+    }
+    
+    .description-block p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .description-block ol,
+    .description-block ul {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      margin: 0 0 var(--spacing-md) 0;
+      padding-left: var(--spacing-xl);
+    }
+    
+    .description-block li {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .description-block li:last-child {
+      margin-bottom: 0;
+    }
+    
+    .description-block ol li {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .game-description-section {
+        padding: var(--spacing-xl) 0;
+      }
+      
+      .game-description-section .container {
+        padding: 0 var(--spacing-md);
+      }
+      
+      .description-block {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+      }
+      
+      .description-block h2 {
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-md);
+      }
+      
+      .description-block p,
+      .description-block ol,
+      .description-block ul {
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+      
+      .description-block ol,
+      .description-block ul {
+        padding-left: var(--spacing-lg);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .description-block h2 {
+        font-size: 1.25rem;
+      }
+      
+      .description-block p,
+      .description-block ol,
+      .description-block ul {
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      
+      .description-block ol,
+      .description-block ul {
+        padding-left: var(--spacing-md);
+      }
+    }
+  </style>
+  
+    <link rel="canonical" href="https://hiplayground.com/pages/game/lucky-toast.html">
+  
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695304116428787"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="game-area">
+    <!-- Game Header -->
+    <header id="game-header">
+      <div class="game-header-left">
+        <button id="btn-back" class="game-header-btn" data-i18n-title="play.back" title="뒤로">←</button>
+      </div>
+      <div class="game-header-center">
+        <h1 id="game-title" data-i18n="common.loading">게임 로딩 중...</h1>
+      </div>
+      <div class="game-header-right">
+        <button id="btn-reset" class="game-header-btn" data-i18n-title="play.reset" title="리셋">🔄</button>
+        <button id="btn-fullscreen" class="game-header-btn" data-i18n-title="play.fullscreen" title="전체화면">⛶</button>
+        <button id="btn-mute" class="game-header-btn" data-i18n-title="play.mute" title="음소거">🔊</button>
+      </div>
+    </header>
+
+    <!-- Game Stats (optional, can be hidden if game doesn't use it) -->
+    <div id="game-stats" style="display: none;">
+      <div class="game-stat">
+        <div class="game-stat-label" data-i18n="play.score">점수</div>
+        <div class="game-stat-value" id="game-score">0</div>
+      </div>
+      <div class="game-stat">
+        <div class="game-stat-label" data-i18n="play.level">레벨</div>
+        <div class="game-stat-value" id="game-level">1</div>
+      </div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="game-container">
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p style="margin-top: var(--spacing-md);" data-i18n="common.loadingGame">게임을 불러오는 중...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO Content Section (Static HTML) -->
+  <article class="game-seo-content" style="margin-top: 40px; padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
+    <h1>럭키 토스트</h1>
+    <p>화구를 늘리고 알바를 고용하세요! 돌발 이벤트가 가득한 경영 게임.</p>
+    
+    <section class="game-description-section">
+      <div class="container">
+        <div class="description-block">
+<h2>🕹️ 게임 방법</h2>
+<ol>
+<li>게임을 시작하면 화구 1개와 초기 자금 $100이 주어집니다.</li>
+<li>화구에서 &quot;굽기&quot; 버튼을 클릭하면 토스트를 굽기 시작합니다. 완성되면 &quot;서빙&quot; 버튼이 나타납니다.</li>
+<li>손님이 대기열에 있을 때 &quot;서빙&quot; 버튼을 클릭하면 토스트를 제공하고 돈을 받습니다.</li>
+<li>토스트는 4가지 종류가 있습니다: 탄 토스트(가격 $0), 평범 토스트($5), 스페셜 토스트($25), 무지개 토스트($150).</li>
+<li>화구 옆의 잠금 아이콘을 클릭하고 비용을 지불하면 화구를 추가할 수 있습니다.</li>
+<li>알바를 고용하면 해당 화구가 자동으로 토스트를 굽고 서빙합니다. 알바 고용 시 임대료가 증가합니다.</li>
+<li>일 중간에 돌발 이벤트가 발생합니다: 골든 타임(수입 2배), 정전(굽기/서빙 불가), 미식가 방문(다음 토스트 가격 5배), 위생 점검(벌금 $50), 성격 급한 손님(인내심 감소) 등.</li>
+<li>화면 상단의 타이머가 0이 되면 하루가 끝납니다. 하루가 끝나면 임대료를 지불해야 합니다.</li>
+<li>손님의 인내심이 0이 되면 손님이 떠나고 라이프가 1 감소합니다. 라이프가 0이 되면 게임 오버입니다.</li>
+<li>가능한 한 많은 날을 버티며 최고 기록을 세우는 것이 목표입니다.</li>
+</ol>
+</div>
+<div class="description-block">
+<h2>🏆 공략 팁 &amp; 전략</h2>
+<ul>
+<li>초반 전략: 첫 화구로 빠르게 토스트를 굽고 서빙하여 자금을 모으세요. 초반에는 평범 토스트가 가장 많이 나오므로 안정적인 수입을 제공합니다.</li>
+<li>화구 확장: 두 번째 화구($200)를 가능한 한 빨리 확보하는 것이 중요합니다. 화구가 많을수록 동시에 더 많은 토스트를 만들 수 있어 수입이 크게 증가합니다.</li>
+<li>알바 고용: 알바를 고용하면 수동 작업 없이 자동으로 토스트를 만들 수 있지만, 임대료가 영구적으로 증가합니다. 여러 화구를 운영할 때 알바를 고용하면 효율이 크게 증가합니다.</li>
+<li>업그레이드 선택: 매운 소스는 가격을 50% 올리지만 탄 토스트 확률이 증가합니다. 안전 제일은 탄 토스트를 완전히 막지만 굽는 속도가 느려집니다. 도박사의 팬은 대박 확률을 높이지만 평범 토스트가 나오지 않습니다.</li>
+<li>이벤트 대응: 골든 타임 중에는 모든 화구를 최대한 활용하여 수입을 2배로 늘리세요. 정전 중에는 손님이 기다리므로 정전이 끝나면 빠르게 서빙해야 합니다. 미식가 방문 시 다음 토스트를 최대한 비싼 것으로 만들기 위해 조금 기다리는 것도 좋은 전략입니다.</li>
+<li>자금 관리: 임대료를 지불할 수 있을 만큼의 자금을 항상 유지하세요. 임대료를 지불하지 못하면 게임 오버입니다. 위생 점검 이벤트($50)에 대비하여 여유 자금을 확보하는 것이 중요합니다.</li>
+<li>손님 관리: 손님의 인내심이 떨어지기 전에 토스트를 서빙해야 합니다. 손님이 많이 몰릴 때는 여러 화구를 동시에 운영하여 빠르게 서빙하는 것이 중요합니다. 서비스 사탕 업그레이드는 손님의 인내심을 증가시켜 도움이 됩니다.</li>
+<li>리스크 관리: 도박사의 팬이나 매운 소스 같은 업그레이드는 높은 수익을 제공하지만 리스크가 있습니다. 안정적인 플레이를 원한다면 안전 제일을 선택하는 것이 좋습니다.</li>
+</ul>
+</div>
+<div class="description-block">
+<h2>ℹ️ 게임 소개</h2>
+<p>럭키 토스트는 토스트 가게를 운영하는 경영 시뮬레이션 게임입니다. 화구를 늘리고 알바를 고용하여 가게를 확장하고, 돌발 이벤트에 대응하며, 손님들을 만족시켜 최대한 오래 운영하는 것이 목표입니다. 토스트를 굽는 결과는 확률에 따라 결정되며, 운 좋게 무지개 토스트를 만들면 큰 수익을 얻을 수 있습니다. 게임을 통해 자원 관리 능력과 빠른 판단력을 기를 수 있으며, 리스크와 수익의 균형을 고려한 전략적 사고력을 향상시킬 수 있습니다. 돌발 이벤트 시스템을 통해 예측 불가능한 상황에서의 대응 능력을 기를 수 있으며, 시간 관리와 멀티태스킹 능력을 향상시킬 수 있습니다. 게임을 통해 경영의 재미와 도전 정신을 느낄 수 있으며, 높은 점수를 달성하는 성취감을 얻을 수 있습니다. 초등학생부터 성인까지 누구나 쉽게 즐길 수 있으면서도 깊이 있는 전략적 요소를 제공하는 교육적 가치가 있는 게임입니다.</p>
+</div>
+      </div>
+    </section>
+  </article>
+
+  <!-- Game Description Section (SEO optimized) -->
+  <section id="game-description-section" class="game-description-section" style="display: none;">
+    <div class="container">
+      <div id="game-description-content"></div>
+    </div>
+  </section>
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/language-selector.js"></script>
+  <script src="../../assets/js/analytics.js"></script>
+  <script src="../../assets/js/router.js"></script>
+  <script src="../../assets/js/app.js"></script>
+  <script src="../../assets/js/game-descriptions.js"></script>
+  <script src="../../shared/game-shell.js"></script>
+  
+  <script>
+    /**
+     * Load and render game description for SEO
+     */
+    function loadGameDescription(gameId) {
+      try {
+        // Wait for I18n to be ready
+        if (typeof I18n === 'undefined') {
+          console.warn('I18n not loaded yet');
+          setTimeout(() => loadGameDescription(gameId), 500);
+          return;
+        }
+        
+        // Get description data from I18n system (falls back to GameDescriptions)
+        const descriptionData = I18n.getGameDescriptionData(gameId);
+        
+        if (!descriptionData) {
+          // If no specific description, use default from game data
+          const game = App.getGameById(gameId);
+          if (game) {
+            renderDefaultDescription(game);
+          }
+          return;
+        }
+        
+        const section = document.getElementById('game-description-section');
+        const content = document.getElementById('game-description-content');
+        
+        if (!section || !content) return;
+        
+        let html = '';
+        
+        // How to Play section
+        if (descriptionData.howToPlay && descriptionData.howToPlay.title) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.howToPlay.title}</h2>`;
+          if (descriptionData.howToPlay.steps && descriptionData.howToPlay.steps.length > 0) {
+            html += '<ol>';
+            descriptionData.howToPlay.steps.forEach(step => {
+              html += `<li>${step}</li>`;
+            });
+            html += '</ol>';
+          }
+          html += '</div>';
+        }
+        
+        // Strategy section
+        if (descriptionData.strategy && descriptionData.strategy.title) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.strategy.title}</h2>`;
+          if (descriptionData.strategy.tips && descriptionData.strategy.tips.length > 0) {
+            html += '<ul>';
+            descriptionData.strategy.tips.forEach(tip => {
+              html += `<li>${tip}</li>`;
+            });
+            html += '</ul>';
+          }
+          html += '</div>';
+        }
+        
+        // About section
+        if (descriptionData.about && descriptionData.about.title) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.about.title}</h2>`;
+          if (descriptionData.about.description) {
+            html += `<p>${descriptionData.about.description}</p>`;
+          }
+          html += '</div>';
+        }
+        
+        content.innerHTML = html;
+        section.style.display = 'block';
+      } catch (error) {
+        console.error('Error loading game description:', error);
+      }
+    }
+    
+    /**
+     * Render default description if specific one doesn't exist
+     */
+    function renderDefaultDescription(game) {
+      const section = document.getElementById('game-description-section');
+      const content = document.getElementById('game-description-content');
+      
+      if (!section || !content) return;
+      
+      let html = '';
+      html += '<div class="description-block">';
+      html += '<h2>게임 방법 (How to Play)</h2>';
+      html += `<p>${game.description}</p>`;
+      html += '<p>게임을 시작하여 즐기세요. 상세한 게임 방법은 게임 내에서 안내됩니다.</p>';
+      html += '</div>';
+      
+      html += '<div class="description-block">';
+      html += '<h2>게임 소개 (About)</h2>';
+      html += `<p>${game.title}은(는) ${game.category} 카테고리의 게임으로, 재미있고 교육적인 경험을 제공합니다. 게임을 통해 두뇌 회전과 재미를 동시에 느낄 수 있으며, 다양한 능력을 향상시킬 수 있습니다.</p>`;
+      html += '</div>';
+      
+      content.innerHTML = html;
+      section.style.display = 'block';
+    }
+    
+    // Page-specific script
+    (async function() {
+      await App.init();
+      
+      // Use game ID directly (static file)
+      const gameId = 'lucky-toast';
+      
+      // Verify game exists
+      const game = App.getGameById(gameId);
+      if (!game) {
+        alert('게임을 찾을 수 없습니다.');
+        window.location.href = '../../index.html';
+        return;
+      }
+      
+      // Initialize game shell
+      await GameShell.init(gameId);
+      
+      // Load and display game description (after game is loaded)
+      loadGameDescription(gameId);
+      
+      // Reload description when language changes
+      document.addEventListener('i18n:loaded', () => {
+        loadGameDescription(gameId);
+        // Also update game title in header
+        if (typeof GameShell !== 'undefined' && GameShell.gameId) {
+          const title = document.getElementById('game-title');
+          if (title && typeof I18n !== 'undefined') {
+            // Get manifest to update title
+            GameShell.loadManifest(gameId).then(manifest => {
+              if (manifest) {
+                title.textContent = I18n.getGameTitle(gameId, manifest);
+              }
+            });
+          }
+        }
+      });
+      
+      // Track page view
+      Analytics.trackPageView(`play:${gameId}`);
+    })();
+  </script></body>
+</html>
+

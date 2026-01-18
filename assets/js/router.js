@@ -112,7 +112,7 @@ const Router = {
    */
   goToPlay(gameId) {
     const basePath = this.getBasePath();
-    window.location.href = `${basePath}play.html?id=${encodeURIComponent(gameId)}`;
+    window.location.href = `${basePath}game/${encodeURIComponent(gameId)}.html`;
   },
   
   /**
