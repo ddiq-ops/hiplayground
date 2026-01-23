@@ -45,7 +45,6 @@ hiplayground/
 │   │   ├── i18n.js                 # 다국어 지원 시스템
 │   │   ├── language-selector.js    # 언어 선택기 UI
 │   │   ├── analytics.js            # 분석 추적
-│   │   ├── security.js             # 도메인 보안 체크
 │   │   └── game-descriptions.js    # 게임 설명 데이터
 │   └── games/                      # 게임별 에셋 (이미지)
 │       ├── omok/
@@ -478,8 +477,6 @@ games/{game-id}/
 - **저장 위치**: 브라우저 로컬 스토리지만 사용
 - **서버 전송**: 없음
 
-### 도메인 보안
-- `assets/js/security.js`: 도메인 검증 기능
 
 ---
 
