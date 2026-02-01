@@ -134,7 +134,135 @@
     <section class="section">
       <h2 class="section-title" data-i18n="home.allGames">모든 게임</h2>
       <div class="grid grid-3" id="all-games-grid">
-        <div class="loading-container">
+        <!-- Static SEO Content (visible without JavaScript) -->
+        <div class="card game-card" data-game-id="clicker">
+          <div class="game-card-icon">🎯</div>
+          <h3 class="game-card-title"><a href="pages/game/clicker.html" style="text-decoration: none; color: inherit;">클리커 게임</a></h3>
+          <div class="game-card-description">빠르게 클릭해서 점수를 모아보세요!</div>
+          <a href="pages/game/clicker.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="memory">
+          <div class="game-card-icon">🧠</div>
+          <h3 class="game-card-title"><a href="pages/game/memory.html" style="text-decoration: none; color: inherit;">기억력 게임</a></h3>
+          <div class="game-card-description">카드를 뒤집어서 같은 그림을 찾아보세요!</div>
+          <a href="pages/game/memory.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="math-quiz">
+          <div class="game-card-icon">💯</div>
+          <h3 class="game-card-title"><a href="pages/game/math-quiz.html" style="text-decoration: none; color: inherit;">초등 수학 마스터</a></h3>
+          <div class="game-card-description">초등 저학년 필수! 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요.</div>
+          <a href="pages/game/math-quiz.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="weapon-levelup">
+          <div class="game-card-icon">⚔️</div>
+          <h3 class="game-card-title"><a href="pages/game/weapon-levelup.html" style="text-decoration: none; color: inherit;">내 무기만 레벨업</a></h3>
+          <div class="game-card-description">대장간에서 무기를 강화하고 상점에서 판매하세요!</div>
+          <a href="pages/game/weapon-levelup.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="omok">
+          <div class="game-card-icon">⚫</div>
+          <h3 class="game-card-title"><a href="pages/game/omok.html" style="text-decoration: none; color: inherit;">오목 마스터</a></h3>
+          <div class="game-card-description">5개를 연속으로 놓아 승리하세요! 고스트 스톤과 마지막 수 표시로 더 편리하게 즐기세요.</div>
+          <a href="pages/game/omok.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="chess">
+          <div class="game-card-icon">♟️</div>
+          <h3 class="game-card-title"><a href="pages/game/chess.html" style="text-decoration: none; color: inherit;">체스</a></h3>
+          <div class="game-card-description">전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.</div>
+          <a href="pages/game/chess.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="speed-number">
+          <div class="game-card-icon">🔢</div>
+          <h3 class="game-card-title"><a href="pages/game/speed-number.html" style="text-decoration: none; color: inherit;">순발력 숫자 터치</a></h3>
+          <div class="game-card-description">눈보다 빠른 손! 1부터 50까지 숫자를 순서대로 찾아 터치하세요. 난이도별 10단계 스테이지 도전!</div>
+          <a href="pages/game/speed-number.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="physics-box">
+          <div class="game-card-icon">💣</div>
+          <h3 class="game-card-title"><a href="pages/game/physics-box.html" style="text-decoration: none; color: inherit;">와르르 상자</a></h3>
+          <div class="game-card-description">공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요.</div>
+          <a href="pages/game/physics-box.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="math-quiz-hard">
+          <div class="game-card-icon">🧠</div>
+          <h3 class="game-card-title"><a href="pages/game/math-quiz-hard.html" style="text-decoration: none; color: inherit;">암산 천재 (고학년)</a></h3>
+          <div class="game-card-description">초등 고학년 도전! 큰 수 연산과 사칙연산 혼합 계산을 마스터하세요.</div>
+          <a href="pages/game/math-quiz-hard.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="gravity-run">
+          <div class="game-card-icon">🏃</div>
+          <h3 class="game-card-title"><a href="pages/game/gravity-run.html" style="text-decoration: none; color: inherit;">그래비티 런: 제로</a></h3>
+          <div class="game-card-description">중력을 거스르는 질주! 터치 한 번으로 위아래를 뒤집으세요. 극한의 속도감에 도전하라.</div>
+          <a href="pages/game/gravity-run.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="infinite-space">
+          <div class="game-card-icon">🚀</div>
+          <h3 class="game-card-title"><a href="pages/game/infinite-space.html" style="text-decoration: none; color: inherit;">인피니티 스페이스: 로그</a></h3>
+          <div class="game-card-description">끝없는 우주 전쟁! 적을 파괴하고, 경험치를 모아 나만의 전함을 진화시키세요.</div>
+          <a href="pages/game/infinite-space.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="mystic-fortune">
+          <div class="game-card-icon">🔮</div>
+          <h3 class="game-card-title"><a href="pages/game/mystic-fortune.html" style="text-decoration: none; color: inherit;">오늘의 운세</a></h3>
+          <div class="game-card-description">별들이 속삭이는 당신의 하루 운세를 확인하세요.</div>
+          <a href="pages/game/mystic-fortune.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="code-rabbit">
+          <div class="game-card-icon">🐰</div>
+          <h3 class="game-card-title"><a href="pages/game/code-rabbit.html" style="text-decoration: none; color: inherit;">코드 래빗</a></h3>
+          <div class="game-card-description">토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)</div>
+          <a href="pages/game/code-rabbit.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="word-pop">
+          <div class="game-card-icon">🫧</div>
+          <h3 class="game-card-title"><a href="pages/game/word-pop.html" style="text-decoration: none; color: inherit;">워드 팝</a></h3>
+          <div class="game-card-description">영어 단어 방울을 터뜨리는 액션 게임</div>
+          <a href="pages/game/word-pop.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="jelly-legend">
+          <div class="game-card-icon">🍮</div>
+          <h3 class="game-card-title"><a href="pages/game/jelly-legend.html" style="text-decoration: none; color: inherit;">젤리 레전드</a></h3>
+          <div class="game-card-description">젤리 합치기 로그라이크 게임</div>
+          <a href="pages/game/jelly-legend.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="neon-beat">
+          <div class="game-card-icon">🎹</div>
+          <h3 class="game-card-title"><a href="pages/game/neon-beat.html" style="text-decoration: none; color: inherit;">네온 비트</a></h3>
+          <div class="game-card-description">20곡의 EDM과 함께하는 4/6/8키 리듬 게임</div>
+          <a href="pages/game/neon-beat.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="guardian-defense">
+          <div class="game-card-icon">🛡️</div>
+          <h3 class="game-card-title"><a href="pages/game/guardian-defense.html" style="text-decoration: none; color: inherit;">가디언 디펜스</a></h3>
+          <div class="game-card-description">타워 디펜스와 로그라이크의 만남! 카드를 선택해 전략을 완성하세요.</div>
+          <a href="pages/game/guardian-defense.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="emoji-survivor">
+          <div class="game-card-icon">🧙‍♂️</div>
+          <h3 class="game-card-title"><a href="pages/game/emoji-survivor.html" style="text-decoration: none; color: inherit;">이모지 서바이버</a></h3>
+          <div class="game-card-description">몰려오는 이모지 군단을 막아내세요! 로그라이크 액션.</div>
+          <a href="pages/game/emoji-survivor.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="idle-factory">
+          <div class="game-card-icon">🏭</div>
+          <h3 class="game-card-title"><a href="pages/game/idle-factory.html" style="text-decoration: none; color: inherit;">아이들 팩토리</a></h3>
+          <div class="game-card-description">자동화 경영 게임! 생산라인을 구축하고 업그레이드해 점점 커지는 공장 운영. 30스테이지에 도전하세요!</div>
+          <a href="pages/game/idle-factory.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="lucky-toast">
+          <div class="game-card-icon">🍞</div>
+          <h3 class="game-card-title"><a href="pages/game/lucky-toast.html" style="text-decoration: none; color: inherit;">럭키 토스트</a></h3>
+          <div class="game-card-description">운빨로 만드는 최고의 토스트! 임대료를 내고 살아남으세요.</div>
+          <a href="pages/game/lucky-toast.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <div class="card game-card" data-game-id="jelly-maze">
+          <div class="game-card-icon">🍮</div>
+          <h3 class="game-card-title"><a href="pages/game/jelly-maze.html" style="text-decoration: none; color: inherit;">젤리 메이즈</a></h3>
+          <div class="game-card-description">타워로 미로를 만들어 젤리를 막으세요! 길찾기 디펜스.</div>
+          <a href="pages/game/jelly-maze.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">플레이</a>
+        </div>
+        <!-- Dynamic content will be loaded here by JavaScript (if available) -->
+        <div class="loading-container" style="display: none;">
           <div class="spinner"></div>
         </div>
       </div>
@@ -170,6 +298,15 @@
       // Load all games
       const allGames = App.getGames();
       const allGamesGrid = document.getElementById('all-games-grid');
+      
+      // Hide loading spinner if it exists
+      const loadingContainer = allGamesGrid.querySelector('.loading-container');
+      if (loadingContainer) {
+        loadingContainer.style.display = 'none';
+      }
+      
+      // Update game cards with dynamic content (enhances static HTML for JS users)
+      // This will replace static HTML with interactive cards, but static HTML is still visible to bots
       UI.renderGameCards(allGamesGrid, allGames);
       
       // Load continue playing
