@@ -143,6 +143,25 @@
       "arcade": { "title": "🍕 Arcade", "desc": "Short, punchy sessions with classic arcade vibes." }
     }
   },
+  "serviceIntro": {
+    "title": "🎮 Hi Playground - A Free Web Game Platform for Everyone",
+    "subtitle1": "A curated collection of high-quality mini games with no installation",
+    "p1": "Hi Playground offers carefully selected mini games that run instantly in your browser without downloads or complex sign-up steps. Beyond simple entertainment, the platform focuses on quality content that encourages logical thinking and creativity.",
+    "subtitle2": "Strategy and brain-training content that builds thinking skills",
+    "p2": "The games are designed not only for passing time, but also for improving cognitive ability and strategic thinking. Players can practice logical problem-solving through coding puzzles and train concentration through memory and speed-number games. With intuitive interfaces and immersive gameplay, each game is accessible and valuable for all ages.",
+    "subtitle3": "Unlimited fun across diverse genres",
+    "list1Title": "Economy and management simulation:",
+    "list1Prefix": "Games like ",
+    "list1Suffix": " help players practice resource management and efficient operating strategies.",
+    "list2Title": "Math and arithmetic training:",
+    "list2Prefix": "",
+    "list2Suffix": " and similar games strengthen core calculation skills and build number sense naturally through play.",
+    "list3Title": "Action and rhythm:",
+    "list3Prefix": "",
+    "list3Suffix": " deliver strong immersion through dynamic gameplay, sound, and visual design.",
+    "subtitle4": "A clean and safe web game experience",
+    "p3": "Hi Playground prioritizes a comfortable and safe environment for users. Through ongoing optimization and regular content updates, the platform continues to improve quality and reflect user feedback to provide a better experience. Start exploring smart and enjoyable play on Hi Playground today."
+  },
   "gameDetails": {
     "clicker": {
       "title": "Clicker Game",

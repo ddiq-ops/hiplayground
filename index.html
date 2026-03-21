@@ -67,6 +67,48 @@
     .continue-game-icon {
       font-size: 3rem;
     }
+
+    #service-intro {
+      max-width: 1000px;
+      margin: var(--spacing-2xl) auto 0;
+      padding: clamp(1rem, 3vw, 2rem);
+      background-color: color-mix(in srgb, var(--color-bg-card) 92%, var(--color-primary) 8%);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      text-align: left;
+    }
+
+    #service-intro h2 {
+      color: var(--color-text);
+      font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+      margin-bottom: var(--spacing-md);
+      line-height: 1.4;
+    }
+
+    #service-intro h3 {
+      color: var(--color-text);
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      margin: var(--spacing-lg) 0 var(--spacing-sm);
+    }
+
+    #service-intro p,
+    #service-intro li {
+      color: var(--color-text-light);
+      line-height: 1.8;
+      font-size: 1rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    #service-intro ul {
+      margin: var(--spacing-sm) 0 0 var(--spacing-lg);
+    }
+
+    #service-intro a {
+      color: var(--color-accent-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-weight: 600;
+    }
     
     @media (max-width: 768px) {
       .hero h1 {
@@ -266,6 +308,43 @@
           <div class="spinner"></div>
         </div>
       </div>
+    </section>
+
+    <section id="service-intro" class="p-8 mt-12" aria-label="서비스 소개">
+      <h2 data-i18n="serviceIntro.title">🎮 하이 플레이그라운드(Hi Playground) - 누구나 즐기는 무료 웹 게임 플랫폼</h2>
+      <h3 data-i18n="serviceIntro.subtitle1">설치 없이 즐기는 고품질 미니 게임의 집합소</h3>
+      <p data-i18n="serviceIntro.p1">하이 플레이그라운드는 별도의 다운로드나 복잡한 회원가입 절차 없이, 웹 브라우저만 있다면 언제 어디서나 즉시 실행 가능한 미니 게임들을 엄선하여 제공합니다. 우리는 단순한 오락을 넘어, 사용자의 논리적 사고와 창의력을 자극하는 양질의 콘텐츠를 지향합니다.</p>
+
+      <h3 data-i18n="serviceIntro.subtitle2">사고력을 키우는 전략 및 두뇌 개발 콘텐츠</h3>
+      <p data-i18n="serviceIntro.p2">하이 플레이그라운드의 게임들은 단순히 시간을 보내는 용도를 넘어, 인지 능력 향상과 전략적 사고를 돕도록 설계되었습니다. '코딩 퍼즐'을 통해 논리적인 문제 해결 과정을 경험하고, '기억력 게임'과 '순발력 숫자 터치'를 통해 집중력을 훈련할 수 있습니다. 각 게임은 직관적인 인터페이스와 몰입감 있는 게임성을 갖추고 있어 모든 연령층이 쉽고 유익하게 즐길 수 있습니다.</p>
+
+      <h3 data-i18n="serviceIntro.subtitle3">다양한 장르로 만나는 무한한 즐거움</h3>
+      <ul>
+        <li>
+          <strong data-i18n="serviceIntro.list1Title">경제 및 경영 시뮬레이션:</strong>
+          <span data-i18n="serviceIntro.list1Prefix"> </span>
+          <a href="pages/game/idle-factory.html" data-i18n="gameDetails.idle-factory.title">아이들 팩토리</a>,
+          <a href="pages/game/lucky-toast.html" data-i18n="gameDetails.lucky-toast.title">럭키 토스트</a>
+          <span data-i18n="serviceIntro.list1Suffix">와 같은 게임을 통해 자원 관리와 효율적인 운영 전략을 세우며 비즈니스 감각을 익힐 수 있습니다.</span>
+        </li>
+        <li>
+          <strong data-i18n="serviceIntro.list2Title">수학 및 연산 트레이닝:</strong>
+          <span data-i18n="serviceIntro.list2Prefix"> </span>
+          <a href="pages/game/math-quiz.html" data-i18n="gameDetails.math-quiz.title">초등 수학 마스터</a>,
+          <a href="pages/game/math-quiz-hard.html" data-i18n="gameDetails.math-quiz-hard.title">암산 천재 (고학년)</a>
+          <span data-i18n="serviceIntro.list2Suffix">등 기초 연산 능력을 재미있게 강화할 수 있는 게임을 통해 숫자에 대한 감각을 자연스럽게 키워줍니다.</span>
+        </li>
+        <li>
+          <strong data-i18n="serviceIntro.list3Title">액션 및 리듬:</strong>
+          <span data-i18n="serviceIntro.list3Prefix"> </span>
+          <a href="pages/game/infinite-space.html" data-i18n="gameDetails.infinite-space.title">인피니티 스페이스: 로그</a>,
+          <a href="pages/game/neon-beat.html" data-i18n="gameDetails.neon-beat.title">네온 비트</a>
+          <span data-i18n="serviceIntro.list3Suffix">는 뛰어난 사운드와 그래픽으로 사용자에게 높은 몰입감을 선사합니다.</span>
+        </li>
+      </ul>
+
+      <h3 data-i18n="serviceIntro.subtitle4">깨끗하고 안전한 웹 게임 환경 제공</h3>
+      <p data-i18n="serviceIntro.p3">하이 플레이그라운드는 사용자에게 쾌적하고 안전한 이용 환경을 제공하는 것을 최우선 가치로 삼습니다. 지속적인 시스템 최적화와 콘텐츠 업데이트를 통해 웹 게임 플랫폼으로서의 전문성을 유지하며, 사용자들의 피드백을 반영하여 더 나은 서비스를 만들어가고 있습니다. 지금 바로 하이 플레이그라운드에서 지적인 즐거움을 발견해 보세요!</p>
     </section>
   </main>
 
