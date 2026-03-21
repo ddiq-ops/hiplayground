@@ -144,3 +144,18 @@
   }
 }
 
+/* Improve readability for SEO description content on white backgrounds */
+.game-seo-content h1,
+.game-seo-content h2,
+.game-description-section .description-block h2 {
+  color: #1f2937 !important;
+}
+
+.game-seo-content p,
+.game-seo-content li,
+.game-description-section .description-block p,
+.game-description-section .description-block li,
+.game-description-section .description-block ol,
+.game-description-section .description-block ul {
+  color: #374151 !important;
+}
