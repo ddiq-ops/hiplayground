@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="피자를 먹을수록 길어지는 뱀! 레트로 감성 스네이크 게임, 피자 스네이크">
+  <title>피자 스네이크 - 하이 플레이그라운드</title>
+
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/theme.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../shared/game-shell.css">
+
+  <style>
+    .game-description-section { background-color: #f9f9f9; padding: var(--spacing-2xl) 0; border-top: 2px solid var(--color-border); }
+    .game-description-section .container { max-width: 900px; margin: 0 auto; padding: 0 var(--spacing-lg); }
+    .description-block { background: #fff; padding: var(--spacing-xl); margin-bottom: var(--spacing-xl); border-radius: var(--radius-lg); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+    .description-block:last-child { margin-bottom: 0; }
+    .description-block h2 { font-size: 1.75rem; margin: 0 0 var(--spacing-lg) 0; padding-bottom: var(--spacing-md); border-bottom: 2px solid var(--color-primary); }
+    .description-block p, .description-block ol, .description-block ul { line-height: 1.8; margin: 0 0 var(--spacing-md) 0; }
+    .description-block ol, .description-block ul { padding-left: var(--spacing-xl); }
+  </style>
+
+  <link rel="canonical" href="https://hiplayground.com/pages/game/pizza-snake.html">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695304116428787" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="game-area">
+    <header id="game-header">
+      <div class="game-header-left"><button id="btn-back" class="game-header-btn" data-i18n-title="play.back" title="뒤로">←</button></div>
+      <div class="game-header-center"><h1 id="game-title" data-i18n="common.loading">게임 로딩 중...</h1></div>
+      <div class="game-header-right">
+        <button id="btn-reset" class="game-header-btn" data-i18n-title="play.reset" title="리셋">🔄</button>
+        <button id="btn-fullscreen" class="game-header-btn" data-i18n-title="play.fullscreen" title="전체화면">⛶</button>
+        <button id="btn-mute" class="game-header-btn" data-i18n-title="play.mute" title="음소거">🔊</button>
+      </div>
+    </header>
+
+    <div id="game-stats" style="display: none;">
+      <div class="game-stat"><div class="game-stat-label" data-i18n="play.score">점수</div><div class="game-stat-value" id="game-score">0</div></div>
+      <div class="game-stat"><div class="game-stat-label" data-i18n="play.level">레벨</div><div class="game-stat-value" id="game-level">1</div></div>
+    </div>
+
+    <div id="game-container">
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p style="margin-top: var(--spacing-md);" data-i18n="common.loadingGame">게임을 불러오는 중...</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="game-description-section" class="game-description-section" style="display: none;">
+    <div class="container"><div id="game-description-content"></div></div>
+  </section>
+
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
+  <script src="../../assets/js/language-selector.js"></script>
+  <script src="../../assets/js/analytics.js"></script>
+  <script src="../../assets/js/router.js"></script>
+  <script src="../../assets/js/app.js"></script>
+  <script src="../../assets/js/game-descriptions.js"></script>
+  <script src="../../shared/game-shell.js"></script>
+  <script>
+    function loadGameDescription(gameId) {
+      try {
+        if (typeof I18n === 'undefined') { setTimeout(() => loadGameDescription(gameId), 500); return; }
+        const descriptionData = I18n.getGameDescriptionData(gameId);
+        const section = document.getElementById('game-description-section');
+        const content = document.getElementById('game-description-content');
+        if (!section || !content || !descriptionData) return;
+        let html = '';
+        if (descriptionData.howToPlay && descriptionData.howToPlay.title) {
+          html += `<div class="description-block"><h2>${descriptionData.howToPlay.title}</h2>`;
+          if (descriptionData.howToPlay.steps?.length) html += `<ol>${descriptionData.howToPlay.steps.map(step => `<li>${step}</li>`).join('')}</ol>`;
+          html += '</div>';
+        }
+        if (descriptionData.strategy && descriptionData.strategy.title) {
+          html += `<div class="description-block"><h2>${descriptionData.strategy.title}</h2>`;
+          if (descriptionData.strategy.tips?.length) html += `<ul>${descriptionData.strategy.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>`;
+          html += '</div>';
+        }
+        if (descriptionData.about && descriptionData.about.title) {
+          html += `<div class="description-block"><h2>${descriptionData.about.title}</h2><p>${descriptionData.about.description || ''}</p></div>`;
+        }
+        content.innerHTML = html;
+        section.style.display = html ? 'block' : 'none';
+      } catch (e) {
+        console.error('Error loading game description:', e);
+      }
+    }
+
+    (async function() {
+      await App.init();
+      const gameId = 'pizza-snake';
+      const game = App.getGameById(gameId);
+      if (!game) { alert('게임을 찾을 수 없습니다.'); window.location.href = '../../index.html'; return; }
+      await GameShell.init(gameId);
+      loadGameDescription(gameId);
+      document.addEventListener('i18n:loaded', () => loadGameDescription(gameId));
+      Analytics.trackPageView(`play:${gameId}`);
+    })();
+  </script>
+</body>
+</html>

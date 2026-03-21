@@ -13,6 +13,47 @@
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6695304116428787"
      crossorigin="anonymous"></script>
+
+  <style>
+    .category-intro-section {
+      margin: var(--spacing-xl) 0;
+      padding: var(--spacing-lg);
+      background: var(--color-bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+    }
+
+    .category-intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+    }
+
+    .category-intro-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+    }
+
+    .category-intro-card h3 {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .category-intro-card p {
+      color: var(--color-text-light);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .category-intro-card a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
@@ -78,6 +119,58 @@
       <input type="text" id="search-input" class="search-input" placeholder="게임 검색..." data-i18n="home.search">
     </div>
 
+    <!-- Static category description for SEO/content quality -->
+    <section class="category-intro-section" aria-label="카테고리 소개">
+      <h2 style="margin-bottom: 6px;" data-i18n="gamesPage.categoryIntro.title">카테고리 소개</h2>
+      <p style="color: var(--color-text-light); line-height: 1.7;" data-i18n="gamesPage.categoryIntro.subtitle">
+        하이 플레이그라운드는 아이들이 즐기며 학습할 수 있도록 카테고리별로 다양한 게임을 제공합니다.
+        아래 소개를 참고해 원하는 학습/놀이 목적에 맞는 게임을 골라보세요.
+      </p>
+
+      <div class="category-intro-grid">
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.action.title">⚡ 액션</h3>
+          <p data-i18n="gamesPage.categoryIntro.action.desc">순발력, 반응 속도, 집중력을 빠르게 끌어올리는 카테고리입니다.</p>
+          <a id="rep-link-action" href="game/speed-number.html" data-game-id="speed-number">대표 게임</a>
+        </article>
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.puzzle.title">🧩 퍼즐</h3>
+          <p data-i18n="gamesPage.categoryIntro.puzzle.desc">문제 해결력과 논리적 사고를 기르는 두뇌형 게임 모음입니다.</p>
+          <a id="rep-link-puzzle" href="game/jelly-legend.html" data-game-id="jelly-legend">대표 게임</a>
+        </article>
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.education.title">📘 교육</h3>
+          <p data-i18n="gamesPage.categoryIntro.education.desc">수학, 코딩, 단어 학습 등 학습 요소를 재미있게 훈련합니다.</p>
+          <a id="rep-link-education" href="game/math-quiz.html" data-game-id="math-quiz">대표 게임</a>
+        </article>
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.board.title">♟️ 보드</h3>
+          <p data-i18n="gamesPage.categoryIntro.board.desc">전략 수립과 장기적 사고가 중요한 정통 보드 게임 카테고리입니다.</p>
+          <a id="rep-link-board" href="game/chess.html" data-game-id="chess">대표 게임</a>
+        </article>
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.shooting.title">🚀 슈팅</h3>
+          <p data-i18n="gamesPage.categoryIntro.shooting.desc">정확한 조작과 회피, 업그레이드 전략을 함께 요구하는 장르입니다.</p>
+          <a id="rep-link-shooting" href="game/infinite-space.html" data-game-id="infinite-space">대표 게임</a>
+        </article>
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.strategy.title">🛡️ 전략</h3>
+          <p data-i18n="gamesPage.categoryIntro.strategy.desc">배치와 자원 운영을 통해 최적의 선택을 찾는 전략 중심 게임입니다.</p>
+          <a id="rep-link-strategy" href="game/guardian-defense.html" data-game-id="guardian-defense">대표 게임</a>
+        </article>
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.simulation.title">🏭 시뮬레이션</h3>
+          <p data-i18n="gamesPage.categoryIntro.simulation.desc">성장/운영의 재미를 통해 계획성과 자원 관리 능력을 키울 수 있습니다.</p>
+          <a id="rep-link-simulation" href="game/aqua-feed.html" data-game-id="aqua-feed">대표 게임</a>
+        </article>
+        <article class="category-intro-card">
+          <h3 data-i18n="gamesPage.categoryIntro.arcade.title">🍕 아케이드</h3>
+          <p data-i18n="gamesPage.categoryIntro.arcade.desc">짧고 강한 플레이로 몰입감을 주는 클래식 감성의 게임 모음입니다.</p>
+          <a id="rep-link-arcade" href="game/pizza-snake.html" data-game-id="pizza-snake">대표 게임</a>
+        </article>
+      </div>
+    </section>
+
     <!-- Games Grid -->
     <div class="grid grid-3" id="games-grid">
       <div class="loading-container">
@@ -89,7 +182,7 @@
   <!-- Footer -->
   <footer style="background-color: var(--color-bg-card); padding: var(--spacing-xl) 0; margin-top: var(--spacing-2xl); text-align: center; color: var(--color-text-light);">
     <div class="container">
-      <p>&copy; 2024 <span data-i18n="site.name">하이 플레이그라운드</span>. <span data-i18n="common.copyright">모든 권리 보유</span>.</p>
+      <p>&copy; 2026 <span data-i18n="site.name">하이 플레이그라운드</span>. <span data-i18n="common.copyright">모든 권리 보유</span>.</p>
     </div>
   </footer>
 
@@ -106,6 +199,18 @@
     // Page-specific script
     (async function() {
       await App.init();
+      
+      // Localize representative game link texts with game titles
+      function updateRepLinks() {
+        const linkLabel = I18n.t('gamesPage.categoryIntro.linkLabel', '대표 게임');
+        document.querySelectorAll('.category-intro-card a[data-game-id]').forEach(a => {
+          const gid = a.getAttribute('data-game-id');
+          const title = I18n.getGameTitle(gid, null, App.getGameById(gid)) || gid;
+          a.textContent = `${linkLabel}: ${title}`;
+        });
+      }
+      updateRepLinks();
+      document.addEventListener('i18n:loaded', updateRepLinks);
       
       const gamesGrid = document.getElementById('games-grid');
       const categoryFilter = document.getElementById('filter-category');

@@ -54,26 +54,26 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "lastUpdated": "Last updated: January 1, 2024",
+    "lastUpdated": "Last updated: March 21, 2026",
     "section1": {
       "title": "1. Purpose of Personal Information Processing",
-      "content": "Hi Playground is a child-friendly game platform that does not collect personal information. Game progress is stored only on the user's browser and is not transmitted to any server."
+      "content": "Hi Playground may process information required for game delivery, service reliability, and advertising. Game progress is primarily stored in the user's browser."
     },
     "section2": {
       "title": "2. Personal Information Items Collected",
-      "content": "Currently, Hi Playground does not collect any personal information. Data such as game scores and progress are stored only on the user's device."
+      "content": "We do not directly collect account registration data. However, third-party providers such as Google AdSense may process cookies, ad identifiers, device/browser information, and IP address."
     },
     "section3": {
       "title": "3. Retention and Use Period of Personal Information",
-      "content": "Since we do not collect personal information, retention and use periods do not apply. Game data stored in the browser can be deleted by the user at any time."
+      "content": "Game data saved in browser local storage may remain until the user deletes it. Retention periods for data processed by third-party services follow each provider's policy."
     },
     "section4": {
       "title": "4. Protection of Children's Personal Information",
-      "content": "Hi Playground does not knowingly collect personal information from children under the age of 13. All of our services are designed to be used without collecting personal information."
+      "content": "Hi Playground strives not to knowingly collect personal information from children under 13. For child-related privacy inquiries or deletion requests, please contact us through the channel below."
     },
     "section5": {
       "title": "5. Cookies and Local Storage",
-      "content": "We may use browser local storage to save game progress. This data is stored only on the user's device and is not transmitted to external servers. Users can delete this data at any time through browser settings."
+      "content": "We may use browser local storage to save game progress. Third-party services may also use cookies or similar technologies for ad delivery and measurement. Users can manage or delete cookies/site data in browser settings."
     },
     "section6": {
       "title": "6. Changes to Privacy Policy",
@@ -87,7 +87,7 @@
   },
   "terms": {
     "title": "Terms of Service",
-    "lastUpdated": "Last updated: January 1, 2024",
+    "lastUpdated": "Last updated: March 21, 2026",
     "section1": {
       "title": "1. Service Introduction",
       "content": "Hi Playground is a free online game platform for children. These terms apply to all use of Hi Playground services."
@@ -126,6 +126,21 @@
       "title": "8. Contact",
       "content": "If you have any questions about these terms of service, please contact us at:",
       "email": "Email: ddiaddiq@gmail.com"
+    }
+  },
+  "gamesPage": {
+    "categoryIntro": {
+      "title": "Category Guide",
+      "subtitle": "Hi Playground offers a variety of games by category so that kids can have fun while learning. Use the guide below to pick the right games for your learning or play goals.",
+      "linkLabel": "Featured",
+      "action": { "title": "⚡ Action", "desc": "Boost reaction time, reflexes, and focus with fast-paced play." },
+      "puzzle": { "title": "🧩 Puzzle", "desc": "Brain-teasing games that build problem-solving and logical thinking." },
+      "education": { "title": "📘 Education", "desc": "Learn math, coding, and words through fun interactive play." },
+      "board": { "title": "♟️ Board", "desc": "Classic board games that require planning and long-term strategy." },
+      "shooting": { "title": "🚀 Shooting", "desc": "Precision control, dodging, and upgrade strategy combined." },
+      "strategy": { "title": "🛡️ Strategy", "desc": "Find optimal choices through placement and resource management." },
+      "simulation": { "title": "🏭 Simulation", "desc": "Enjoy growth and management while building planning skills." },
+      "arcade": { "title": "🍕 Arcade", "desc": "Short, punchy sessions with classic arcade vibes." }
     }
   },
   "gameDetails": {
