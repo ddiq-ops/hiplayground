@@ -139,6 +139,48 @@
      crossorigin="anonymous"></script>
 </head>
 <body>
+
+  <article class="game-seo-content" style="margin-top: 40px; padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
+    <h1>코드 래빗</h1>
+    <p>토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)</p>
+    
+    <section class="game-description-section">
+      <div class="container">
+        <div class="description-block">
+<h2>🕹️ 게임 방법</h2>
+<ol>
+<li>게임을 시작하면 토끼와 당근, 그리고 명령 블록들이 표시됩니다.</li>
+<li>명령 블록(앞으로, 오른쪽, 왼쪽 등)을 순서대로 배치하여 토끼가 당근에 도달하도록 프로그래밍합니다.</li>
+<li>명령 블록을 클릭하여 실행 순서대로 추가합니다.</li>
+<li>&quot;실행&quot; 버튼을 클릭하면 토끼가 프로그래밍된 명령에 따라 움직입니다.</li>
+<li>토끼가 당근에 도달하면 스테이지를 클리어하고 다음 레벨로 진행합니다.</li>
+<li>레벨이 올라갈수록 더 복잡한 명령 조합이 필요합니다.</li>
+<li>반복문, 조건문 등의 고급 개념도 점진적으로 학습할 수 있습니다.</li>
+</ol>
+</div>
+<div class="description-block">
+<h2>🏆 공략 팁 &amp; 전략</h2>
+<ul>
+<li>단계별로 문제를 분해하여 해결하세요. 토끼가 당근에 도달하기까지 필요한 이동을 먼저 파악한 후, 그에 필요한 명령을 순서대로 배치하는 것이 중요합니다. 예를 들어 &quot;3칸 앞으로, 오른쪽, 2칸 앞으로&quot;처럼 단계를 나누어 생각하면 쉽게 해결할 수 있습니다.</li>
+<li>반복 패턴을 활용하세요. 같은 동작을 여러 번 반복해야 하는 경우 반복문 블록을 사용하면 코드를 간결하게 만들 수 있습니다. 예를 들어 &quot;앞으로 5번&quot;이 필요하면 반복 블록을 사용하는 것이 효율적입니다. 문제를 풀 때 패턴이 있는지 먼저 확인하는 습관을 기르세요.</li>
+<li>실행 전에 머릿속으로 시뮬레이션을 해보세요. 명령 블록을 배치한 후 토끼가 어떻게 움직일지 머릿속으로 따라가 보면 실수 없이 문제를 해결할 수 있습니다. 특히 방향 전환과 이동 거리를 정확히 계산하는 것이 중요합니다.</li>
+<li>점진적으로 복잡한 문제에 도전하세요. 기본 명령(앞으로, 회전)을 완벽히 이해한 후에 반복문, 조건문 같은 고급 개념을 학습하는 것이 좋습니다. 각 개념을 충분히 이해하고 익숙해진 후 다음 단계로 넘어가는 것이 중요합니다.</li>
+</ul>
+</div>
+<div class="description-block">
+<h2>ℹ️ 게임 소개</h2>
+<p>코드 래빗은 코딩 로직을 게임을 통해 쉽고 재미있게 학습할 수 있는 교육 게임입니다. 블록 기반 프로그래밍 방식을 통해 초등학생들도 부담 없이 코딩의 기본 개념을 익힐 수 있습니다. 게임을 통해 순차적 사고, 논리적 추론, 문제 해결 능력을 향상시킬 수 있으며, 알고리즘적 사고를 자연스럽게 기를 수 있습니다. 프로그래밍의 기본 원리인 명령의 순서, 반복, 조건 등을 시각적이고 직관적으로 이해할 수 있어, 향후 실제 프로그래밍 언어 학습의 기반을 마련하는 데 매우 효과적입니다. 21세기 필수 능력인 컴퓨터 사고력(Computational Thinking)을 재미있게 기를 수 있는 교육적 가치가 매우 높은 게임입니다.</p>
+</div>
+      </div>
+    </section>
+  </article>
+
+  <section id="game-description-section" class="game-description-section" style="display: none;">
+    <div class="container">
+      <div id="game-description-content"></div>
+    </div>
+  </section>
+
   <div id="game-area">
     <!-- Game Header -->
     <header id="game-header">
@@ -177,48 +219,7 @@
   </div>
 
   <!-- SEO Content Section (Static HTML) -->
-  <article class="game-seo-content" style="margin-top: 40px; padding: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
-    <h1>코드 래빗</h1>
-    <p>토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)</p>
-    
-    <section class="game-description-section">
-      <div class="container">
-        <div class="description-block">
-<h2>🕹️ 게임 방법</h2>
-<ol>
-<li>게임을 시작하면 토끼와 당근, 그리고 명령 블록들이 표시됩니다.</li>
-<li>명령 블록(앞으로, 오른쪽, 왼쪽 등)을 순서대로 배치하여 토끼가 당근에 도달하도록 프로그래밍합니다.</li>
-<li>명령 블록을 클릭하여 실행 순서대로 추가합니다.</li>
-<li>&quot;실행&quot; 버튼을 클릭하면 토끼가 프로그래밍된 명령에 따라 움직입니다.</li>
-<li>토끼가 당근에 도달하면 스테이지를 클리어하고 다음 레벨로 진행합니다.</li>
-<li>레벨이 올라갈수록 더 복잡한 명령 조합이 필요합니다.</li>
-<li>반복문, 조건문 등의 고급 개념도 점진적으로 학습할 수 있습니다.</li>
-</ol>
-</div>
-<div class="description-block">
-<h2>🏆 공략 팁 &amp; 전략</h2>
-<ul>
-<li>단계별로 문제를 분해하여 해결하세요. 토끼가 당근에 도달하기까지 필요한 이동을 먼저 파악한 후, 그에 필요한 명령을 순서대로 배치하는 것이 중요합니다. 예를 들어 &quot;3칸 앞으로, 오른쪽, 2칸 앞으로&quot;처럼 단계를 나누어 생각하면 쉽게 해결할 수 있습니다.</li>
-<li>반복 패턴을 활용하세요. 같은 동작을 여러 번 반복해야 하는 경우 반복문 블록을 사용하면 코드를 간결하게 만들 수 있습니다. 예를 들어 &quot;앞으로 5번&quot;이 필요하면 반복 블록을 사용하는 것이 효율적입니다. 문제를 풀 때 패턴이 있는지 먼저 확인하는 습관을 기르세요.</li>
-<li>실행 전에 머릿속으로 시뮬레이션을 해보세요. 명령 블록을 배치한 후 토끼가 어떻게 움직일지 머릿속으로 따라가 보면 실수 없이 문제를 해결할 수 있습니다. 특히 방향 전환과 이동 거리를 정확히 계산하는 것이 중요합니다.</li>
-<li>점진적으로 복잡한 문제에 도전하세요. 기본 명령(앞으로, 회전)을 완벽히 이해한 후에 반복문, 조건문 같은 고급 개념을 학습하는 것이 좋습니다. 각 개념을 충분히 이해하고 익숙해진 후 다음 단계로 넘어가는 것이 중요합니다.</li>
-</ul>
-</div>
-<div class="description-block">
-<h2>ℹ️ 게임 소개</h2>
-<p>코드 래빗은 코딩 로직을 게임을 통해 쉽고 재미있게 학습할 수 있는 교육 게임입니다. 블록 기반 프로그래밍 방식을 통해 초등학생들도 부담 없이 코딩의 기본 개념을 익힐 수 있습니다. 게임을 통해 순차적 사고, 논리적 추론, 문제 해결 능력을 향상시킬 수 있으며, 알고리즘적 사고를 자연스럽게 기를 수 있습니다. 프로그래밍의 기본 원리인 명령의 순서, 반복, 조건 등을 시각적이고 직관적으로 이해할 수 있어, 향후 실제 프로그래밍 언어 학습의 기반을 마련하는 데 매우 효과적입니다. 21세기 필수 능력인 컴퓨터 사고력(Computational Thinking)을 재미있게 기를 수 있는 교육적 가치가 매우 높은 게임입니다.</p>
-</div>
-      </div>
-    </section>
-  </article>
-
   <!-- Game Description Section (SEO optimized) -->
-  <section id="game-description-section" class="game-description-section" style="display: none;">
-    <div class="container">
-      <div id="game-description-content"></div>
-    </div>
-  </section>
-
   <!-- JavaScript -->
   <script src="../../assets/js/storage.js"></script>
   <script src="../../assets/js/i18n.js"></script>
