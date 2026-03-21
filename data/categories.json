@@ -4,6 +4,7 @@
     "name": "액션",
     "nameEn": "Action",
     "icon": "⚡",
+    "lucideIcon": "zap",
     "description": "빠르고 재미있는 액션 게임들",
     "descriptionEn": "Fast and fun action games"
   },
@@ -12,6 +13,7 @@
     "name": "퍼즐",
     "nameEn": "Puzzle",
     "icon": "🧩",
+    "lucideIcon": "puzzle",
     "description": "머리를 쓰는 퍼즐 게임들",
     "descriptionEn": "Brain-teasing puzzle games"
   },
@@ -20,6 +22,7 @@
     "name": "수학",
     "nameEn": "Math",
     "icon": "🔢",
+    "lucideIcon": "calculator",
     "description": "수학을 배우는 게임들",
     "descriptionEn": "Educational math games"
   },
@@ -28,6 +31,7 @@
     "name": "기억력",
     "nameEn": "Memory",
     "icon": "🧠",
+    "lucideIcon": "brain",
     "description": "기억력을 키우는 게임들",
     "descriptionEn": "Memory training games"
   }

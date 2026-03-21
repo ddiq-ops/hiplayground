@@ -4,6 +4,61 @@
  */
 
 const UI = {
+  lucideCdnUrl: 'https://unpkg.com/lucide@latest',
+
+  /**
+   * Ensure Lucide is loaded from CDN.
+   */
+  ensureLucideLoaded() {
+    if (typeof window === 'undefined') {
+      return Promise.resolve(false);
+    }
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      return Promise.resolve(true);
+    }
+    if (window.__lucideLoadPromise) {
+      return window.__lucideLoadPromise;
+    }
+    window.__lucideLoadPromise = new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = this.lucideCdnUrl;
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.head.appendChild(script);
+    });
+    return window.__lucideLoadPromise;
+  },
+
+  /**
+   * Re-render all Lucide placeholders in current DOM.
+   */
+  async refreshLucideIcons() {
+    const loaded = await this.ensureLucideLoaded();
+    if (!loaded || !window.lucide) return;
+    window.lucide.createIcons();
+  },
+
+  /**
+   * Map category to Lucide icon for consistent visuals.
+   */
+  getCategoryLucideIcon(categoryId) {
+    const iconMap = {
+      action: 'zap',
+      puzzle: 'puzzle',
+      education: 'book-open',
+      board: 'chess',
+      shooting: 'crosshair',
+      strategy: 'shield',
+      simulation: 'factory',
+      arcade: 'gamepad-2',
+      lifestyle: 'sparkles',
+      math: 'calculator',
+      memory: 'brain'
+    };
+    return iconMap[categoryId] || 'gamepad-2';
+  },
+
   /**
    * Get base path for assets (handles different page locations)
    */
@@ -44,6 +99,13 @@ const UI = {
     
     // Otherwise, treat as emoji
     return `<div class="${className}">${icon}</div>`;
+  },
+
+  /**
+   * Render Lucide icon placeholder.
+   */
+  renderLucideIcon(iconName, className = 'game-card-icon') {
+    return `<div class="${className} lucide-icon-wrap"><i data-lucide="${iconName}" class="lucide-icon"></i></div>`;
   },
   
   /**
@@ -92,9 +154,13 @@ const UI = {
       playButtonText = I18n.t('games.play', '플레이');
     }
     
+    const iconHtml = game.lucideIcon
+      ? this.renderLucideIcon(game.lucideIcon)
+      : this.renderIcon(game.icon);
+
     card.innerHTML = `
       ${isFavorite ? '<div class="game-card-badge">⭐</div>' : ''}
-      ${this.renderIcon(game.icon)}
+      ${iconHtml}
       <div class="game-card-title">${gameTitle}</div>
       <div class="game-card-description">${gameDescription}</div>
       <button class="btn btn-primary">${playButtonText}</button>
@@ -111,8 +177,9 @@ const UI = {
     card.className = 'card category-card';
     card.dataset.categoryId = category.id;
     
+    const categoryIcon = category.lucideIcon || this.getCategoryLucideIcon(category.id);
     card.innerHTML = `
-      <div class="category-card-icon">${category.icon || '📁'}</div>
+      <div class="category-card-icon lucide-icon-wrap"><i data-lucide="${categoryIcon}" class="lucide-icon"></i></div>
       <div class="category-card-title">${category.name}</div>
       <div class="card-body">${category.description}</div>
     `;
@@ -134,6 +201,7 @@ const UI = {
       const card = this.createGameCard(game);
       container.appendChild(card);
     });
+    this.refreshLucideIcons();
   },
   
   /**
@@ -150,6 +218,7 @@ const UI = {
       const card = this.createCategoryCard(category);
       container.appendChild(card);
     });
+    this.refreshLucideIcons();
   },
   
   /**

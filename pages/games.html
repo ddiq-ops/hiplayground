@@ -38,8 +38,18 @@
     }
 
     .category-intro-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 8px;
       font-size: 1rem;
+    }
+
+    .category-intro-card .lucide-inline {
+      width: 18px;
+      height: 18px;
+      color: var(--color-primary);
+      flex-shrink: 0;
     }
 
     .category-intro-card p {
@@ -129,42 +139,42 @@
 
       <div class="category-intro-grid">
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.action.title">⚡ 액션</h3>
+          <h3><i data-lucide="zap" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.action.title">⚡ 액션</span></h3>
           <p data-i18n="gamesPage.categoryIntro.action.desc">순발력, 반응 속도, 집중력을 빠르게 끌어올리는 카테고리입니다.</p>
           <a id="rep-link-action" href="game/speed-number.html" data-game-id="speed-number">대표 게임</a>
         </article>
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.puzzle.title">🧩 퍼즐</h3>
+          <h3><i data-lucide="puzzle" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.puzzle.title">🧩 퍼즐</span></h3>
           <p data-i18n="gamesPage.categoryIntro.puzzle.desc">문제 해결력과 논리적 사고를 기르는 두뇌형 게임 모음입니다.</p>
           <a id="rep-link-puzzle" href="game/jelly-legend.html" data-game-id="jelly-legend">대표 게임</a>
         </article>
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.education.title">📘 교육</h3>
+          <h3><i data-lucide="book-open" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.education.title">📘 교육</span></h3>
           <p data-i18n="gamesPage.categoryIntro.education.desc">수학, 코딩, 단어 학습 등 학습 요소를 재미있게 훈련합니다.</p>
           <a id="rep-link-education" href="game/math-quiz.html" data-game-id="math-quiz">대표 게임</a>
         </article>
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.board.title">♟️ 보드</h3>
+          <h3><i data-lucide="chess" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.board.title">♟️ 보드</span></h3>
           <p data-i18n="gamesPage.categoryIntro.board.desc">전략 수립과 장기적 사고가 중요한 정통 보드 게임 카테고리입니다.</p>
           <a id="rep-link-board" href="game/chess.html" data-game-id="chess">대표 게임</a>
         </article>
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.shooting.title">🚀 슈팅</h3>
+          <h3><i data-lucide="crosshair" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.shooting.title">🚀 슈팅</span></h3>
           <p data-i18n="gamesPage.categoryIntro.shooting.desc">정확한 조작과 회피, 업그레이드 전략을 함께 요구하는 장르입니다.</p>
           <a id="rep-link-shooting" href="game/infinite-space.html" data-game-id="infinite-space">대표 게임</a>
         </article>
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.strategy.title">🛡️ 전략</h3>
+          <h3><i data-lucide="shield" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.strategy.title">🛡️ 전략</span></h3>
           <p data-i18n="gamesPage.categoryIntro.strategy.desc">배치와 자원 운영을 통해 최적의 선택을 찾는 전략 중심 게임입니다.</p>
           <a id="rep-link-strategy" href="game/guardian-defense.html" data-game-id="guardian-defense">대표 게임</a>
         </article>
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.simulation.title">🏭 시뮬레이션</h3>
+          <h3><i data-lucide="factory" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.simulation.title">🏭 시뮬레이션</span></h3>
           <p data-i18n="gamesPage.categoryIntro.simulation.desc">성장/운영의 재미를 통해 계획성과 자원 관리 능력을 키울 수 있습니다.</p>
           <a id="rep-link-simulation" href="game/aqua-feed.html" data-game-id="aqua-feed">대표 게임</a>
         </article>
         <article class="category-intro-card">
-          <h3 data-i18n="gamesPage.categoryIntro.arcade.title">🍕 아케이드</h3>
+          <h3><i data-lucide="gamepad-2" class="lucide-inline" aria-hidden="true"></i><span data-i18n="gamesPage.categoryIntro.arcade.title">🍕 아케이드</span></h3>
           <p data-i18n="gamesPage.categoryIntro.arcade.desc">짧고 강한 플레이로 몰입감을 주는 클래식 감성의 게임 모음입니다.</p>
           <a id="rep-link-arcade" href="game/pizza-snake.html" data-game-id="pizza-snake">대표 게임</a>
         </article>
@@ -211,6 +221,7 @@
       }
       updateRepLinks();
       document.addEventListener('i18n:loaded', updateRepLinks);
+      UI.refreshLucideIcons();
       
       const gamesGrid = document.getElementById('games-grid');
       const categoryFilter = document.getElementById('filter-category');

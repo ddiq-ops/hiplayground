@@ -79,6 +79,13 @@
       "title": "6. 私隱政策變更",
       "content": "本私隱政策可能會根據法律、政策或安全技術的變更而更新，以新增、刪除或修改內容。我們會在變更生效前透過網站通知用戶。"
     },
+    "section8": {
+      "title": "8. Google AdSense 及個人化廣告說明",
+      "line1": "本網站使用 Google AdSense 廣告服務。",
+      "line2": "Google 會使用 Cookie，根據用戶過往的瀏覽紀錄投放廣告。",
+      "line3": "用戶可在 Google 廣告設定中停用個人化廣告。",
+      "linkText": "前往 Google 廣告設定"
+    },
     "section7": {
       "title": "7. 聯絡方式",
       "content": "如對本私隱政策有任何疑問，請透過以下方式聯絡我們：",

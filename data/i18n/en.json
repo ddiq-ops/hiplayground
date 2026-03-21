@@ -79,6 +79,13 @@
       "title": "6. Changes to Privacy Policy",
       "content": "This privacy policy may be updated to add, delete, or modify content in accordance with changes in laws, policies, or security technology. We will notify users of any changes through the site before they take effect."
     },
+    "section8": {
+      "title": "8. Google AdSense and Personalized Ads Notice",
+      "line1": "We use Google AdSense advertising on this site.",
+      "line2": "Google uses cookies to serve ads based on a user's previous visits.",
+      "line3": "Users can disable personalized ads in Google Ad Settings.",
+      "linkText": "Go to Google Ad Settings"
+    },
     "section7": {
       "title": "7. Contact",
       "content": "If you have any questions about this privacy policy, please contact us at:",
