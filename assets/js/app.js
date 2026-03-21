@@ -15,14 +15,19 @@ const App = {
     const href = window.location.href;
     const pathname = window.location.pathname;
     
-    // Simple check: if URL contains 'pages', we're in pages folder
+    // Check if we're in pages/game/ folder (2 levels deep)
+    if (href.includes('/pages/game/') || href.includes('\\pages\\game\\') || 
+        pathname.includes('/pages/game/') || pathname.includes('\\pages\\game\\')) {
+      return '../../';
+    }
+    
+    // Check if we're in pages/ folder (1 level deep)
     if (href.includes('/pages/') || href.includes('\\pages\\') || 
-        href.includes('/pages') || href.includes('\\pages') ||
-        pathname.includes('/pages/') || pathname.includes('\\pages\\') ||
-        pathname.includes('/pages') || pathname.includes('\\pages')) {
+        pathname.includes('/pages/') || pathname.includes('\\pages\\')) {
       return '../';
     }
     
+    // Root level
     return './';
   },
   
