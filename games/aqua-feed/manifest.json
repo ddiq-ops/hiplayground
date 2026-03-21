@@ -1,0 +1,12 @@
+{
+  "id": "aqua-feed",
+  "title": "아쿠아 피드",
+  "titleEn": "Aqua Feed",
+  "description": "물고기에게 밥을 주세요! 무럭무럭 자라서 보물을 선물합니다.",
+  "descriptionEn": "Feed fish, collect coins, and grow your aquarium!",
+  "icon": "🐠",
+  "category": "simulation",
+  "difficulty": "easy",
+  "version": "1.0.0",
+  "orientation": "portrait"
+}

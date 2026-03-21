@@ -1,0 +1,90 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+.af-wrapper {
+  width: 100%; height: 100%;
+  /* [수정] 배경 그라데이션 밝기 조절 (조금 더 밝게) */
+  background: linear-gradient(180deg, #0077a3 0%, #004477 100%);
+  font-family: 'Pretendard', sans-serif;
+  overflow: hidden; user-select: none;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+
+/* ... (나머지 CSS는 기존과 동일) ... */
+.af-bg-bubble {
+  position: absolute; bottom: -20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%; pointer-events: none;
+  animation: floatUp 10s infinite linear;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+.af-header {
+  padding: 10px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(0, 0, 0, 0.3); color: white;
+  z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+.af-money { font-size: 1.2rem; font-weight: bold; color: #ffeb3b; display: flex; align-items: center; gap: 5px; }
+.af-count { font-size: 0.9rem; color: #b3e5fc; }
+
+.af-game-area {
+  flex: 1; position: relative; overflow: hidden; cursor: crosshair;
+}
+canvas { display: block; width: 100%; height: 100%; }
+
+.af-controls {
+  padding: 15px; background: rgba(255, 255, 255, 0.95);
+  display: flex; gap: 10px; justify-content: center;
+  border-top-left-radius: 20px; border-top-right-radius: 20px;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.3); z-index: 20;
+}
+
+.af-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: #fff; border: 2px solid #e0e0e0; border-radius: 12px;
+  padding: 8px 15px; min-width: 70px; cursor: pointer;
+  transition: all 0.1s;
+}
+.af-btn:active { transform: scale(0.95); background: #f5f5f5; }
+.af-btn-icon { font-size: 1.8rem; margin-bottom: 2px; }
+.af-btn-label { font-size: 0.8rem; font-weight: bold; color: #333; }
+.af-btn-cost { font-size: 0.75rem; color: #f57f17; font-weight: bold; }
+
+.af-toast {
+  position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.7); color: #fff; padding: 10px 20px;
+  border-radius: 30px; font-size: 0.9rem; pointer-events: none;
+  opacity: 0; transition: opacity 0.3s; z-index: 100;
+}
+
+.af-modal {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8); z-index: 100;
+  display: flex; justify-content: center; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.af-modal.active { opacity: 1; pointer-events: auto; }
+
+.af-guide {
+  background: #fff; width: 85%; max-width: 400px;
+  border-radius: 20px; padding: 25px; text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.af-guide h2 { margin-top: 0; color: #0277bd; margin-bottom: 15px; }
+.af-guide-item { 
+  display: flex; align-items: center; gap: 15px; 
+  margin-bottom: 15px; text-align: left; background: #f1f8e9;
+  padding: 10px; border-radius: 10px;
+}
+.af-guide-icon { font-size: 2rem; }
+.af-guide-text { font-size: 0.9rem; color: #555; line-height: 1.4; font-weight: bold;}
+.af-btn-close {
+  background: #0277bd; color: white; border: none; padding: 12px 30px;
+  border-radius: 25px; font-size: 1rem; font-weight: bold; cursor: pointer;
+  margin-top: 10px; width: 100%;
+}

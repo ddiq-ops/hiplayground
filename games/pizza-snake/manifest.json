@@ -1,0 +1,12 @@
+{
+  "id": "pizza-snake",
+  "title": "피자 스네이크",
+  "titleEn": "Pizza Snake",
+  "description": "피자를 먹을수록 길어지는 뱀! 꼬리에 닿지 않게 조심하세요.",
+  "descriptionEn": "Eat pizza, get longer! Classic retro snake game.",
+  "icon": "🍕",
+  "category": "arcade",
+  "difficulty": "normal",
+  "version": "1.0.0",
+  "orientation": "portrait"
+}

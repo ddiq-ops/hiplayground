@@ -1576,6 +1576,108 @@
           "step3": "Yellow cards (relics) apply effects immediately upon purchase. (No placement)"
         }
       }
+    },
+    "pizza-snake": {
+      "title": "Pizza Snake",
+      "description": "Eat pizza, get longer! Don't hit your tail.",
+      "ui": {
+        "title": "PIZZA<br>SNAKE",
+        "labels": {
+          "score": "SCORE",
+          "high": "HIGH"
+        },
+        "buttons": {
+          "start": "START"
+        },
+        "pressStart": "PRESS START",
+        "gameOver": "GAME OVER",
+        "hint": "PC: Arrow Keys / Mobile: Swipe"
+      },
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, a snake appears in the center of the screen.",
+          "On PC, use the arrow keys (↑↓←→) to control the snake's direction.",
+          "On mobile, swipe on the screen to control the snake's direction.",
+          "Eating the pizza (🍕) that appears on the screen makes the snake longer and increases your score.",
+          "Each time you eat pizza, the game speed gradually increases.",
+          "Hitting a wall or touching your own body (tail) results in game over.",
+          "Try to eat as many pizzas as possible to achieve a high score!"
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Always be aware of the distance between the snake's head and tail. As the snake gets longer, the risk of touching your own body increases, so it's important to plan your path in advance. Especially when the snake is long, using the center area is safer than going to the edges of the screen.",
+          "Think about your next move before eating pizza. Since eating pizza makes the snake longer, check if your body is around the pizza and choose a safe path. If you just chase pizza blindly, you might get trapped by your own body and game over.",
+          "As the game speed increases, reaction speed becomes important. In the early stages, play slowly to learn the patterns, and practice staying calm and adjusting direction smoothly even when the speed increases. Sudden direction changes can cause mistakes, so choosing smooth and predictable paths is better.",
+          "Use the entire screen. Don't keep the snake in just one area, but use the whole space efficiently to eat more pizza. Especially when the snake is long, moving in circular or spiral patterns helps you use space efficiently."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Pizza Snake is a retro version of the classic snake game, an arcade game where you control a snake that grows longer as it eats pizza. Through the game, you can improve reaction speed and instant judgment, and develop the ability to make accurate decisions even in rapidly changing situations. The game helps improve spatial perception and prediction abilities, and develops multitasking skills by performing long-term path planning and short-term reactions simultaneously. The system where speed increases each time you eat pizza maintains a continuous sense of challenge, and the process of challenging high scores improves concentration and patience. It's a game with simple controls but requires deep strategy, and has educational value in helping elementary school students train reaction speed and improve spatial awareness."
+      }
+    },
+    "aqua-feed": {
+      "title": "Aqua Feed",
+      "description": "Feed fish, collect coins, and grow your aquarium!",
+      "ui": {
+        "labels": {
+          "fish": "Fish",
+          "max": "MAX"
+        },
+        "buttons": {
+          "buyFish": "Buy Guppy",
+          "upgradeFood": "Upgrade Food",
+          "help": "Help",
+          "startGame": "Start Game"
+        },
+        "guide": {
+          "title": "🐠 Aqua Feed Guide",
+          "text1": "Tap the screen to give <span style=\"color:#f57f17\">food</span>.",
+          "text2": "When a <span style=\"color:#0277bd\">bowl</span> appears above the head, the fish is hungry! Feed it!",
+          "text3": "Click <span style=\"color:#fbc02d\">coins</span> to collect money."
+        },
+        "messages": {
+          "tooMuchFood": "Too much food!",
+          "notEnoughMoneyForFood": "Not enough money! (Food 5G)",
+          "tankFull": "Tank is full!",
+          "fishBorn": "A guppy was born!",
+          "notEnoughMoney": "Not enough money!",
+          "maxLevel": "Max level reached!",
+          "foodUpgraded": "Food upgraded!"
+        }
+      },
+      "howToPlay": {
+        "title": "How to Play",
+        "steps": [
+          "When you start the game, 2 fish appear in the aquarium.",
+          "Tap or click on the screen to drop food at that location. Each food costs 5G.",
+          "When a bowl (🥣) icon appears above a fish's head, it means the fish is hungry. Feed it!",
+          "When a skull (💀) icon appears above a fish's head, the fish is in critical condition. Feed it immediately or it will starve to death.",
+          "When fish eat food, their hunger decreases and they gain experience. As experience accumulates, fish grow.",
+          "Fish have growth stages: Guppy (🐟) → Medium Fish (🐠) → King Fish (🐳).",
+          "Fish produce coins when they're not hungry. Tap coins to collect them.",
+          "Use the Buy Guppy button to purchase new fish (100G).",
+          "Use the Upgrade Food button to increase food level. Higher level food gives more experience.",
+          "You can raise up to 100 fish. Raise many fish to collect more coins!"
+        ]
+      },
+      "strategy": {
+        "title": "Strategy & Tips",
+        "tips": [
+          "Always check the status of your fish. It's best to feed them immediately when the bowl icon appears. Feeding fish before the skull icon appears prevents them from dying. As you have more fish, managing each fish's status becomes increasingly important.",
+          "Food placement strategy is important. Dropping food where many fish gather allows multiple fish to eat simultaneously, which is efficient. However, dropping too much food at once can be wasteful, so maintaining an appropriate amount is good.",
+          "Food upgrades are very useful in the long run. Higher level food makes fish grow faster, allowing you to create King Fish more quickly. King Fish produce diamonds, which significantly increases profits. A good strategy is to buy many guppies early on, then invest in food upgrades from the mid-game.",
+          "Don't neglect coin collection. You need to frequently collect coins produced by fish to increase your funds. Especially, diamonds produced by King Fish are worth 50G and very valuable, so raising many King Fish helps increase profits.",
+          "Manage the number of fish appropriately. Too few fish means slow coin production, and too many fish makes it difficult to feed all of them. It's good to maintain a manageable number of fish and gradually increase it."
+        ]
+      },
+      "about": {
+        "title": "About",
+        "description": "Aqua Feed is a simulation game where you raise fish, feed them, and collect coins. Through the game, you can develop a sense of responsibility for caring for living creatures and resource management skills. The process of observing fish status and feeding them at appropriate times improves observation and judgment abilities. Experiencing fish growth and evolution brings joy and a sense of achievement, and the process of collecting coins to buy more fish or upgrade food develops economic thinking. The game teaches the value of patience and consistency, and caring for living creatures improves empathy and responsibility. It's an educational game that helps elementary school students develop respect for life and improve resource management skills."
+      }
     }
   }
 }

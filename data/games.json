@@ -329,6 +329,34 @@
   "popularity": 85,
   "releaseDate": "2026-01-13",
   "orientation": "portrait"
+},
+{
+  "id": "pizza-snake",
+  "title": "피자 스네이크",
+  "titleEn": "Pizza Snake",
+  "category": "arcade",
+  "difficulty": "normal",
+  "description": "피자를 먹을수록 길어지는 뱀! 꼬리에 닿지 않게 조심하세요.",
+  "descriptionEn": "Eat pizza, get longer! Don't hit your tail.",
+  "icon": "🍕",
+  "tags": ["아케이드", "스네이크", "레트로"],
+  "popularity": 85,
+  "releaseDate": "2026-01-14",
+  "orientation": "portrait"
+},
+{
+  "id": "aqua-feed",
+  "title": "아쿠아 피드",
+  "titleEn": "Aqua Feed",
+  "category": "simulation",
+  "difficulty": "easy",
+  "description": "물고기에게 밥을 주세요! 무럭무럭 자라서 보물을 선물합니다.",
+  "descriptionEn": "Feed fish, collect coins, and grow your aquarium!",
+  "icon": "🐠",
+  "tags": ["시뮬레이션", "물고기", "힐링"],
+  "popularity": 90,
+  "releaseDate": "2026-01-14",
+  "orientation": "portrait"
 }
   
 ]
