@@ -52,6 +52,167 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service"
   },
+  "edu": {
+    "common": {
+      "title": "Educational Value of This Game",
+      "safety": "Safety notice: Excessive game time may negatively affect health and study rhythm. Take 20–30 minute breaks and build balanced habits with a parent/guardian."
+    },
+    "word-pop": {
+      "age": "Recommended age: 7–12",
+      "point1": "Strengthens foundational reading via spelling awareness and grapheme–phoneme mapping",
+      "point2": "Improves working memory and attention through planning and ordering letters",
+      "point3": "Enhances visual discrimination and accuracy by distinguishing similar spellings",
+      "point4": "Boosts fluency by committing high‑frequency word forms to long‑term memory",
+      "point5": "Trains executive functions (inhibition/switching) with time‑bounded decisions"
+    },
+    "weapon-levelup": {
+      "age": "Recommended age: 9–14",
+      "point1": "Builds proportional/ratio sense through resource allocation and upgrade decisions",
+      "point2": "Fosters economic thinking and planning via opportunity cost and trade‑off evaluation",
+      "point3": "Practices hypothesis testing with experiment–feedback loops and data‑driven judgment",
+      "point4": "Strengthens executive functions such as risk management and prioritization"
+    },
+    "aqua-feed": {
+      "age": "Recommended age: 6–11",
+      "point1": "Introduces cause–effect via feed–growth–reward cycles",
+      "point2": "Improves planning and problem‑solving by timing resource inputs",
+      "point3": "Builds self‑regulated learning through goals, monitoring, and strategy adjustment",
+      "point4": "Supports motivation with calming/soothing elements that aid emotional regulation"
+    },
+    "gravity-run": {
+      "age": "Recommended Age: 8–13",
+      "point1": "Rapid decision-making: train reaction time under high-speed conditions",
+      "point2": "Attention shifting and sustained focus: strengthen cognitive flexibility for changing patterns",
+      "point3": "Prediction and timing: learn optimal flip timing from obstacle patterns",
+      "point4": "Stress coping: maintain breathing/rhythm for emotional regulation in tension"
+    },
+    "infinite-space": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Strategic choices and builds: plan via ability synergies",
+      "point2": "Visual attention allocation: multitask across bullets and targets",
+      "point3": "Risk–reward judgment: balance evasion/attack and rational resource picks",
+      "point4": "Feedback-driven learning: analyze failures and adjust next attempts"
+    },
+    "jelly-legend": {
+      "age": "Recommended Age: 8–13",
+      "point1": "Number sense: strengthen pattern recognition with powers-of-two merging",
+      "point2": "Spatial reasoning: placement planning and trajectory prediction with physics",
+      "point3": "Long-term strategy: prioritize between short-term points and long merges",
+      "point4": "Experimental thinking: try skill combos and compare outcomes for optimization"
+    },
+    "guardian-defense": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Resource management and optimization: cost–benefit-based upgrade/placement",
+      "point2": "Cause–effect reasoning: understand pathing, slow, and AoE interactions",
+      "point3": "Systems thinking: design synergies of draft cards and tower kits",
+      "point4": "Problem solving: analyze wave threats and craft counter strategies"
+    },
+    "speed-number": {
+      "age": "Recommended Age: 7–12",
+      "point1": "Visual search and perception: systematic scanning and location memory",
+      "point2": "Sequential thinking: 1→N processing to strengthen working memory and focus",
+      "point3": "Processing speed: prioritize accuracy under time pressure, then ramp speed",
+      "point4": "Error recovery: re‑focusing and emotion regulation after mistakes"
+    },
+    "math-quiz": {
+      "age": "Recommended Age: 7–11",
+      "point1": "Basic fact fluency: automate addition/subtraction/multiplication tables",
+      "point2": "Number sense: place value, complements, and multiples pattern recognition",
+      "point3": "Problem‑solving heuristics: estimation and elimination with choices",
+      "point4": "Sustained attention: maintain focus in timed settings"
+    },
+    "math-quiz-hard": {
+      "age": "Recommended Age: 10–13",
+      "point1": "Order of operations: internalize parentheses and ×/÷ precedence",
+      "point2": "Decomposition: break complex calculations to boost accuracy and speed",
+      "point3": "Reasoned arithmetic: use rough size and last‑digit rules for fast choices",
+      "point4": "Cognitive perseverance: practice sticking with challenging problems"
+    },
+    "chess": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Strategy and tactics: center control, piece coordination, long‑term plans",
+      "point2": "Pattern recognition: typical structures and endgame motifs",
+      "point3": "Decision‑making: risk evaluation and candidate‑move comparison",
+      "point4": "Metacognition: analyze mistakes and improve next moves"
+    },
+    "physics-box": {
+      "age": "Recommended Age: 8–13",
+      "point1": "Hands‑on physics: angles, force, trajectory; collision and friction",
+      "point2": "Spatial and causal reasoning: destroy supports → trigger chain collapse",
+      "point3": "Plan–act–feedback: pick targets, observe results, adjust strategy",
+      "point4": "Accuracy building: compare predicted vs actual path to refine aim"
+    },
+    "emoji-survivor": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Reaction and situational judgment: real‑time decisions amid hordes",
+      "point2": "Strategic synergies: weapon/ability builds and prioritization",
+      "point3": "Resource routing: optimize XP and item collection paths",
+      "point4": "Spatial awareness: crowd density vs safe zones to plan routes"
+    },
+    "idle-factory": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Resource management and scale: optimize lines and upgrades",
+      "point2": "Decision economics: opportunity cost and marginal benefit",
+      "point3": "Risk management: respond to probabilistic events and investments",
+      "point4": "Long‑term goals: staged targets and cumulative growth curves"
+    },
+    "lucky-toast": {
+      "age": "Recommended Age: 8–13",
+      "point1": "Time and priority management: schedule parallel tasks, remove bottlenecks",
+      "point2": "Service operations sense: handle demand swings and patience",
+      "point3": "Risk–reward balance: choose high‑risk upgrades and event responses",
+      "point4": "Basic finance: manage cashflow and fixed costs (rent)"
+    },
+    "code-rabbit": {
+      "age": "Recommended Age: 7–12",
+      "point1": "Computational thinking: internalize sequence/loop/condition visually",
+      "point2": "Problem decomposition: break the path goal into smaller steps",
+      "point3": "Debugging habit: analyze causes after run and fix iteratively",
+      "point4": "Planning: design command sequences to reach objectives"
+    },
+    "neon-beat": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Rhythm and timing: precise hits aligned to BPM and beats",
+      "point2": "Attention allocation: integrate visual and auditory cues, sustain focus",
+      "point3": "Motor coordination: bimanual/multi‑key accuracy and control",
+      "point4": "Error correction: adjust timing using judgment feedback"
+    },
+    "jelly-maze": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Pathfinding insight: experience dynamic shortest‑path recalculation",
+      "point2": "System design: build synergies between towers and relics",
+      "point3": "Resource optimization: high ROI placement and upgrades",
+      "point4": "Strategic planning: preempt waves with tailored counters"
+    },
+    "pizza-snake": {
+      "age": "Recommended Age: 7–12",
+      "point1": "Spatial planning: route reservation and avoidance paths",
+      "point2": "Anticipation: foresee collision risks as length increases",
+      "point3": "Focus and reaction: stable control under increasing speed",
+      "point4": "Self‑regulation: curb haste and maintain consistent patterns"
+    },
+    "memory": {
+      "age": "Recommended Age: 7–12",
+      "point1": "Working memory: maintain and update visual information",
+      "point2": "Visual discrimination: distinguish similar images and fine details",
+      "point3": "Strategic search: systematic flipping and spatial indexing",
+      "point4": "Sustained focus: maintain accuracy under time limits"
+    },
+    "omok": {
+      "age": "Recommended Age: 9–14",
+      "point1": "Strategy and tactics: center control, reading, long‑term plans",
+      "point2": "Pattern recognition: three/four shapes and endgames",
+      "point3": "Decision‑making: risk evaluation and counterplay",
+      "point4": "Metacognition: analyze mistakes and improve next moves"
+    },
+    "mystic-fortune": {
+      "age": "Recommended Age: 8–13",
+      "point1": "Emotional regulation: ease daily stress with positive messages",
+      "point2": "Self‑reflection: routine for checking plans and goals",
+      "point3": "Language comprehension: interpret expository text and gist",
+      "point4": "Media literacy: treat fortune content as reference only"
+    }
+  },
   "privacy": {
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: March 21, 2026",

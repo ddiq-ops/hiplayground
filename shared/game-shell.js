@@ -25,6 +25,9 @@ const GameShell = {
     
     // Setup shell UI
     this.setupUI(manifest);
+
+    // Prefer static SEO article for AdSense; if present, suppress dynamic section
+    this.preferStaticSeoArticle();
     
     // Load game CSS
     this.loadGameCSS(gameId);
@@ -34,6 +37,31 @@ const GameShell = {
     
     // Setup event listeners
     this.setupEventListeners();
+  },
+
+  /**
+   * Prefer static SEO article when present; hide dynamic description section
+   */
+  preferStaticSeoArticle() {
+    try {
+      const staticArticle = document.querySelector('article.game-seo-content');
+      if (staticArticle) {
+        // Mark global flag for other scripts (defensive)
+        if (typeof window !== 'undefined') {
+          window.__STATIC_SEO_PRESENT = true;
+        }
+        // Hide dynamic section if present
+        const dynamicSection = document.getElementById('game-description-section');
+        const dynamicContent = document.getElementById('game-description-content');
+        if (dynamicContent) dynamicContent.innerHTML = '';
+        if (dynamicSection && dynamicSection.parentElement) {
+          // Remove the dynamic section entirely to prevent later scripts from re-showing it
+          dynamicSection.parentElement.removeChild(dynamicSection);
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to prefer static SEO article:', error);
+    }
   },
   
   /**
