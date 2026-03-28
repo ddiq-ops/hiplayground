@@ -171,6 +171,11 @@
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://hiplayground.com/pages/game/math-crowd.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://hiplayground.com/pages/game/speed-number.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>

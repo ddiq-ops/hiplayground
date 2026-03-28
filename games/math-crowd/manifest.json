@@ -1,0 +1,12 @@
+{
+  "id": "math-crowd",
+  "title": "매스 군단",
+  "titleEn": "Math Crowd",
+  "description": "좌우로 이동하며 최선의 게이트를 선택하세요. 끝없이 몰려오는 적들을 막아내며 최고 기록에 도전하세요!",
+  "descriptionEn": "Choose the best gates and survive the endless waves of enemies!",
+  "icon": "⚔️",
+  "category": "arcade",
+  "difficulty": "hard",
+  "version": "2.0.0",
+  "orientation": "portrait"
+}

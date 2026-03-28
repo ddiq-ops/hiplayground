@@ -1,0 +1,64 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+.mc-wrapper {
+  width: 100%; height: 100%;
+  background: #37474f; /* 아스팔트 느낌의 어두운 배경 */
+  font-family: 'Pretendard', sans-serif;
+  overflow: hidden; user-select: none;
+  display: flex; flex-direction: column;
+  position: relative;
+  touch-action: none; /* 스와이프 시 화면 스크롤 방지 */
+}
+
+.mc-header {
+  padding: 15px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: #263238; color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  z-index: 10;
+  border-bottom: 3px solid #546e7a;
+}
+.mc-score-box { display: flex; flex-direction: column; }
+.mc-score-label { font-size: 0.8rem; color: #b0bec5; font-weight: bold; }
+.mc-score-val { font-size: 1.5rem; font-weight: 900; color: #ffca28; }
+.mc-count { font-size: 1.4rem; font-weight: bold; background: #0277bd; padding: 5px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+
+.mc-game-area {
+  flex: 1; position: relative; overflow: hidden;
+  background: #455a64;
+}
+canvas {
+  display: block; width: 100%; height: 100%;
+}
+
+.mc-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85); z-index: 100;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.mc-overlay.active { opacity: 1; pointer-events: auto; }
+
+.mc-result-title { font-size: 3.5rem; font-weight: 900; color: #f44336; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(244, 67, 54, 0.5); }
+.mc-result-msg { font-size: 1.5rem; color: #fff; margin-bottom: 30px; font-weight: bold; }
+
+.btn-next {
+  padding: 15px 50px; background: #ffca28; color: #333;
+  border: none; border-radius: 30px; font-size: 1.5rem; font-weight: 900;
+  cursor: pointer; box-shadow: 0 5px 15px rgba(255, 202, 40, 0.4);
+  transition: transform 0.1s;
+}
+.btn-next:active { transform: scale(0.95); }
+
+.mc-guide-toast {
+  position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.8); color: #fff; padding: 12px 25px;
+  border-radius: 30px; font-size: 1.1rem; pointer-events: none;
+  font-weight: bold; white-space: nowrap;
+  border: 1px solid #78909c;
+  animation: floatUpDown 2s infinite ease-in-out;
+}
+@keyframes floatUpDown {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -10px); }
+}

@@ -357,6 +357,20 @@
   "popularity": 90,
   "releaseDate": "2026-01-14",
   "orientation": "portrait"
+},
+{
+  "id": "math-crowd",
+  "title": "매스 군단",
+  "titleEn": "Math Crowd",
+  "category": "arcade",
+  "difficulty": "normal",
+  "description": "올바른 사칙연산 게이트를 선택해 군단을 늘리고 성을 점령하세요!",
+  "descriptionEn": "Choose the correct math gates to multiply your army and conquer the castle!",
+  "icon": "🏃‍♂️",
+  "tags": ["아케이드", "수학", "러닝"],
+  "popularity": 98,
+  "releaseDate": "2026-03-28",
+  "orientation": "portrait"
 }
   
 ]

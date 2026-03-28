@@ -57,6 +57,13 @@
       "title": "Educational Value of This Game",
       "safety": "Safety notice: Excessive game time may negatively affect health and study rhythm. Take 20–30 minute breaks and build balanced habits with a parent/guardian."
     },
+    "math-crowd": {
+      "age": "Recommended age: 8–13",
+      "point1": "Number sense & fluency: instantly compare + / × outcomes and choose",
+      "point2": "Mental math & estimation: fast judgment using rough magnitude and last‑digit rules",
+      "point3": "Path optimization: train choices that minimize loss and maximize growth",
+      "point4": "Executive function: inhibition, switching, and visual scanning under time pressure"
+    },
     "word-pop": {
       "age": "Recommended age: 7–12",
       "point1": "Strengthens foundational reading via spelling awareness and grapheme–phoneme mapping",
