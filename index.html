@@ -384,46 +384,70 @@
         loadingContainer.style.display = 'none';
       }
       
-      // Update game cards with dynamic content (enhances static HTML for JS users)
-      // This will replace static HTML with interactive cards, but static HTML is still visible to bots
-      UI.renderGameCards(allGamesGrid, allGames);
-      
-      // Load continue playing
-      const lastPlayed = Storage.getLastPlayed();
-      if (lastPlayed && lastPlayed.gameId) {
-        const game = App.getGameById(lastPlayed.gameId);
-        if (game) {
-          const continueSection = document.getElementById('continue-section');
-          const continueGame = document.getElementById('continue-game');
-          continueSection.style.display = 'block';
-          
-          const continueCard = document.createElement('div');
-          continueCard.className = 'continue-game-card';
-          continueCard.onclick = () => Router.goToPlay(game.id);
-          continueCard.innerHTML = `
-            <div class="continue-game-icon">${game.icon}</div>
-            <div>
-              <div style="font-weight: 700; font-size: 1.25rem;">${game.title}</div>
-              <div style="color: var(--color-text-light);">계속해서 플레이하세요!</div>
-            </div>
-          `;
-          continueGame.appendChild(continueCard);
-        }
-      }
-      
-      // Setup search
-      const searchInput = document.getElementById('search-input');
-      const handleSearch = UI.debounce((query) => {
+      function renderAllGames(query = '') {
         if (!query.trim()) {
           UI.renderGameCards(allGamesGrid, allGames);
           return;
         }
         const results = App.searchGames(query);
         UI.renderGameCards(allGamesGrid, results);
+      }
+
+      // Update game cards with dynamic content (enhances static HTML for JS users)
+      // This will replace static HTML with interactive cards, but static HTML is still visible to bots
+      renderAllGames();
+      
+      // Load continue playing
+      function renderContinueGame() {
+        const continueSection = document.getElementById('continue-section');
+        const continueGame = document.getElementById('continue-game');
+        if (!continueSection || !continueGame) return;
+
+        continueGame.innerHTML = '';
+        continueSection.style.display = 'none';
+
+        const lastPlayed = Storage.getLastPlayed();
+        if (!lastPlayed || !lastPlayed.gameId) return;
+
+        const game = App.getGameById(lastPlayed.gameId);
+        if (!game) return;
+
+        continueSection.style.display = 'block';
+        const gameTitle = (typeof I18n !== 'undefined')
+          ? I18n.getGameTitle(game.id, null, game)
+          : game.title;
+        const continueText = (typeof I18n !== 'undefined')
+          ? I18n.t('home.continuePlayingHint', 'Continue playing!')
+          : 'Continue playing!';
+
+        const continueCard = document.createElement('div');
+        continueCard.className = 'continue-game-card';
+        continueCard.onclick = () => Router.goToPlay(game.id);
+        continueCard.innerHTML = `
+          <div class="continue-game-icon">${game.icon}</div>
+          <div>
+            <div style="font-weight: 700; font-size: 1.25rem;">${gameTitle}</div>
+            <div style="color: var(--color-text-light);">${continueText}</div>
+          </div>
+        `;
+        continueGame.appendChild(continueCard);
+      }
+      renderContinueGame();
+      
+      // Setup search
+      const searchInput = document.getElementById('search-input');
+      const handleSearch = UI.debounce((query) => {
+        renderAllGames(query);
       }, 300);
       
       searchInput.addEventListener('input', (e) => {
         handleSearch(e.target.value);
+      });
+
+      // Re-render dynamic texts immediately on language change
+      document.addEventListener('i18n:loaded', () => {
+        renderAllGames(searchInput.value || '');
+        renderContinueGame();
       });
       
       // Track page view

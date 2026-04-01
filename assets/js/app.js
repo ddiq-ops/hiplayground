@@ -11,6 +11,11 @@ const App = {
    * Get base path for data files (handles different page locations)
    */
   getBasePath() {
+    // For language-prefixed URLs on web, always read shared JSON from root
+    if (!window.location.href.startsWith('file://')) {
+      return '/';
+    }
+
     // Get current page path
     const href = window.location.href;
     const pathname = window.location.pathname;

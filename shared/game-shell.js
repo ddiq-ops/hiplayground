@@ -26,8 +26,8 @@ const GameShell = {
     // Setup shell UI
     this.setupUI(manifest);
 
-    // Prefer static SEO article for AdSense; if present, suppress dynamic section
-    this.preferStaticSeoArticle();
+    // Prefer static SEO article for AdSense and localize it for current language.
+    this.preferStaticSeoArticle(manifest);
     
     // Load game CSS
     this.loadGameCSS(gameId);
@@ -42,23 +42,90 @@ const GameShell = {
   /**
    * Prefer static SEO article when present; hide dynamic description section
    */
-  preferStaticSeoArticle() {
+  preferStaticSeoArticle(manifest = null) {
     try {
       const staticArticle = document.querySelector('article.game-seo-content');
-      if (staticArticle) {
-        // Mark global flag for other scripts (defensive)
-        if (typeof window !== 'undefined') {
-          window.__STATIC_SEO_PRESENT = true;
-        }
-        // Hide dynamic section if present
-        const dynamicSection = document.getElementById('game-description-section');
-        const dynamicContent = document.getElementById('game-description-content');
-        if (dynamicContent) dynamicContent.innerHTML = '';
-        if (dynamicSection && dynamicSection.parentElement) {
-          // Remove the dynamic section entirely to prevent later scripts from re-showing it
-          dynamicSection.parentElement.removeChild(dynamicSection);
-        }
+      if (!staticArticle) return;
+
+      const dynamicSection = document.getElementById('game-description-section');
+      // Remove dynamic description section entirely to prevent duplicate rendering
+      // from per-page loadGameDescription() scripts.
+      if (dynamicSection && dynamicSection.parentElement) {
+        dynamicSection.parentElement.removeChild(dynamicSection);
       }
+
+      const educationBlock = staticArticle.querySelector('[data-i18n^="edu."]')
+        ? staticArticle.querySelector('[data-i18n^="edu."]').closest('.description-block')
+        : null;
+      const educationBlockHTML = educationBlock ? educationBlock.outerHTML : '';
+
+      const renderLocalizedStaticArticle = () => {
+        if (typeof I18n === 'undefined' || !I18n.getGameDescriptionData) return;
+        const lang = I18n.getLanguage ? I18n.getLanguage() : 'en';
+        const gameTitle = I18n.getGameTitle ? I18n.getGameTitle(this.gameId, manifest) : (manifest && manifest.title) || 'Game';
+        const gameSummary = I18n.getGameDescription ? I18n.getGameDescription(this.gameId, manifest) : (manifest && manifest.description) || '';
+        const descriptionData = I18n.getGameDescriptionData(this.gameId);
+        if (!descriptionData) return;
+
+        let html = '';
+        html += `<h1>${gameTitle}</h1>`;
+        if (gameSummary) {
+          html += `<p>${gameSummary}</p>`;
+        }
+        html += '<section class="game-description-section"><div class="container">';
+
+        if (descriptionData.howToPlay && descriptionData.howToPlay.title) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.howToPlay.title}</h2>`;
+          if (Array.isArray(descriptionData.howToPlay.steps) && descriptionData.howToPlay.steps.length) {
+            html += '<ol>';
+            descriptionData.howToPlay.steps.forEach((step) => {
+              html += `<li>${step}</li>`;
+            });
+            html += '</ol>';
+          }
+          html += '</div>';
+        }
+
+        if (descriptionData.strategy && descriptionData.strategy.title) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.strategy.title}</h2>`;
+          if (Array.isArray(descriptionData.strategy.tips) && descriptionData.strategy.tips.length) {
+            html += '<ul>';
+            descriptionData.strategy.tips.forEach((tip) => {
+              html += `<li>${tip}</li>`;
+            });
+            html += '</ul>';
+          }
+          html += '</div>';
+        }
+
+        if (descriptionData.about && descriptionData.about.title) {
+          html += '<div class="description-block">';
+          html += `<h2>${descriptionData.about.title}</h2>`;
+          if (descriptionData.about.description) {
+            html += `<p>${descriptionData.about.description}</p>`;
+          }
+          html += '</div>';
+        }
+
+        // Preserve the static education block (uses data-i18n keys in page HTML).
+        if (educationBlockHTML) {
+          html += educationBlockHTML;
+        }
+
+        html += '</div></section>';
+
+        staticArticle.innerHTML = html;
+        staticArticle.style.display = '';
+        document.documentElement.lang = lang;
+      };
+
+      renderLocalizedStaticArticle();
+      document.addEventListener('i18n:loaded', renderLocalizedStaticArticle);
+      // Also retry once after game data and i18n settle
+      setTimeout(renderLocalizedStaticArticle, 300);
+      setTimeout(renderLocalizedStaticArticle, 800);
     } catch (error) {
       console.warn('Failed to prefer static SEO article:', error);
     }
@@ -68,6 +135,10 @@ const GameShell = {
    * Get base path for game files
    */
   getBasePath() {
+    if (!window.location.href.startsWith('file://')) {
+      return '/';
+    }
+
     // Use App.getBasePath if available, otherwise fallback to simple check
     if (typeof App !== 'undefined' && App.getBasePath) {
       return App.getBasePath();

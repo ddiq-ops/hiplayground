@@ -6,6 +6,11 @@
 
 const Router = {
   currentRoute: null,
+  localePathMap: {
+    'ko': 'ko',
+    'en': 'en',
+    'zh-HK': 'zh-hk'
+  },
   
   /**
    * Initialize router
@@ -85,9 +90,25 @@ const Router = {
   getBasePath() {
     const href = window.location.href;
     const pathname = window.location.pathname;
+    if (!href.startsWith('file://')) {
+      return '/';
+    }
     const isInPages = href.includes('/pages/') || href.includes('\\pages\\') || 
                       pathname.includes('/pages/') || pathname.includes('\\pages\\');
     return isInPages ? '' : 'pages/';
+  },
+
+  /**
+   * Build locale-aware absolute path for web deployment.
+   */
+  withLocalePrefix(path) {
+    if (window.location.href.startsWith('file://')) {
+      return path;
+    }
+    const lang = (typeof I18n !== 'undefined' && I18n.getLanguage) ? I18n.getLanguage() : 'en';
+    const langSegment = this.localePathMap[lang] || 'en';
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    return `/${langSegment}${cleanPath}`;
   },
   
   /**
@@ -96,7 +117,11 @@ const Router = {
   goToGames() {
     // For local file serving, we'll use direct page navigation
     const basePath = this.getBasePath();
-    window.location.href = `${basePath}games.html`;
+    if (window.location.href.startsWith('file://')) {
+      window.location.href = `${basePath}games.html`;
+      return;
+    }
+    window.location.href = '/pages/games.html';
   },
   
   /**
@@ -104,7 +129,11 @@ const Router = {
    */
   goToCategory(categoryId) {
     const basePath = this.getBasePath();
-    window.location.href = `${basePath}category.html?c=${encodeURIComponent(categoryId)}`;
+    if (window.location.href.startsWith('file://')) {
+      window.location.href = `${basePath}category.html?c=${encodeURIComponent(categoryId)}`;
+      return;
+    }
+    window.location.href = `/pages/category.html?c=${encodeURIComponent(categoryId)}`;
   },
   
   /**
@@ -112,7 +141,11 @@ const Router = {
    */
   goToPlay(gameId) {
     const basePath = this.getBasePath();
-    window.location.href = `${basePath}game/${encodeURIComponent(gameId)}.html`;
+    if (window.location.href.startsWith('file://')) {
+      window.location.href = `${basePath}game/${encodeURIComponent(gameId)}.html`;
+      return;
+    }
+    window.location.href = `/pages/game/${encodeURIComponent(gameId)}.html`;
   },
   
   /**
@@ -120,7 +153,11 @@ const Router = {
    */
   goToHome() {
     const basePath = this.getBasePath();
-    window.location.href = basePath ? '../index.html' : 'index.html';
+    if (window.location.href.startsWith('file://')) {
+      window.location.href = basePath ? '../index.html' : 'index.html';
+      return;
+    }
+    window.location.href = '/index.html';
   },
   
   /**

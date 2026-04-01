@@ -126,7 +126,7 @@ const Storage = {
    */
   getSettings() {
     return this.get(this.KEYS.SETTINGS, {
-      language: 'ko',
+      language: 'en',
       soundEnabled: true,
       fullscreen: false
     });

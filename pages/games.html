@@ -229,14 +229,28 @@
       const sortFilter = document.getElementById('filter-sort');
       const searchInput = document.getElementById('search-input');
       
+      function getCategoryName(category) {
+        if (typeof I18n === 'undefined') return category.name;
+        const lang = I18n.getLanguage();
+        if (lang === 'en' && category.nameEn) return category.nameEn;
+        const keyBased = I18n.t(`categories.${category.id}`, null);
+        if (keyBased) return keyBased;
+        return category.name;
+      }
+
       // Load categories for filter
       const categories = App.getCategories();
-      categories.forEach(cat => {
-        const option = document.createElement('option');
-        option.value = cat.id;
-        option.textContent = cat.name;
-        categoryFilter.appendChild(option);
-      });
+      function renderCategoryFilterOptions() {
+        categoryFilter.querySelectorAll('option[data-dynamic-category="true"]').forEach(el => el.remove());
+        categories.forEach(cat => {
+          const option = document.createElement('option');
+          option.value = cat.id;
+          option.textContent = getCategoryName(cat);
+          option.setAttribute('data-dynamic-category', 'true');
+          categoryFilter.appendChild(option);
+        });
+      }
+      renderCategoryFilterOptions();
       
       // Filter and render games
       function renderGames() {
@@ -270,6 +284,15 @@
       // Setup search
       const handleSearch = UI.debounce(renderGames, 300);
       searchInput.addEventListener('input', handleSearch);
+
+      // Re-render dynamic texts immediately on language change
+      document.addEventListener('i18n:loaded', () => {
+        const currentCategory = categoryFilter.value;
+        renderCategoryFilterOptions();
+        categoryFilter.value = currentCategory;
+        updateRepLinks();
+        renderGames();
+      });
       
       // Track page view
       Analytics.trackPageView('games');

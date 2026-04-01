@@ -4,13 +4,23 @@
  */
 
 const I18n = {
-  currentLanguage: 'ko',
+  currentLanguage: 'en',
   translations: {},
+  localePathMap: {
+    'ko': 'ko',
+    'en': 'en',
+    'zh-HK': 'zh-hk'
+  },
   
   /**
    * Get base path for data files (handles different page locations)
    */
   getBasePath() {
+    // When language-prefixed URLs are used on web, load shared data from root
+    if (!window.location.href.startsWith('file://')) {
+      return '/';
+    }
+
     // Get current page path
     const href = window.location.href;
     const pathname = window.location.pathname;
@@ -77,6 +87,34 @@ const I18n = {
     // 3. 그 외 모든 언어는 영어로 설정 (글로벌 대응)
     return 'en';
   },
+
+  /**
+   * Read language from URL (/ko/, /en/, /zh-hk/)
+   */
+  detectLanguageFromPath() {
+    if (window.location.href.startsWith('file://')) return null;
+    const match = window.location.pathname.match(/^\/(ko|en|zh-hk)(\/|$)/i);
+    if (!match) return null;
+    const code = match[1].toLowerCase();
+    if (code === 'zh-hk') return 'zh-HK';
+    if (code === 'ko') return 'ko';
+    return 'en';
+  },
+
+  /**
+   * Update current URL path with selected language code.
+   * This changes URL only (no reload) to keep current page context.
+   */
+  applyLanguagePath(language) {
+    if (window.location.href.startsWith('file://')) return;
+    const segment = this.localePathMap[language] || 'en';
+    const currentPath = window.location.pathname;
+    const pathWithoutLang = currentPath.replace(/^\/(ko|en|zh-hk)(?=\/|$)/i, '');
+    const normalizedPath = pathWithoutLang.startsWith('/') ? pathWithoutLang : `/${pathWithoutLang}`;
+    const localizedPath = `/${segment}${normalizedPath === '/' ? '' : normalizedPath}`;
+    const nextUrl = `${localizedPath}${window.location.search}${window.location.hash}`;
+    window.history.replaceState({}, '', nextUrl);
+  },
   
   /**
    * Initialize i18n system
@@ -85,19 +123,32 @@ const I18n = {
     // 1. 인자로 언어가 전달된 경우 (최우선)
     if (language) {
       this.currentLanguage = language;
-    } 
-    // 2. 저장된 설정 확인
-    else if (typeof Storage !== 'undefined') {
+    }
+    // 2. URL 언어 코드 확인
+    else {
+      const pathLang = this.detectLanguageFromPath();
+      if (pathLang) {
+        this.currentLanguage = pathLang;
+      }
+    }
+    
+    // 3. 저장된 설정 확인
+    if (!language && typeof Storage !== 'undefined') {
+      const pathLang = this.detectLanguageFromPath();
+      if (pathLang) {
+        this.currentLanguage = pathLang;
+      } else {
       const settings = Storage.getSettings();
       if (settings.language) {
         this.currentLanguage = settings.language;
       } else {
-        // 3. 저장된 설정이 없으면 브라우저 언어 감지 (자동 설정)
-        this.currentLanguage = this.detectBrowserLanguage();
+        // 4. 저장된 설정이 없으면 기본 영어
+        this.currentLanguage = 'en';
       }
-    } else {
-      // 4. 스토리지 사용 불가 시 브라우저 언어 감지
-      this.currentLanguage = this.detectBrowserLanguage();
+      }
+    } else if (!language) {
+      // 5. 스토리지 사용 불가 시 기본 영어
+      this.currentLanguage = 'en';
     }
     
     try {
@@ -111,6 +162,7 @@ const I18n = {
       
       // Update HTML lang attribute
       document.documentElement.lang = this.currentLanguage;
+      this.applyLanguagePath(this.currentLanguage);
       
       // Apply translations to page
       if (typeof document !== 'undefined' && document.readyState === 'complete') {
@@ -201,6 +253,7 @@ const I18n = {
     const success = await this.init(language);
     if (success) {
       Storage.saveSettings({ language });
+      this.applyLanguagePath(language);
       // Apply translations without page reload
       this.translatePage();
       // Trigger translation update event (init already does this, but ensure it's dispatched)

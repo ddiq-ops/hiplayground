@@ -83,28 +83,57 @@
       
       const categoryHeader = document.getElementById('category-header');
       const gamesGrid = document.getElementById('games-grid');
-      
-      // Load category info
-      if (categoryId !== 'all') {
-        const category = App.getCategoryById(categoryId);
-        if (category) {
-          categoryHeader.innerHTML = `
-            <div style="text-align: center;">
-              <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">${category.icon}</div>
-              <h1>${category.name}</h1>
-              <p style="color: var(--color-text-light); font-size: 1.25rem;">${category.description}</p>
-            </div>
-          `;
+
+      function getCategoryName(category) {
+        if (typeof I18n === 'undefined') return category.name;
+        const lang = I18n.getLanguage();
+        if (lang === 'en' && category.nameEn) return category.nameEn;
+        const keyBased = I18n.t(`categories.${category.id}`, null);
+        if (keyBased) return keyBased;
+        return category.name;
+      }
+
+      function getCategoryDescription(category) {
+        if (typeof I18n === 'undefined') return category.description || '';
+        const lang = I18n.getLanguage();
+        if (lang === 'en' && category.descriptionEn) return category.descriptionEn;
+        const keyBased = I18n.t(`categoriesDesc.${category.id}`, null);
+        if (keyBased) return keyBased;
+        return category.description || '';
+      }
+
+      function renderCategoryHeader() {
+        if (categoryId !== 'all') {
+          const category = App.getCategoryById(categoryId);
+          if (category) {
+            categoryHeader.innerHTML = `
+              <div style="text-align: center;">
+                <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">${category.icon}</div>
+                <h1>${getCategoryName(category)}</h1>
+                <p style="color: var(--color-text-light); font-size: 1.25rem;">${getCategoryDescription(category)}</p>
+              </div>
+            `;
+          } else {
+            categoryHeader.innerHTML = `<h1>${I18n.t('games.categoryNotFound', 'Category not found')}</h1>`;
+          }
         } else {
-          categoryHeader.innerHTML = '<h1>카테고리를 찾을 수 없습니다</h1>';
+          categoryHeader.innerHTML = `<h1>${I18n.t('home.allGames', 'All Games')}</h1>`;
         }
-      } else {
-        categoryHeader.innerHTML = '<h1>모든 게임</h1>';
       }
       
+      renderCategoryHeader();
+      
       // Load games in category
-      const games = App.getGamesByCategory(categoryId);
-      UI.renderGameCards(gamesGrid, games);
+      function renderGames() {
+        const games = App.getGamesByCategory(categoryId);
+        UI.renderGameCards(gamesGrid, games);
+      }
+      renderGames();
+
+      document.addEventListener('i18n:loaded', () => {
+        renderCategoryHeader();
+        renderGames();
+      });
       
       // Track page view
       Analytics.trackPageView(`category:${categoryId}`);

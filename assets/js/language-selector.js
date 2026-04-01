@@ -21,7 +21,7 @@
     function updateLangSelector() {
       if (!langCurrent) return;
       const currentLang = I18n.getLanguage();
-      langCurrent.textContent = langLabels[currentLang] || '한국어';
+      langCurrent.textContent = langLabels[currentLang] || 'English';
       
       langItems.forEach(item => {
         if (item.getAttribute('data-lang') === currentLang) {
