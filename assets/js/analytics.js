@@ -1,17 +1,39 @@
 /**
  * Analytics Manager
- * Placeholder for future analytics integration
- * Currently just logs events (can be extended to send to analytics service)
+ * Sends events to Google Tag Manager via dataLayer.
  */
 
 const Analytics = {
+  /**
+   * Ensure dataLayer exists and return it.
+   */
+  getDataLayer() {
+    if (typeof window === 'undefined') return null;
+    window.dataLayer = window.dataLayer || [];
+    return window.dataLayer;
+  },
+
+  /**
+   * Push a normalized event payload into GTM dataLayer.
+   */
+  push(eventName, payload = {}) {
+    const dataLayer = this.getDataLayer();
+    if (!dataLayer) return;
+    dataLayer.push({
+      event: eventName,
+      ...payload
+    });
+  },
+
   /**
    * Track a page view
    */
   trackPageView(pageName) {
     console.log('Analytics: Page view', pageName);
-    // Future: Send to analytics service
-    // Example: gtag('config', 'GA_MEASUREMENT_ID', { page_path: pageName });
+    this.push('page_view', {
+      page_name: pageName,
+      page_path: (typeof window !== 'undefined' && window.location) ? window.location.pathname : ''
+    });
   },
   
   /**
@@ -19,8 +41,7 @@ const Analytics = {
    */
   trackGamePlay(gameId) {
     console.log('Analytics: Game played', gameId);
-    // Future: Send to analytics service
-    // Example: gtag('event', 'game_play', { game_id: gameId });
+    this.push('game_play', { game_id: gameId });
   },
   
   /**
@@ -28,7 +49,11 @@ const Analytics = {
    */
   trackGameComplete(gameId, score, time) {
     console.log('Analytics: Game completed', { gameId, score, time });
-    // Future: Send to analytics service
+    this.push('game_complete', {
+      game_id: gameId,
+      score: typeof score === 'number' ? score : 0,
+      time_spent: typeof time === 'number' ? time : 0
+    });
   },
   
   /**
@@ -36,8 +61,7 @@ const Analytics = {
    */
   trackEvent(eventName, eventData = {}) {
     console.log('Analytics: Event', eventName, eventData);
-    // Future: Send to analytics service
-    // Example: gtag('event', eventName, eventData);
+    this.push(eventName, eventData);
   }
 };
 
