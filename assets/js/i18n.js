@@ -3,6 +3,29 @@
  * Handles language switching and text translation
  */
 
+/**
+ * Fetch JSON from url. Rejects if the body looks like HTML (404/SPA fallback/cached wrong file),
+ * which otherwise surfaces as: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+ */
+async function fetchJsonDocument(url, resourceLabel = 'JSON') {
+  const res = await fetch(url, { cache: 'no-store' });
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`${resourceLabel} (${res.status}): ${url}`);
+  }
+  const trimmed = text.trimStart();
+  if (trimmed.startsWith('<')) {
+    throw new Error(
+      `${resourceLabel}: JSON 대신 HTML이 반환되었습니다. 새로고침하거나 잠시 후 다시 시도해 주세요.`
+    );
+  }
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    throw new Error(`${resourceLabel} 파싱 오류: ${e.message}`);
+  }
+}
+
 const I18n = {
   currentLanguage: 'en',
   translations: {},
@@ -107,13 +130,11 @@ const I18n = {
    */
   applyLanguagePath(language) {
     if (window.location.href.startsWith('file://')) return;
-    const segment = this.localePathMap[language] || 'en';
-    const currentPath = window.location.pathname;
-    const pathWithoutLang = currentPath.replace(/^\/(ko|en|zh-hk)(?=\/|$)/i, '');
-    const normalizedPath = pathWithoutLang.startsWith('/') ? pathWithoutLang : `/${pathWithoutLang}`;
-    const localizedPath = `/${segment}${normalizedPath === '/' ? '' : normalizedPath}`;
-    const nextUrl = `${localizedPath}${window.location.search}${window.location.hash}`;
-    window.history.replaceState({}, '', nextUrl);
+    // 정적 배포에는 /ko, /en, /zh-hk 실제 파일이 없음. replaceState만 하면
+    // 새로고침·공유 시 /en 등으로 요청되어 404가 남. 언어는 스토리지·UI로만 유지.
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      return;
+    }
   },
   
   /**
@@ -153,12 +174,8 @@ const I18n = {
     
     try {
       const basePath = this.getBasePath();
-      // Load translation file
-      const response = await fetch(`${basePath}data/i18n/${this.currentLanguage}.json`);
-      if (!response.ok) {
-        throw new Error('Failed to load translation file');
-      }
-      this.translations = await response.json();
+      const i18nUrl = `${basePath}data/i18n/${this.currentLanguage}.json`;
+      this.translations = await fetchJsonDocument(i18nUrl, '번역 파일');
       
       // Update HTML lang attribute
       document.documentElement.lang = this.currentLanguage;

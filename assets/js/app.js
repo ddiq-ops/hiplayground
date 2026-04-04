@@ -66,24 +66,25 @@ const App = {
   async loadData() {
     try {
       const basePath = this.getBasePath();
-      
-      // Load games
+      const fetchJson =
+        typeof fetchJsonDocument === 'function'
+          ? fetchJsonDocument
+          : async (url, label) => {
+              const res = await fetch(url, { cache: 'no-store' });
+              const text = await res.text();
+              if (!res.ok) throw new Error(`${label} (${res.status})`);
+              const t = text.trimStart();
+              if (t.startsWith('<')) throw new Error(`${label}: HTML 응답`);
+              return JSON.parse(text);
+            };
+
       const gamesUrl = `${basePath}data/games.json`;
       console.log('Loading games from:', gamesUrl, 'Current location:', window.location.href);
-      const gamesResponse = await fetch(gamesUrl);
-      if (!gamesResponse.ok) {
-        throw new Error(`Failed to load games: ${gamesResponse.status} - ${gamesResponse.statusText}`);
-      }
-      this.games = await gamesResponse.json();
-      
-      // Load categories
+      this.games = await fetchJson(gamesUrl, '게임 목록');
+
       const categoriesUrl = `${basePath}data/categories.json`;
       console.log('Loading categories from:', categoriesUrl);
-      const categoriesResponse = await fetch(categoriesUrl);
-      if (!categoriesResponse.ok) {
-        throw new Error(`Failed to load categories: ${categoriesResponse.status} - ${categoriesResponse.statusText}`);
-      }
-      this.categories = await categoriesResponse.json();
+      this.categories = await fetchJson(categoriesUrl, '카테고리');
       
       return { games: this.games, categories: this.categories };
     } catch (error) {

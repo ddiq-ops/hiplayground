@@ -170,9 +170,15 @@ const GameShell = {
   async loadManifest(gameId) {
     try {
       const basePath = this.getBasePath();
-      const response = await fetch(`${basePath}games/${gameId}/manifest.json`);
+      const url = `${basePath}games/${gameId}/manifest.json`;
+      if (typeof fetchJsonDocument === 'function') {
+        return await fetchJsonDocument(url, '게임 매니페스트');
+      }
+      const response = await fetch(url, { cache: 'no-store' });
+      const text = await response.text();
       if (!response.ok) throw new Error('Manifest not found');
-      return await response.json();
+      if (text.trimStart().startsWith('<')) throw new Error('Manifest HTML response');
+      return JSON.parse(text);
     } catch (error) {
       console.error('Manifest load error:', error);
       return null;
