@@ -1,17 +1,12 @@
 /**
  * Analytics Manager
- * Sends events to Google Analytics 4.
+ * Uses GA4 gtag loaded in each page <head> (G-59SSSHXEHJ).
+ * Do not load gtag.js here — avoids duplicate config and ensures live HTML search finds the ID.
  */
 
 const Analytics = {
   measurementId: 'G-59SSSHXEHJ',
-  initialized: false,
-  scriptLoaded: false,
-  pendingEvents: [],
 
-  /**
-   * Ensure dataLayer exists and return it.
-   */
   getDataLayer() {
     if (typeof window === 'undefined') return null;
     window.dataLayer = window.dataLayer || [];
@@ -19,84 +14,41 @@ const Analytics = {
   },
 
   /**
-   * Ensure gtag is available and GA4 is configured.
-   */
-  init() {
-    if (typeof window === 'undefined' || this.initialized) return;
-    const dataLayer = this.getDataLayer();
-    if (!dataLayer) return;
-
-    // Define gtag bridge once.
-    if (typeof window.gtag !== 'function') {
-      window.gtag = function gtag() {
-        window.dataLayer.push(arguments);
-      };
-    }
-
-    // Load GA4 library only once.
-    if (!this.scriptLoaded) {
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${this.measurementId}`;
-      script.onload = () => {
-        this.flushPendingEvents();
-      };
-      document.head.appendChild(script);
-      this.scriptLoaded = true;
-    }
-
-    window.gtag('js', new Date());
-    // Avoid duplicate automatic page_view since pages already call trackPageView.
-    window.gtag('config', this.measurementId, { send_page_view: false });
-
-    this.initialized = true;
-  },
-
-  /**
-   * Send event through gtag, queueing until gtag is ready.
+   * Queue event until gtag is defined (inline script in <head> usually defines it immediately).
    */
   sendEvent(eventName, payload = {}) {
-    this.init();
-    if (typeof window === 'undefined' || typeof window.gtag !== 'function') {
-      this.pendingEvents.push({ eventName, payload });
-      return;
-    }
-    window.gtag('event', eventName, payload);
+    const trySend = () => {
+      if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', eventName, payload);
+        return true;
+      }
+      return false;
+    };
+
+    if (trySend()) return;
+
+    this.getDataLayer();
+    const start = Date.now();
+    const tick = () => {
+      if (trySend()) return;
+      if (Date.now() - start > 8000) return;
+      setTimeout(tick, 50);
+    };
+    tick();
   },
 
-  /**
-   * Flush queued events once gtag is available.
-   */
-  flushPendingEvents() {
-    if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
-    if (!this.pendingEvents.length) return;
-    this.pendingEvents.forEach(({ eventName, payload }) => {
-      window.gtag('event', eventName, payload);
-    });
-    this.pendingEvents = [];
-  },
-
-  /**
-   * Track a page view
-   */
   trackPageView(pageName) {
     this.sendEvent('page_view', {
       page_name: pageName,
-      page_path: (typeof window !== 'undefined' && window.location) ? window.location.pathname : '',
-      page_location: (typeof window !== 'undefined' && window.location) ? window.location.href : ''
+      page_path: typeof window !== 'undefined' && window.location ? window.location.pathname : '',
+      page_location: typeof window !== 'undefined' && window.location ? window.location.href : ''
     });
   },
-  
-  /**
-   * Track a game play event
-   */
+
   trackGamePlay(gameId) {
     this.sendEvent('game_play', { game_id: gameId });
   },
-  
-  /**
-   * Track a game completion
-   */
+
   trackGameComplete(gameId, score, time) {
     this.sendEvent('game_complete', {
       game_id: gameId,
@@ -104,26 +56,12 @@ const Analytics = {
       time_spent: typeof time === 'number' ? time : 0
     });
   },
-  
-  /**
-   * Track a custom event
-   */
+
   trackEvent(eventName, eventData = {}) {
     this.sendEvent(eventName, eventData);
   }
 };
 
-// Initialize immediately so collection starts as soon as script is loaded.
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => Analytics.init(), { once: true });
-  } else {
-    Analytics.init();
-  }
-}
-
-// Export for use in other files
 if (typeof window !== 'undefined') {
   window.Analytics = Analytics;
 }
-
