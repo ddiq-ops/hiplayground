@@ -5,124 +5,179 @@
     <link>https://hiplayground.com/</link>
     <description>어린이를 위한 안전하고 재미있는 미니 게임 플랫폼. 액션, 퍼즐, 교육, 보드게임 등 다양한 게임을 무료로 즐기세요!</description>
     <language>ko-KR</language>
-    <lastBuildDate>Tue, 08 Jan 2026 00:00:00 +0900</lastBuildDate>
-    <pubDate>Tue, 08 Jan 2026 00:00:00 +0900</pubDate>
+    <lastBuildDate>Sat, 04 Apr 2026 00:00:00 +0900</lastBuildDate>
+    <pubDate>Sat, 04 Apr 2026 00:00:00 +0900</pubDate>
     <managingEditor>ddiaddiq@gmail.com (하이 플레이그라운드)</managingEditor>
     <webMaster>ddiaddiq@gmail.com (하이 플레이그라운드)</webMaster>
     <atom:link href="https://hiplayground.com/rss.xml" rel="self" type="application/rss+xml"/>
-    
-    <!-- 최신 게임 추가 -->
+
     <item>
-      <title>🫧 워드 팝 - 영어 단어 방울을 터뜨리는 액션 게임</title>
-      <link>https://hiplayground.com/pages/play.html?id=word-pop</link>
-      <description>영어 단어 방울을 터뜨리는 액션 게임. 영어 학습과 재미를 동시에!</description>
-      <pubDate>Wed, 08 Jan 2026 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=word-pop</guid>
+      <title>🏃‍♂️ 매스 군단 - 올바른 사칙연산 게이트를 선택해 군단을 늘리고 성을 점령하세요!</title>
+      <link>https://hiplayground.com/pages/game/math-crowd.html</link>
+      <description><![CDATA[올바른 사칙연산 게이트를 선택해 군단을 늘리고 성을 점령하세요!]]></description>
+      <pubDate>Sat, 28 Mar 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/math-crowd.html</guid>
     </item>
-    
+    <item>
+      <title>🐠 아쿠아 피드 - 물고기에게 밥을 주세요! 무럭무럭 자라서 보물을 선물합니다.</title>
+      <link>https://hiplayground.com/pages/game/aqua-feed.html</link>
+      <description><![CDATA[물고기에게 밥을 주세요! 무럭무럭 자라서 보물을 선물합니다.]]></description>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/aqua-feed.html</guid>
+    </item>
+    <item>
+      <title>🍕 피자 스네이크 - 피자를 먹을수록 길어지는 뱀! 꼬리에 닿지 않게 조심하세요.</title>
+      <link>https://hiplayground.com/pages/game/pizza-snake.html</link>
+      <description><![CDATA[피자를 먹을수록 길어지는 뱀! 꼬리에 닿지 않게 조심하세요.]]></description>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/pizza-snake.html</guid>
+    </item>
+    <item>
+      <title>🍮 젤리 메이즈 - 타워로 미로를 만들어 젤리를 막으세요! 길찾기 디펜스.</title>
+      <link>https://hiplayground.com/pages/game/jelly-maze.html</link>
+      <description><![CDATA[타워로 미로를 만들어 젤리를 막으세요! 길찾기 디펜스.]]></description>
+      <pubDate>Tue, 13 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/jelly-maze.html</guid>
+    </item>
+    <item>
+      <title>🍞 럭키 토스트 - 운빨로 만드는 최고의 토스트! 임대료를 내고 살아남으세요.</title>
+      <link>https://hiplayground.com/pages/game/lucky-toast.html</link>
+      <description><![CDATA[운빨로 만드는 최고의 토스트! 임대료를 내고 살아남으세요.]]></description>
+      <pubDate>Tue, 13 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/lucky-toast.html</guid>
+    </item>
+    <item>
+      <title>🏭 아이들 팩토리 - 자동화 경영 게임! 생산라인을 구축하고 업그레이드해 점점 커지는 공장 운영.</title>
+      <link>https://hiplayground.com/pages/game/idle-factory.html</link>
+      <description><![CDATA[자동화 경영 게임! 생산라인을 구축하고 업그레이드해 점점 커지는 공장 운영. 30스테이지에 도전하세요!]]></description>
+      <pubDate>Mon, 12 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/idle-factory.html</guid>
+    </item>
+    <item>
+      <title>🧙‍♂️ 이모지 서바이버 - 몰려오는 이모지 군단을 막아내세요! 로그라이크 액션.</title>
+      <link>https://hiplayground.com/pages/game/emoji-survivor.html</link>
+      <description><![CDATA[몰려오는 이모지 군단을 막아내세요! 로그라이크 액션.]]></description>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/emoji-survivor.html</guid>
+    </item>
+    <item>
+      <title>🛡️ 가디언 디펜스 - 타워 디펜스와 로그라이크의 만남! 카드를 선택해 전략을 완성하세요.</title>
+      <link>https://hiplayground.com/pages/game/guardian-defense.html</link>
+      <description><![CDATA[타워 디펜스와 로그라이크의 만남! 카드를 선택해 전략을 완성하세요.]]></description>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/guardian-defense.html</guid>
+    </item>
+    <item>
+      <title>🎹 네온 비트 - 20곡의 EDM과 함께하는 4/6/8키 리듬 게임</title>
+      <link>https://hiplayground.com/pages/game/neon-beat.html</link>
+      <description><![CDATA[20곡의 EDM과 함께하는 4/6/8키 리듬 게임]]></description>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/neon-beat.html</guid>
+    </item>
     <item>
       <title>🐰 코드 래빗 - 토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)</title>
-      <link>https://hiplayground.com/pages/play.html?id=code-rabbit</link>
-      <description>토끼가 당근을 먹게 도와주세요! 코딩 로직 퍼즐 게임으로 논리적 사고력을 기르세요.</description>
-      <pubDate>Tue, 08 Jan 2026 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=code-rabbit</guid>
+      <link>https://hiplayground.com/pages/game/code-rabbit.html</link>
+      <description><![CDATA[토끼가 당근을 먹게 도와주세요! (코딩 퍼즐)]]></description>
+      <pubDate>Thu, 08 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/code-rabbit.html</guid>
     </item>
-    
     <item>
-      <title>🔮 오늘의 운세 - 별들이 속삭이는 당신의 하루 운세</title>
-      <link>https://hiplayground.com/pages/play.html?id=mystic-fortune</link>
-      <description>별들이 속삭이는 당신의 하루 운세를 확인하세요. 라이프스타일 게임으로 힐링하세요.</description>
-      <pubDate>Wed, 07 Jan 2026 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=mystic-fortune</guid>
+      <title>🍮 젤리 레전드 - 젤리 합치기 로그라이크 게임</title>
+      <link>https://hiplayground.com/pages/game/jelly-legend.html</link>
+      <description><![CDATA[젤리 합치기 로그라이크 게임]]></description>
+      <pubDate>Thu, 08 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/jelly-legend.html</guid>
     </item>
-    
+    <item>
+      <title>🫧 워드 팝 - 영어 단어 방울을 터뜨리는 액션 게임</title>
+      <link>https://hiplayground.com/pages/game/word-pop.html</link>
+      <description><![CDATA[영어 단어 방울을 터뜨리는 액션 게임]]></description>
+      <pubDate>Thu, 08 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/word-pop.html</guid>
+    </item>
+    <item>
+      <title>🔮 오늘의 운세 - 별들이 속삭이는 당신의 하루 운세를 확인하세요.</title>
+      <link>https://hiplayground.com/pages/game/mystic-fortune.html</link>
+      <description><![CDATA[별들이 속삭이는 당신의 하루 운세를 확인하세요.]]></description>
+      <pubDate>Wed, 07 Jan 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/mystic-fortune.html</guid>
+    </item>
     <item>
       <title>🚀 인피니티 스페이스: 로그 - 끝없는 우주 전쟁!</title>
-      <link>https://hiplayground.com/pages/play.html?id=infinite-space</link>
-      <description>끝없는 우주 전쟁! 적을 파괴하고, 경험치를 모아 나만의 전함을 진화시키세요. 로그라이크 슈팅 게임.</description>
+      <link>https://hiplayground.com/pages/game/infinite-space.html</link>
+      <description><![CDATA[끝없는 우주 전쟁! 적을 파괴하고, 경험치를 모아 나만의 전함을 진화시키세요.]]></description>
       <pubDate>Mon, 05 Feb 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=infinite-space</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/infinite-space.html</guid>
     </item>
-    
     <item>
       <title>🏃 그래비티 런: 제로 - 중력을 거스르는 질주!</title>
-      <link>https://hiplayground.com/pages/play.html?id=gravity-run</link>
-      <description>중력을 거스르는 질주! 터치 한 번으로 위아래를 뒤집으세요. 극한의 속도감에 도전하라.</description>
+      <link>https://hiplayground.com/pages/game/gravity-run.html</link>
+      <description><![CDATA[중력을 거스르는 질주! 터치 한 번으로 위아래를 뒤집으세요. 극한의 속도감에 도전하라.]]></description>
       <pubDate>Thu, 01 Feb 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=gravity-run</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/gravity-run.html</guid>
     </item>
-    
     <item>
       <title>🔢 순발력 숫자 터치 - 눈보다 빠른 손!</title>
-      <link>https://hiplayground.com/pages/play.html?id=speed-number</link>
-      <description>눈보다 빠른 손! 1부터 50까지 숫자를 순서대로 찾아 터치하세요. 난이도별 10단계 스테이지 도전!</description>
+      <link>https://hiplayground.com/pages/game/speed-number.html</link>
+      <description><![CDATA[눈보다 빠른 손! 1부터 50까지 숫자를 순서대로 찾아 터치하세요. 난이도별 10단계 스테이지 도전!]]></description>
       <pubDate>Wed, 31 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=speed-number</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/speed-number.html</guid>
     </item>
-    
-    <item>
-      <title>🧠 암산 천재 (고학년) - 초등 고학년 도전!</title>
-      <link>https://hiplayground.com/pages/play.html?id=math-quiz-hard</link>
-      <description>초등 고학년 도전! 큰 수 연산과 사칙연산 혼합 계산을 마스터하세요.</description>
-      <pubDate>Fri, 26 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=math-quiz-hard</guid>
-    </item>
-    
     <item>
       <title>⚫ 오목 마스터 - 5개를 연속으로 놓아 승리하세요!</title>
-      <link>https://hiplayground.com/pages/play.html?id=omok</link>
-      <description>5개를 연속으로 놓아 승리하세요! 고스트 스톤과 마지막 수 표시로 더 편리하게 즐기세요.</description>
+      <link>https://hiplayground.com/pages/game/omok.html</link>
+      <description><![CDATA[5개를 연속으로 놓아 승리하세요! 고스트 스톤과 마지막 수 표시로 더 편리하게 즐기세요.]]></description>
       <pubDate>Mon, 29 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=omok</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/omok.html</guid>
     </item>
-    
     <item>
-      <title>💣 와르르 상자 - 물리 엔진으로 상자탑을 무너뜨리세요!</title>
-      <link>https://hiplayground.com/pages/play.html?id=physics-box</link>
-      <description>공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요.</description>
-      <pubDate>Tue, 09 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=physics-box</guid>
+      <title>🧠 암산 천재 (고학년) - 초등 고학년 도전!</title>
+      <link>https://hiplayground.com/pages/game/math-quiz-hard.html</link>
+      <description><![CDATA[초등 고학년 도전! 큰 수 연산과 사칙연산 혼합 계산을 마스터하세요.]]></description>
+      <pubDate>Fri, 26 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/math-quiz-hard.html</guid>
     </item>
-    
+    <item>
+      <title>💣 와르르 상자 - 공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요.</title>
+      <link>https://hiplayground.com/pages/game/physics-box.html</link>
+      <description><![CDATA[공을 당겨서 발사하세요! 물리 엔진으로 상자탑을 무너뜨리는 쾌감을 느껴보세요.]]></description>
+      <pubDate>Tue, 09 Jan 2024 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/physics-box.html</guid>
+    </item>
     <item>
       <title>♟️ 체스 - 전략적 사고가 필요한 체스 게임!</title>
-      <link>https://hiplayground.com/pages/play.html?id=chess</link>
-      <description>전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.</description>
+      <link>https://hiplayground.com/pages/game/chess.html</link>
+      <description><![CDATA[전략적 사고가 필요한 체스 게임! 1인용과 2인용을 지원합니다.]]></description>
       <pubDate>Sat, 06 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=chess</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/chess.html</guid>
     </item>
-    
     <item>
       <title>⚔️ 내 무기만 레벨업 - 대장간에서 무기를 강화하고 상점에서 판매하세요!</title>
-      <link>https://hiplayground.com/pages/play.html?id=weapon-levelup</link>
-      <description>대장간에서 무기를 강화하고 상점에서 판매하세요! 전략적 업그레이드 게임.</description>
+      <link>https://hiplayground.com/pages/game/weapon-levelup.html</link>
+      <description><![CDATA[대장간에서 무기를 강화하고 상점에서 판매하세요!]]></description>
       <pubDate>Thu, 04 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=weapon-levelup</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/weapon-levelup.html</guid>
     </item>
-    
     <item>
-      <title>💯 초등 수학 마스터 - 덧셈, 뺄셈, 구구단, 나눗셈 게임으로 훈련하세요</title>
-      <link>https://hiplayground.com/pages/play.html?id=math-quiz</link>
-      <description>초등 저학년 필수! 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요.</description>
+      <title>💯 초등 수학 마스터 - 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요</title>
+      <link>https://hiplayground.com/pages/game/math-quiz.html</link>
+      <description><![CDATA[초등 저학년 필수! 덧셈, 뺄셈, 구구단, 나눗셈을 게임으로 재미있게 훈련하세요.]]></description>
       <pubDate>Wed, 03 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=math-quiz</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/math-quiz.html</guid>
     </item>
-    
     <item>
       <title>🧠 기억력 게임 - 카드를 뒤집어서 같은 그림을 찾아보세요!</title>
-      <link>https://hiplayground.com/pages/play.html?id=memory</link>
-      <description>카드를 뒤집어서 같은 그림을 찾아보세요! 기억력과 집중력을 키우는 퍼즐 게임.</description>
+      <link>https://hiplayground.com/pages/game/memory.html</link>
+      <description><![CDATA[카드를 뒤집어서 같은 그림을 찾아보세요!]]></description>
       <pubDate>Tue, 02 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=memory</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/memory.html</guid>
     </item>
-    
     <item>
       <title>🎯 클리커 게임 - 빠르게 클릭해서 점수를 모아보세요!</title>
-      <link>https://hiplayground.com/pages/play.html?id=clicker</link>
-      <description>빠르게 클릭해서 점수를 모아보세요! 간단하고 재미있는 반응속도 게임.</description>
+      <link>https://hiplayground.com/pages/game/clicker.html</link>
+      <description><![CDATA[빠르게 클릭해서 점수를 모아보세요!]]></description>
       <pubDate>Mon, 01 Jan 2024 00:00:00 +0900</pubDate>
-      <guid isPermaLink="true">https://hiplayground.com/pages/play.html?id=clicker</guid>
+      <guid isPermaLink="true">https://hiplayground.com/pages/game/clicker.html</guid>
     </item>
   </channel>
 </rss>
-

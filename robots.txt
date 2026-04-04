@@ -1,8 +1,11 @@
 User-agent: *
 Allow: /
 
-# Sitemap 위치
+# Sitemap
 Sitemap: https://hiplayground.com/sitemap.xml
+
+# RSS (구독/리더용; 검색엔진은 주로 Sitemap 사용)
+# https://hiplayground.com/rss.xml
 
 # 크롤링 제외할 디렉토리 (필요시)
 # Disallow: /private/
