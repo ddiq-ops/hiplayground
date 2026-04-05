@@ -1,11 +1,11 @@
 /**
  * Analytics Manager
- * Uses GA4 gtag loaded in each page <head> (G-59SSSHXEHJ).
+ * Uses GA4 gtag loaded in each page <head> (G-9JDCJRN2PC).
  * Do not load gtag.js here — avoids duplicate config and ensures live HTML search finds the ID.
  */
 
 const Analytics = {
-  measurementId: 'G-59SSSHXEHJ',
+  measurementId: 'G-9JDCJRN2PC',
 
   getDataLayer() {
     if (typeof window === 'undefined') return null;
